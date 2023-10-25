@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/")
 public class CustomerController {
     @Autowired
-    CustomerService customerService;
+    CustomerService memberService;
 
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
@@ -30,9 +31,9 @@ public class CustomerController {
     public String login(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
 
-        String member_id =  request.getParameter("member_id");
-        String password  =  request.getParameter("password");
-        int result_value = customerService.login(member_id, password);
+        String member_id = request.getParameter("member_id");
+        String password  = request.getParameter("password");
+        int result_value = memberService.login(member_id, password);
         if (result_value == 1) result = "success";
 
         return result;
