@@ -11,7 +11,7 @@ public class MemberService implements CustomerService {
     MemberDAO memberDAO;
 
     @Override
-    public int login(MemberDTO member) {
+    public MemberDTO login(MemberDTO member) {
         return memberDAO.login(member);
     }
 }

@@ -4,6 +4,7 @@ import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,17 +27,24 @@ public class CustomerController {
     /**
      * RQ-001 로그인 기능 구현<br>
      * 비동기 통신 후 문자열 형태로 결과를 반환한다.
+     * 성공 시 세션에 값을 저장한다.
      */
     @PostMapping("/action/login")
     @ResponseBody
     public String login(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
-        MemberDTO member = new MemberDTO();
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = new MemberDTO();
 
-        member.setMember_id(request.getParameter("member_id"));
-        member.setPassword(request.getParameter("password"));
-        int result_value = memberService.login(member);
-        if (result_value == 1) result = "success";
+        ssKey.setMember_id(request.getParameter("member_id"));
+        ssKey.setPassword(request.getParameter("password"));
+        ssKey = memberService.login(ssKey);
+        if (ssKey == null) {
+            result = "failed, ssKey value is null;";
+        } else {
+            result = "success";
+            session.setAttribute("ssKey", ssKey);
+        }
 
         return result;
     }

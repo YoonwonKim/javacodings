@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberDAO {
-    int login(MemberDTO member);
+    MemberDTO login(MemberDTO member);
 }
