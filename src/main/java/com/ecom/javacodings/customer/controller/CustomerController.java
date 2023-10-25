@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,10 +31,11 @@ public class CustomerController {
     @ResponseBody
     public String login(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
+        MemberDTO member = new MemberDTO();
 
-        String member_id = request.getParameter("member_id");
-        String password  = request.getParameter("password");
-        int result_value = memberService.login(member_id, password);
+        member.setMember_id(request.getParameter("member_id"));
+        member.setPassword(request.getParameter("password"));
+        int result_value = memberService.login(member);
         if (result_value == 1) result = "success";
 
         return result;
