@@ -48,4 +48,25 @@ public class CustomerController {
 
         return result;
     }
+
+    /**
+     * RQ-002 로그아웃 기능 구현
+     * 비동기 통신 후 결과를 반환하고 세션을 초기화한다.
+     */
+    @PostMapping("/action/logout")
+    @ResponseBody
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        String result = "failed";
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+
+        if (ssKey != null) {
+            result = "success, but already logged out";
+        } else {
+            session.removeAttribute("ssKey");
+            result = "success";
+        }
+
+        return result;
+    }
 }
