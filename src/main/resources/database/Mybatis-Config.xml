@@ -11,5 +11,7 @@
     <typeAliases>
         <typeAlias alias="hashMap" type="java.util.HashMap" />
         <typeAlias alias="map" type="java.util.Map" />
+
+        <typeAlias alias="memberDTO" type="com.ecom.javacodings.common.transfer.MemberDTO" />
     </typeAliases>
 </configuration>
