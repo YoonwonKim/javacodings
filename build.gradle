@@ -36,6 +36,8 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	// https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jasper
 	implementation 'org.apache.tomcat:tomcat-jasper:10.1.15'
+	compileOnly 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 	// End Region 서버 관련 패키지
 	// Region 데이터베이스 관련 패키지
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
