@@ -17,20 +17,22 @@
     height: 512px;
 }
 
+/** Region Event Banner **/
 div#events {
     width: 1280px;
     margin: 32px auto;
 
-    display: flex;
-    gap: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px;
+    grid-auto-rows: minmax(100px, auto);
 }
-div#events .card {
-    width: 100%;
+#events .card:nth-child(1) { background-color: #ddd; }
+#events .card:nth-child(2) { background-color: #deefe7; }
+#events .card:nth-child(3) { background-color: #eee5de; }
 
-    background-color: #ddd;
-    background-image: url(/resources/images/Grey.png);
-    background-size: cover;
-    padding: 16px 16px 32px;
+div#events .card {
+    padding: 16px;
     min-height: 400px;
     max-height: 512px;
 }
@@ -51,8 +53,8 @@ div#events .card p {
     font-size: 24px;
     font-weight: 400;
 }
-
-
+/** End Region Event Banner **/
+/** Region MD List **/
 div#md-list {
     background: #e0e0e0;
 }
@@ -103,3 +105,4 @@ div#md-list .card p {
     line-height: 20px;
     color: #262626;
 }
+/** End Region MD List **/
