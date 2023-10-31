@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
 	<link rel="stylesheet" href="/views/fragments/init.css" />
@@ -22,19 +24,11 @@
 
 	<div id="events">
 		<div class="card">
-			<p class="tag">배너 태그</p>
-			<h1>배너입니다.</h1>
-			<p>이벤트 설명입니다.</p>
-		</div>
-		<div class="card">
-			<p class="tag">배너 태그</p>
-			<h1>배너입니다.</h1>
-			<p>이벤트 설명입니다.</p>
-		</div>
-		<div class="card">
-			<p class="tag">배너 태그</p>
-			<h1>배너입니다.</h1>
-			<p>이벤트 설명입니다.</p>
+		<c:forEach items="${banners}" var="banner">
+			<p class="tag">${banners.item_id}</p>
+			<h1>${banners.label}</h1>
+			<p>${banners.desc}</p>
+		</c:forEach>
 		</div>
 	</div>
 
