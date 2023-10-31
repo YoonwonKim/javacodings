@@ -32,3 +32,5 @@ body {
 main {
     flex: 1;
 }
+
+a, a:visited, a:hover, a:focus { text-decoration: none; color: #525252; }

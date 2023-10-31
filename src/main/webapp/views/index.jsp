@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -33,17 +32,21 @@
 	</div>
 
 	<div id="md-list">
+	<c:forEach var="list" items="${md-list}">
 		<div class="layer">
-			<h1>태그 라벨입니다.</h1>
-			<p>태그 설명입니다. 다소 깁니다.</p>
-			<ul>
-				<li class="card">
-					<img src="/resources/Grey.png">
-					<h1>상품 라벨입니다.</h1>
-					<p>140,000원</p>
-				</li>
-			</ul>
+			<h1>${list.label}</h1>
+			<p>${list.desc}</p>
+			<div class="grid">
+			<c:forEach var="item" items="${list.itemList}">
+				<a href="#" class="card">
+					<img src="/resources/images/${item.image}.png">
+					<h1>${item.label}</h1>
+					<p>${item.price}원</p>
+				</a>
+			</c:forEach>
+			</div>
 		</div>
+	</c:forEach>
 	</div>
 </main>
 <%@ include file="/views/fragments/footer.jsp" %>

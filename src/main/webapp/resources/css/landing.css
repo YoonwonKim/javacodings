@@ -13,7 +13,7 @@ div#banner {
     width: 1280px;
     margin: 32px auto 0;
 
-    background-image: url(/resources/demo.jpg);
+    background-image: url(/resources/images/demo.jpg);
     background-size: cover;
 }
 div#banner ul {
@@ -40,7 +40,7 @@ div#events .card {
     width: 100%;
 
     background-color: #ddd;
-    background-image: url(/resources/Grey.png);
+    background-image: url(/resources/images/Grey.png);
     background-size: cover;
     padding: 16px 16px 32px;
     min-height: 400px;
@@ -85,27 +85,33 @@ div#md-list .layer p {
     line-height: 48px;
     text-align: center;
 }
-div#md-list .layer ul {
-    display: flex;
-    flex-direction: row;
+div#md-list .layer .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 16px;
+    grid-auto-rows: minmax(100px, auto);
+
     padding-top: 16px;
     width: 1280px;
 }
-div#md-list .layer li {
+div#md-list .card {
     min-width: 320px;
     height: 400px;
 }
-div#md-list .layer li img {
+div#md-list .card img {
     height: 300px;
+    width:  100%;
 }
-div#md-list .layer li h1 {
+div#md-list .card h1 {
     font-family: IBMPlexSansKR;
     font-size: 16px;
     text-align: left;
+    color: #525252;
 }
-div#md-list .layer li p {
+div#md-list .card p {
     font-family: IBMPlexSansKR;
     font-size: 16px;
     text-align: left;
-    line-height: 20px
+    line-height: 20px;
+    color: #262626;
 }
