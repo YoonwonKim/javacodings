@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'Giants-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+div#banner {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 512px;
+    /*width: 100%;*/
+    width: 1280px;
+    margin: 32px auto 0;
+
+    background-image: url(/resources/demo.jpg);
+    background-size: cover;
+}
+div#banner ul {
+    display: flex;
+    justify-content: center;
+    height: 16px;
+    gap: 16px;
+}
+div#banner li {
+    width:  32px;
+    height: 6px;
+    background-color: #525252;
+}
+div#banner li.selected { background-color: #f4f4f4; }
+
+div#events {
+    width: 1280px;
+    margin: 32px auto;
+
+    display: flex;
+    gap: 32px;
+}
+div#events .card {
+    width: 100%;
+
+    background-color: #ddd;
+    background-image: url(/resources/Grey.png);
+    background-size: cover;
+    padding: 16px 16px 32px;
+    min-height: 400px;
+    max-height: 512px;
+}
+div#events .card .tag {
+    display: inline-block;
+    background-color: #262626;
+    color: #f4f4f4;
+    padding: 4px 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+div#events .card h1 {
+    font-family: Giants-Bold;
+    font-size: 32px;
+    line-height: 48px;
+}
+div#events .card p {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+
+div#md-list {
+    background: #e0e0e0;
+}
+div#md-list .layer {
+    width: 1280px;
+    margin: 0 auto;
+    padding-top: 32px;
+    padding-bottom: 64px;
+}
+div#md-list .layer h1 {
+    font-family: Giants-Bold;
+    font-size: 32px;
+    line-height: 48px;
+    text-align: center;
+}
+div#md-list .layer p {
+    font-size: 24px;
+    line-height: 48px;
+    text-align: center;
+}
+div#md-list .layer ul {
+    display: flex;
+    flex-direction: row;
+    padding-top: 16px;
+    width: 1280px;
+}
+div#md-list .layer li {
+    min-width: 320px;
+    height: 400px;
+}
+div#md-list .layer li img {
+    height: 300px;
+}
+div#md-list .layer li h1 {
+    font-family: IBMPlexSansKR;
+    font-size: 16px;
+    text-align: left;
+}
+div#md-list .layer li p {
+    font-family: IBMPlexSansKR;
+    font-size: 16px;
+    text-align: left;
+    line-height: 20px
+}
