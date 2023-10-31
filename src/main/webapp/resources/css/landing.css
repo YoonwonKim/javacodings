@@ -5,29 +5,17 @@
     font-style: normal;
 }
 
-div#banner {
-    display: flex;
-    flex-direction: column-reverse;
-    height: 512px;
-    /*width: 100%;*/
+.banner {
     width: 1280px;
-    margin: 32px auto 0;
+    height: 512px;
+    margin: 32px auto;
+    overflow: hidden;
+}
 
-    background-image: url(/resources/images/demo.jpg);
-    background-size: cover;
+.banner img {
+    width: 1280px;
+    height: 512px;
 }
-div#banner ul {
-    display: flex;
-    justify-content: center;
-    height: 16px;
-    gap: 16px;
-}
-div#banner li {
-    width:  32px;
-    height: 6px;
-    background-color: #525252;
-}
-div#banner li.selected { background-color: #f4f4f4; }
 
 div#events {
     width: 1280px;
