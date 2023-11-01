@@ -2,9 +2,18 @@ package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
+import com.ecom.javacodings.customer.transfer.BannerDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,11 +26,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CustomerController {
     @Autowired
     CustomerService memberService;
+    
+    @Autowired
+    BannerService bannerSrvice;
 
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
-                       Model model) {
-        return "index";
+                       Model model, BannerDTO banner) {
+    	
+    	model.addAttribute("mainList", bannerService.listMain(7));
+    	model.addAttribute("eventList", bannerService.listEvent());
+    	
+    	List<Map<String, Object>> mdList = new ArrayList<>();
+    	mdList.put(bannerService.listNew(8));
+    	mdList.put(bannerService.listBest(8));
+    	mdList.put(bannerService.listTagById(""));
+    	mdList.put(bannerService.listTagById(""));
+    	mdList.put(bannerService.listTagById(""));
+    	model.addAttribute("mdList", mdList);
+    	
+    	return "index";
     }
 
     /**
