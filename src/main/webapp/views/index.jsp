@@ -20,8 +20,8 @@
 <%@ include file="/views/fragments/header.jsp" %>
 <main>
 	<div class="banner">
-	<c:forEach var="banner" items="mainList">
-		<a href="#"><img src="/resources/images/100HITS.png"></a>
+	<c:forEach items="${mainList}" var="banner">
+		<a href="#"><img src="/resources/images/${banner.image}"></a>
 	</c:forEach>
 	</div>
 
@@ -32,12 +32,12 @@
 			<p class="tag">${banner.item_id}</p>
 			<h1>${banner.label}</h1>
 			<p>${banner.desc}</p>
-			<img src="${banner.image}}">
+			<img src="/resources/images/${banner.image}">
 		</a>
 		</c:forEach>
 	</div>
 
-	<div id="md-list">
+	<div id="md-list" class="list">
 	<c:forEach var="list" items="${mdList}">
 		<div class="layer">
 			<h1>${list.label}</h1>
@@ -45,7 +45,7 @@
 			<div class="grid">
 			<c:forEach var="item" items="${list.itemList}">
 				<a href="#" class="card">
-					<img src="/resources/images/${item.image}.png">
+					<img src="/resources/images/${item.image}">
 					<h1>${item.label}</h1>
 					<p>${item.price}원</p>
 				</a>
