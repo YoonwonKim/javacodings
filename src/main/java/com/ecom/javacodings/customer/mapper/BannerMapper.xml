@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.customer.access.BannerDAO">
+
+<select id="getbanner" resultType="bannerDTO">
+  select LABEL, DESC, IMAGE
+  from BANNER
+  WHERE CATEGORY='MAIN'
+</select>
+
+<select id="listEvent" resultType="bannerDTO">
+  select BANNER_ID, ITEM_ID, CATEGORY, LABEL, DESE, IMAGE
+  from BANNER
+   WHERE CATEGORY='EVENT'	
+</select>
+
+
+
+
+</mapper>
+ 
