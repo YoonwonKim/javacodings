@@ -15,7 +15,6 @@
         <typeAlias alias="memberDTO" type="com.ecom.javacodings.common.transfer.MemberDTO" />
         <typeAlias alias="bannerDTO" type="com.ecom.javacodings.customer.transfer.BannerDTO" />
         <typeAlias alias="itemDTO" type="com.ecom.javacodings.customer.transfer.ItemDTO" />
-    	
-    
+        <typeAlias alias="tagDTo" type="com.ecom.javacodings.customer.transfer.TagDTO" />
     </typeAliases>
 </configuration>
