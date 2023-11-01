@@ -7,10 +7,8 @@ import com.ecom.javacodings.customer.transfer.BannerDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,25 +24,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class CustomerController {
     @Autowired
     CustomerService memberService;
-    
-    @Autowired
-    BannerService bannerSrvice;
 
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
-                       Model model, BannerDTO banner) {
-    	
-    	model.addAttribute("mainList", bannerService.listMain(7));
-    	model.addAttribute("eventList", bannerService.listEvent());
-    	
+                       Model model) {
+
+    	model.addAttribute("mainList", memberService.listMain(8));
+    	model.addAttribute("eventList", memberService.listEvent());
+
     	List<Map<String, Object>> mdList = new ArrayList<>();
-    	mdList.put(bannerService.listNew(8));
-    	mdList.put(bannerService.listBest(8));
-    	mdList.put(bannerService.listTagById(""));
-    	mdList.put(bannerService.listTagById(""));
-    	mdList.put(bannerService.listTagById(""));
+    	mdList.add(memberService.listNew(8));
+    	mdList.add(memberService.listBest(8));
+    	mdList.add(memberService.listItemsByTagId("players"));
+    	mdList.add(memberService.listItemsByTagId("mascots"));
+    	mdList.add(memberService.listItemsByTagId("fashion"));
     	model.addAttribute("mdList", mdList);
-    	
+
     	return "index";
     }
 

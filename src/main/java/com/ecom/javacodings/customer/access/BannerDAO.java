@@ -5,24 +5,10 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.transfer.BannerDTO;
 
 @Mapper
 public interface BannerDAO {
-
-	MemberDTO login(MemberDTO member);
-
-	List<BannerDTO> listEvent(int number);
-	
-	List<BannerDTO> getbanner(int number);
-
-
-	
-	
-
-
-
-	
- 
+	List<BannerDTO> listEvent();
+	List<BannerDTO> listMain(int number);
 }

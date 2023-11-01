@@ -18,7 +18,7 @@
 }
 
 /** Region Event Banner **/
-div#events {
+#events {
     width: 1280px;
     margin: 32px auto;
 
@@ -31,12 +31,12 @@ div#events {
 #events .card:nth-child(2) { background-color: #deefe7; }
 #events .card:nth-child(3) { background-color: #eee5de; }
 
-div#events .card {
+#events .card {
     padding: 16px;
     min-height: 400px;
     max-height: 512px;
 }
-div#events .card .tag {
+#events .card .tag {
     display: inline-block;
     background-color: #262626;
     color: #f4f4f4;
@@ -44,38 +44,40 @@ div#events .card .tag {
     margin-bottom: 16px;
     font-size: 14px;
 }
-div#events .card h1 {
+#events .card h1 {
     font-family: Giants-Bold;
     font-size: 32px;
     line-height: 48px;
+    color: #262626;
 }
-div#events .card p {
+#events .card p {
     font-size: 24px;
     font-weight: 400;
+    color: #262626;
 }
 /** End Region Event Banner **/
 /** Region MD List **/
-div#md-list {
-    background: #e0e0e0;
-}
-div#md-list .layer {
-    width: 1280px;
+.list .layer {
     margin: 0 auto;
     padding-top: 32px;
     padding-bottom: 64px;
 }
-div#md-list .layer h1 {
+.list .layer:nth-child(even) { background-color: #e0e0e0; }
+.list .layer:nth-child(odd)  { background-color: #f4f4f4; }
+
+
+.list .layer h1 {
     font-family: Giants-Bold;
     font-size: 32px;
     line-height: 48px;
     text-align: center;
 }
-div#md-list .layer p {
+.list .layer p {
     font-size: 24px;
     line-height: 48px;
     text-align: center;
 }
-div#md-list .layer .grid {
+.list .layer .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 16px;
@@ -83,22 +85,23 @@ div#md-list .layer .grid {
 
     padding-top: 16px;
     width: 1280px;
+    margin: 0 auto;
 }
-div#md-list .card {
+.list .card {
     min-width: 320px;
     height: 400px;
 }
-div#md-list .card img {
+.list .card img {
     height: 300px;
     width:  100%;
 }
-div#md-list .card h1 {
+.list .card h1 {
     font-family: IBMPlexSansKR;
     font-size: 16px;
     text-align: left;
     color: #525252;
 }
-div#md-list .card p {
+.list .card p {
     font-family: IBMPlexSansKR;
     font-size: 16px;
     text-align: left;
