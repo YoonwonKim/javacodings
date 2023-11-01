@@ -27,4 +27,23 @@
               ORDER BY I.REG_DATE)
         WHERE RN BETWEEN 1 AND 8
     </select>
+    
+    <select id="listItem" parameterType="int">
+    SELECT *
+	FROM (SELECT *, ROW_NUMBER()over(ORDER BY REG_DATE DESC) AS RN 
+	      FROM ITMES)
+    WHERE RN BETWEEN #{value} AND #{value}
+    </select>
+    
+    <update id="updateList" parameterType="ItemDTO">
+	UPDATE ITEMS SET 
+   				<if test="category!=null">CATEGORY=#{category}, </if>
+    			<if test="label!=null">LABEL=#{label}, </if>
+    			<if test="desc!=null">DESC=#{desc}, </if>
+				<if test="image!=null">IMAGE=#{image}, </if>
+				<if test="price!=null">PRICE=#{price}, </if>
+				<if test="stock!=null">STOCK=#{stock} </if>
+	WHERE ITEM_ID=#{item_id}			
+    </update>
+
 </mapper>
