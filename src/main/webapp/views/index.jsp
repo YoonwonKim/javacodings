@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
 <head>
@@ -19,22 +20,25 @@
 <%@ include file="/views/fragments/header.jsp" %>
 <main>
 	<div class="banner">
-		<div class="swiper-slide"><img src="/resources/images/demo.jpg"></div>
-		<div class="swiper-slide"><img src="/resources/images/demo2.jpg"></div>
+	<c:forEach var="banner" items="mainList">
+		<a href="#"><img src="/resources/images/100HITS.png"></a>
+	</c:forEach>
 	</div>
 
 	<div id="events">
-		<div class="card">
-		<c:forEach items="${banners}" var="banner">
-			<p class="tag">${banners.item_id}</p>
-			<h1>${banners.label}</h1>
-			<p>${banners.desc}</p>
+		<c:forEach items="${eventList}" var="banner">
+		<a class="card"
+		   href="#">
+			<p class="tag">${banner.item_id}</p>
+			<h1>${banner.label}</h1>
+			<p>${banner.desc}</p>
+			<img src="${banner.image}}">
+		</a>
 		</c:forEach>
-		</div>
 	</div>
 
 	<div id="md-list">
-	<c:forEach var="list" items="${md-list}">
+	<c:forEach var="list" items="${mdList}">
 		<div class="layer">
 			<h1>${list.label}</h1>
 			<p>${list.desc}</p>
