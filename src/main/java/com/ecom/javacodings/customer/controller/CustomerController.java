@@ -2,9 +2,16 @@ package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
+import com.ecom.javacodings.customer.transfer.BannerDTO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +28,19 @@ public class CustomerController {
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
                        Model model) {
-        return "index";
+
+    	model.addAttribute("mainList", memberService.listMain(8));
+    	model.addAttribute("eventList", memberService.listEvent());
+
+    	List<Map<String, Object>> mdList = new ArrayList<>();
+    	mdList.add(memberService.listNew(8));
+    	mdList.add(memberService.listBest(8));
+    	mdList.add(memberService.listItemsByTagId("players"));
+    	mdList.add(memberService.listItemsByTagId("mascots"));
+    	mdList.add(memberService.listItemsByTagId("fashion"));
+    	model.addAttribute("mdList", mdList);
+
+    	return "index";
     }
 
     /**

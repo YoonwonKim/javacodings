@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'Giants-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.banner {
+    width: 1280px;
+    height: 512px;
+    margin: 32px auto;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 1280px;
+    height: 512px;
+}
+
+/** Region Event Banner **/
+#events {
+    width: 1280px;
+    margin: 32px auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px;
+    grid-auto-rows: minmax(100px, auto);
+}
+#events .card:nth-child(1) { background-color: #ddd; }
+#events .card:nth-child(2) { background-color: #deefe7; }
+#events .card:nth-child(3) { background-color: #eee5de; }
+
+#events .card {
+    padding: 16px;
+    min-height: 400px;
+    max-height: 512px;
+}
+#events .card .tag {
+    display: inline-block;
+    background-color: #262626;
+    color: #f4f4f4;
+    padding: 4px 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+#events .card h1 {
+    font-family: Giants-Bold;
+    font-size: 32px;
+    line-height: 48px;
+    color: #262626;
+}
+#events .card p {
+    font-size: 24px;
+    font-weight: 400;
+    color: #262626;
+}
+/** End Region Event Banner **/
+/** Region MD List **/
+.list .layer {
+    margin: 0 auto;
+    padding-top: 32px;
+    padding-bottom: 64px;
+}
+.list .layer:nth-child(even) { background-color: #e0e0e0; }
+.list .layer:nth-child(odd)  { background-color: #f4f4f4; }
+
+
+.list .layer h1 {
+    font-family: Giants-Bold;
+    font-size: 32px;
+    line-height: 48px;
+    text-align: center;
+}
+.list .layer p {
+    font-size: 24px;
+    line-height: 48px;
+    text-align: center;
+}
+.list .layer .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 16px;
+    grid-auto-rows: minmax(100px, auto);
+
+    padding-top: 16px;
+    width: 1280px;
+    margin: 0 auto;
+}
+.list .card {
+    min-width: 320px;
+    height: 400px;
+}
+.list .card img {
+    height: 300px;
+    width:  100%;
+}
+.list .card h1 {
+    font-family: IBMPlexSansKR;
+    font-size: 16px;
+    text-align: left;
+    color: #525252;
+}
+.list .card p {
+    font-family: IBMPlexSansKR;
+    font-size: 16px;
+    text-align: left;
+    line-height: 20px;
+    color: #262626;
+}
+/** End Region MD List **/
