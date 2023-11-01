@@ -12,5 +12,4 @@ public class BannerDTO {
 	  private String label;
 	  private String desc;
 	  private String image;
-	  private int reg_date;
 }
