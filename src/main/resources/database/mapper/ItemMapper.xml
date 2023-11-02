@@ -58,4 +58,18 @@
 		FROM ORDER
 		WHERE STATUS = 0 AND ORDER_ID = #{value}
 	</insert>
+	
+	<insert id="insertOrder" parameterType="list">
+	  <selectKey keyProperty="oder_id" resultType="int" order="BEFORE">
+		SELECT NVL(MAX(state), 0)+1 AS status FROM ORDER
+	</selectKey>
+	
+     INSERT INTO ORDER(ORDER_ID,ITEM_ID,MEMBER_ID,QUANTITY,
+                  STATE,STATUS,)
+          VALUES(#{order_id},#{item_id},#{member_id},#{quantity},
+                 #{state},#{status})
+                 
+
+	
+	</insert>
 </mapper>
