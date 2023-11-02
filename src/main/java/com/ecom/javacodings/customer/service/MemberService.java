@@ -78,4 +78,20 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    @Override
+    public List<ItemDTO> listItem(int item){
+    	List<ItemDTO> listItem = itemDAO.listItem(item);
+    	return itemDAO.listItem(item);
+    	
+    }
+    
+    @Override
+    public int updateList(ItemDTO item) {
+    	return itemDAO.updateList(item);
+    }
+    
+    @Override
+    public int deleteItem(ItemDTO item) {
+    	return itemDAO.deleteItem(item);
+    }
 }
