@@ -24,6 +24,13 @@ public interface CustomerService {
 	List<ItemDTO> listItem(int item);
 	int updateList(ItemDTO item);
 	int deleteItem(ItemDTO item);
+	int register(MemberDTO member);
+	
+	
+	int insertOrder(ItemDTO item);
+	int updateOrderState(ItemDTO item);
+	
+	
     
 
 }
