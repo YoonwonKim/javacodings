@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ecom.javacodings.customer.transfer.ItemDTO;
 
 
+
 @Mapper
 public interface ItemDAO {
 	String a();
@@ -18,6 +19,8 @@ public interface ItemDAO {
 	int updateList(ItemDTO item);
 	int deleteItem(ItemDTO item);
 	
+	int insertOrder(ItemDTO item);
+	int updateOrderState(ItemDTO item);
 	
 	
 }
