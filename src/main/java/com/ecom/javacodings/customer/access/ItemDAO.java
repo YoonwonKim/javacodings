@@ -25,5 +25,8 @@ public interface ItemDAO {
 	//RQ - 011 - 06 가격 데이터 변경
 	int updatePrice(ItemDTO item);
 	
+	int insertOrder(ItemDTO item);
+    int updateOrderState(ItemDTO item);
+	
 	
 }
