@@ -15,4 +15,8 @@ public interface ManagerService {
 
     ItemDTO getItemById(String id);
     List<String> listCategory();
+
+
+
+    List<String> listTags();
 }
