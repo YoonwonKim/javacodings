@@ -94,4 +94,15 @@ public class MemberService implements CustomerService {
     public int deleteItem(ItemDTO item) {
     	return itemDAO.deleteItem(item);
     }
+    
+    @Override
+    public int updateStockItem(ItemDTO item) {
+    	return itemDAO.updateStockItem(item);
+    }
+    
+    @Override
+    public int listItemByItemId(ItemDTO item) {
+    	return itemDAO.updateStockItem(item);
+    }
+    
 }

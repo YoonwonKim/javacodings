@@ -24,6 +24,11 @@ public interface CustomerService {
 	List<ItemDTO> listItem(int item);
 	int updateList(ItemDTO item);
 	int deleteItem(ItemDTO item);
+	//RQ - 011 - 05 재고 데이터 변경
+	int updateStockItem(ItemDTO item);
+	//RQ - 012 - 02 상품관리페이지 제품 정보
+	int listItemByItemId(ItemDTO item);
     
+	 
 
 }

@@ -46,7 +46,7 @@
 		WHERE ITEM_ID=#{item_id}
     </update>
 
-    <delete id="deleteItem" parameterType="string">
+    <delete id="deleteItem" parameterType="String">
 		DELETE 
 		FROM ITEMS
 		WHERE ITEM_ID = #{value}
@@ -69,13 +69,13 @@
                  #{state},#{status})
 	</insert>
 	
-	<update id="updateStockItem" parameterType="int">
+	<update id="updateStockItem" parameterType="ItemDTO">
 		UPDATE ITEMS
 		SET STOCK = STOCK - #{value}
 		WHERE ITEM_ID = #{value}
 	</update>
 	
-	<select id="listItemByItemId" parameterType="map">
+	<select id="listItemByItemId" parameterType="String">
 		SELECT *
 		FROM ITEMS
 		WHERE ITEM_ID = #{value}
