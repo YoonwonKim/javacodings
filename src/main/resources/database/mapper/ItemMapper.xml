@@ -80,4 +80,12 @@
 		FROM ITEMS
 		WHERE ITEM_ID = #{value}
 	</select>
+	
+	<!-- RQ - 011 - 06 가격 데이터 변경 -->
+	<update id="updatePrice" parameterType="item">
+	  UPDATE ITEMS SET
+	  PRICE = #{value}
+	  WHERE 
+	  ITEM_ID = #{value}
+	</update>
 </mapper>

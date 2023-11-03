@@ -105,4 +105,7 @@ public class MemberService implements CustomerService {
     	return itemDAO.updateStockItem(item);
     }
     
+    public int updatePrice(ItemDTO item) {
+    	return itemDAO.updatePrice(item);
+    }
 }
