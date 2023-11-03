@@ -27,7 +27,7 @@ public interface ItemDAO {
 	
 	int insertOrder(ItemDTO item);
     int updateOrderState(ItemDTO item);
-    //RQ - 012 - 02 제품 정보
+    //RQ - 013 - 02 주문 리스트
 	int orderList(ItemDTO item);
 	
 }

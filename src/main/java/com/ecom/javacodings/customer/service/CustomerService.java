@@ -36,7 +36,7 @@ public interface CustomerService {
     int insertOrder(ItemDTO item);
     //상품 상태변경
     int updateOrderState(ItemDTO item);
-    //RQ - 012 - 02 제품 정보
+    //RQ - 013 - 02 주문 리스트
     int orderList(ItemDTO item);
 
     
