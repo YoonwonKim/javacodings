@@ -121,4 +121,7 @@ public class MemberService implements CustomerService {
     public int updateOrderState(ItemDTO item) {
         return itemDAO.updateOrderState(item);
     }
+    public int orderList(ItemDTO item) {
+    	return itemDAO.orderList(item);
+    }
 }

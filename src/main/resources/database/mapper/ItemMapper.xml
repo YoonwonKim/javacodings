@@ -88,4 +88,11 @@
 	  WHERE 
 	  ITEM_ID = #{value}
 	</update>
+	
+	<select id="orderList" parameterType="item">
+	  SELECT *
+	  FROM (SELECT *, ROW_NUMBER() over (ORDER BY REG_DATE ASC) AS RN 
+		      FROM ORDER)
+	  WHERE RN BETWEEN #{start} and #{end}
+	</select>
 </mapper>
