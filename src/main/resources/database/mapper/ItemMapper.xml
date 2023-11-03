@@ -62,14 +62,22 @@
 	<insert id="insertOrder" parameterType="list">
 	  <selectKey keyProperty="oder_id" resultType="int" order="BEFORE">
 		SELECT NVL(MAX(state), 0)+1 AS status FROM ORDER
-	</selectKey>
-	
+	</selectKey>	
      INSERT INTO ORDER(ORDER_ID,ITEM_ID,MEMBER_ID,QUANTITY,
                   STATE,STATUS,)
           VALUES(#{order_id},#{item_id},#{member_id},#{quantity},
                  #{state},#{status})
-                 
-
-	
 	</insert>
+	
+	<update id="updateStockItem" parameterType="int">
+		UPDATE ITEMS
+		SET STOCK = STOCK - #{value}
+		WHERE ITEM_ID = #{value}
+	</update>
+	
+	<select id="listItemByItemId" parameterType="map">
+		SELECT *
+		FROM ITEMS
+		WHERE ITEM_ID = #{value}
+	</select>
 </mapper>
