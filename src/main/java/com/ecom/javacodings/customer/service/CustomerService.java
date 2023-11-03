@@ -30,6 +30,12 @@ public interface CustomerService {
 	int listItemByItemId(ItemDTO item);
 	//RQ - 011 - 06 가격 데이터 변경
 	int updatePrice(ItemDTO item);
+	//회원가입
+	int register(MemberDTO member);
+	//상품담기
+    int insertOrder(ItemDTO item);
+    //상품 상태변경
+    int updateOrderState(ItemDTO item);
 
     
 	 

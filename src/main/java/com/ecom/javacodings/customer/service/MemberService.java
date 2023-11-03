@@ -102,10 +102,23 @@ public class MemberService implements CustomerService {
     
     @Override
     public int listItemByItemId(ItemDTO item) {
-    	return itemDAO.updateStockItem(item);
+    	return itemDAO.listItemByItemId(item);
     }
-    
+    @Override
     public int updatePrice(ItemDTO item) {
     	return itemDAO.updatePrice(item);
+    }
+    
+    @Override //회원가입
+    public int register(MemberDTO member) {
+        return memberDAO.register(member);
+    }
+    @Override //장바구니 담기
+    public int insertOrder(ItemDTO item) {
+        return itemDAO.insertOrder(item);
+    }
+    @Override //장바구니 상태변경
+    public int updateOrderState(ItemDTO item) {
+        return itemDAO.updateOrderState(item);
     }
 }
