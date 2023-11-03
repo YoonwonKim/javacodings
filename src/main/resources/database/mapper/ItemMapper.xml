@@ -72,4 +72,12 @@
 
 	
 	</insert>
+	
+	<update id="updatePrice" parameterType="itemDTO">
+	  
+	    UPDATE ITEMS SET
+	    PRICE = #{value}
+	    WHERE
+	    ITEM_ID = #{item_id}
+	</update>
 </mapper>
