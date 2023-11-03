@@ -3,6 +3,7 @@ package com.ecom.javacodings.merchandiser.service;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
+import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class MerchandiserService implements ManagerService {
     // Region 상품 관리
     @Autowired
     ItemManagerDAO itemDAO;
+
+    @Autowired
+    TagManagerDAO tagDAO;
 
     @Override
     public List<ItemDTO> listItem(PageDTO page){
@@ -32,8 +36,11 @@ public class MerchandiserService implements ManagerService {
     // Region 상품 메타 정보
     public List<String> listCategory() {
         List<String> result = itemDAO.listCategory();
-        System.out.println(result);
         return result;
+    }
+
+    public List<String> listTags() {
+        return tagDAO.listTags();
     }
     // End Region 상품 메타 정보
     // End Region 상품 관리

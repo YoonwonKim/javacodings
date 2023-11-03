@@ -36,5 +36,4 @@
 	<select id="listCategory" resultType="String">
 		SELECT CATEGORY FROM ITEMS GROUP BY CATEGORY
 	</select>
-
 </mapper>

@@ -8,14 +8,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.net.http.HttpRequest;
 
 @Controller
 @RequestMapping("/manager/")
@@ -32,6 +29,7 @@ public class MerchandiserController {
         page.setEnd(page.getRow() + page.getStart());
         model.addAttribute("itemList", managerService.listItem(page));
         model.addAttribute("categoryList", managerService.listCategory());
+        model.addAttribute("tagList", managerService.listTags());
 
         return "/merchandiser/products";
     }

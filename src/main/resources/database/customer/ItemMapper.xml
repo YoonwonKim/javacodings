@@ -82,7 +82,7 @@
 	  WHERE ITEM_ID = #{value}
 	</update>
 	<!-- RQ - 013 - 02 주문 리스트 -->
-	<select id="orderList" parameterType="item">
+	<select id="orderList" parameterType="itemDTO">
 	  SELECT *
 	  FROM (SELECT *, ROW_NUMBER() over (ORDER BY REG_DATE ASC) AS RN 
 		      FROM ORDER)
