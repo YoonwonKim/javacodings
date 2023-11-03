@@ -24,6 +24,7 @@ public interface CustomerService {
 	List<ItemDTO> listItem(int item);
 	int updateList(ItemDTO item);
 	int deleteItem(ItemDTO item);
+	int updatePrice(ItemDTO item);
     
-
+	
 }
