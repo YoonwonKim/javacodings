@@ -4,4 +4,36 @@
     <select id="login" parameterType="memberDTO" resultType="memberDTO">
         SELECT MEMBER_ID, PASSWORD, ROLE FROM MEMBER;
     </select>
+    <insert id="register" parameterType="memberDTO">
+    INSERT INTO MEMBER(MEMBER_ID,
+					   PASSWORD,
+					   REG_DATE,
+					   ROLE,
+					   EMAIL)
+	VALUES (           #{member_id},
+					   #{password},
+					   'SYSDATE',
+					   #{role},
+					   #{email});
+    INSERT INTO MEMBER_INFOS(MEMBER_ID,
+                             NAME,
+                             EMAIL,
+                             BIRTH,
+                             PHONE)
+    VALUES (                 #{member_id},
+                             #{name},
+                             #{email},
+                             #{birth}
+                             #{phone});
+    INSERT INTO address(MEMBER_ID,
+                        ZIPCODE,
+                        ADDRESS,
+                        ADDRESS2)   
+           
+    VALUES(             #{MEMBER_ID},
+                        #{ZIPCODE},
+                        #{ADDRESS},
+                        #{ADDRESS2});                     
+    </insert>
+    
 </mapper>
