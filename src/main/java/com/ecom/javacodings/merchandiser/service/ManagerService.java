@@ -11,6 +11,10 @@ public interface ManagerService {
     List<ItemDTO> listItem(PageDTO page);
 
     int updateItem(ItemDTO item);
+    int updateTags(String item_id, List<String> tags);
+
+
+
 
     int deleteItem(ItemDTO item);
 
