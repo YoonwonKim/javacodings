@@ -8,7 +8,6 @@ import com.ecom.javacodings.common.transfer.ItemDTO;
 
 @Mapper
 public interface ItemDAO {
-	String a();
 	List<ItemDTO> listNew(int number);
 	List<ItemDTO> listBest(int number);
 	List<ItemDTO> listItemsByTagId(String tagId);
