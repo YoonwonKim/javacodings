@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.merchandiser.access.TagManagerDAO">
+
+<select id="listTags" resultType="String">
+    SELECT TAG_ID
+    FROM TAGS
+</select>
+<select id="listTagsById" resultType="String">
+    SELECT TAG_ID
+    FROM ITEMS_TAGS
+    WHERE ITEM_ID = #{value}
+</select>
+
+    <delete id="deleteTagsByItemId" parameterType="String">
+        DELETE
+        FROM ITEMS_TAGS
+        WHERE ITEM_ID = #{value}
+    </delete>
+    <insert id="insertTags" parameterType="map">
+        INSERT INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES
+        <foreach collection="tags" item="tag" index="index" separator=",">
+            ( #{item_id}, #{tag} )
+        </foreach>
+    </insert>
+</mapper>
+ 
