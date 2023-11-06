@@ -74,11 +74,6 @@ function setItemInfo(id) {
     });
 
     console.log("TAGS : ", tags);
-
-
-
-
-
     //? Input Item metadata into Modal.
     let modal = document.getElementById('item-modal');
     modal.querySelector('cds-modal-heading').innerHTML = item.label;
@@ -97,6 +92,9 @@ function setItemInfo(id) {
 
     modal.querySelector('cds-select-item[value="'+item.category+'"]')
         .setAttribute('selected', true);
+
+    modal.querySelector('cds-multi-select')
+        .setAttribute('value', tags);
 
     // Open Modal
     document.getElementById('item-modal').open = true;
