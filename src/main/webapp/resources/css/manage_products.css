@@ -1,0 +1,15 @@
+main {
+    width: 1280px;
+    margin: 0 auto;
+}
+tr {
+    cursor: grab;
+}
+
+.input {
+    display: flex;
+}
+.reverse {
+    display: flex;
+    flex-direction: row-reverse;
+}

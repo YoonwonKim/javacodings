@@ -78,4 +78,51 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    @Override
+    public List<ItemDTO> listItem(int item){
+    	List<ItemDTO> listItem = itemDAO.listItem(item);
+    	return itemDAO.listItem(item);
+    	
+    }
+    
+    @Override
+    public int updateList(ItemDTO item) {
+    	return itemDAO.updateList(item);
+    }
+    
+    @Override
+    public int deleteItem(ItemDTO item) {
+    	return itemDAO.deleteItem(item);
+    }
+    
+    @Override
+    public int updateStockItem(ItemDTO item) {
+    	return itemDAO.updateStockItem(item);
+    }
+    
+    @Override
+    public int listItemByItemId(ItemDTO item) {
+    	return itemDAO.listItemByItemId(item);
+    }
+    @Override
+    public int updatePrice(ItemDTO item) {
+    	return itemDAO.updatePrice(item);
+    }
+    
+    @Override //회원가입
+    public int register(MemberDTO member) {
+        return memberDAO.register(member);
+    }
+    @Override //장바구니 담기
+    public int insertOrder(ItemDTO item) {
+        return itemDAO.insertOrder(item);
+    }
+    @Override //장바구니 상태변경
+    public int updateOrderState(ItemDTO item) {
+        return itemDAO.updateOrderState(item);
+    }
+    //RQ - 013 - 02 주문 리스트
+    public int orderList(ItemDTO item) {
+    	return itemDAO.orderList(item);
+    }
 }

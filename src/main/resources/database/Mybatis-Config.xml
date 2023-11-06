@@ -13,8 +13,9 @@
         <typeAlias alias="map" type="java.util.Map" />
 
         <typeAlias alias="memberDTO" type="com.ecom.javacodings.common.transfer.MemberDTO" />
-        <typeAlias alias="bannerDTO" type="com.ecom.javacodings.customer.transfer.BannerDTO" />
-        <typeAlias alias="itemDTO" type="com.ecom.javacodings.customer.transfer.ItemDTO" />
-        <typeAlias alias="tagDTo" type="com.ecom.javacodings.customer.transfer.TagDTO" />
+        <typeAlias alias="bannerDTO" type="com.ecom.javacodings.common.transfer.BannerDTO" />
+        <typeAlias alias="itemDTO" type="com.ecom.javacodings.common.transfer.ItemDTO" />
+        <typeAlias alias="tagDTO" type="com.ecom.javacodings.common.transfer.TagDTO" />
+        <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.transfer.PageDTO" />
     </typeAliases>
 </configuration>
