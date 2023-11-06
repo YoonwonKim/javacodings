@@ -29,4 +29,7 @@ public interface ManagerService {
     List<TagDTO> listTagsById(String itemId);
 
 	OrderDTO orderUpdate(OrderDTO order); //주문 상태 변경
+	
+	//RQ - 013 - 02 주문 리스트
+    List<OrderDTO> orderList(PageDTO page);
 }

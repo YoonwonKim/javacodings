@@ -4,8 +4,8 @@ import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.TagDTO;
-import com.ecom.javacodings.customer.access.OrderDAO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
+import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class MerchandiserService implements ManagerService {
     TagManagerDAO tagDAO;
     
     @Autowired
-    OrderDAO orderDAO;
+    OrderManagerDAO ordermanagerDAO;
 
     @Override
     public List<ItemDTO> listItem(PageDTO page){
@@ -73,6 +73,13 @@ public class MerchandiserService implements ManagerService {
     
     @Override
     public OrderDTO orderUpdate(OrderDTO order) {
-        return orderDAO.orderUpdate(order); // 주문 상태 변경                                             
+        return ordermanagerDAO.orderUpdate(order); // 주문 상태 변경                                             
     }
+    
+    @Override
+    public List<OrderDTO> orderList(PageDTO page) {
+    	return ordermanagerDAO.orderList(page);
+    }
+    
+    
 }

@@ -25,5 +25,12 @@
 		FROM ITEMS
 		WHERE ITEM_ID = #{value}
 	</delete>
+	
+	<select id="orderList" parameterType="pageDTO">
+	 SELECT * 
+	 FROM (SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+      FROM ORDER)
+        WHERE RN BETWEEN #{start} AND #{end} 
+	</select>
 
 </mapper>
