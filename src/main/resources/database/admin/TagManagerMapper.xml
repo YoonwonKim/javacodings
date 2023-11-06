@@ -13,5 +13,16 @@
     WHERE ITEM_ID = #{value}
 </select>
 
+    <delete id="deleteTagsByItemId" parameterType="String">
+        DELETE
+        FROM ITEMS_TAGS
+        WHERE ITEM_ID = #{value}
+    </delete>
+    <insert id="insertTags" parameterType="map">
+        INSERT INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES
+        <foreach collection="tags" item="tag" index="index" separator=",">
+            ( #{item_id}, #{tag} )
+        </foreach>
+    </insert>
 </mapper>
  
