@@ -11,4 +11,8 @@ public interface ItemManagerDAO {
 	List<ItemDTO> listItem(PageDTO page);
 	int updateList(ItemDTO item);
 	int deleteItem(ItemDTO item);
+	int updateItem(ItemDTO item);
+
+	List<String> listCategory();
+	ItemDTO getItemById(String item_id);
 }
