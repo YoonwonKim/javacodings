@@ -7,6 +7,11 @@
     SELECT TAG_ID
     FROM TAGS
 </select>
+<select id="listTagsById" resultType="String">
+    SELECT TAG_ID
+    FROM ITEMS_TAGS
+    WHERE ITEM_ID = #{value}
+</select>
 
 </mapper>
  
