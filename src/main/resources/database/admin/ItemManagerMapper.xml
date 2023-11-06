@@ -9,15 +9,16 @@
 	    WHERE RN BETWEEN #{start} AND #{end}
     </select>
     
-    <update id="updateList" parameterType="ItemDTO">
-		UPDATE ITEMS SET 
-			<if test="category!=null">CATEGORY=#{category}, </if>
-			<if test="label!=null">LABEL=#{label}, </if>
-			<if test="desc!=null">DESC=#{desc}, </if>
-			<if test="image!=null">IMAGE=#{image}, </if>
-			<if test="price!=null">PRICE=#{price}, </if>
-			<if test="stock!=null">STOCK=#{stock} </if>
-		WHERE ITEM_ID=#{item_id}			
+    <update id="updateItem" parameterType="ItemDTO">
+		UPDATE ITEMS
+		SET
+		<if test="category!=null">CATEGORY=#{category}, </if>
+		<if test="label!=null">LABEL=#{label}, </if>
+		<if test="desc!=null">"DESC"=#{desc}, </if>
+		<if test="image!=null">IMAGE=#{image}, </if>
+		<if test="price!=null">PRICE=#{price}, </if>
+		<if test="stock!=null">STOCK=#{stock} </if>
+		WHERE ITEM_ID=#{item_id}
     </update>
     
     <delete id="deleteItem" parameterType="string">
