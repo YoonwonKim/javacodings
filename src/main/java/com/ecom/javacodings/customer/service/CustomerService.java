@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
-import com.ecom.javacodings.customer.transfer.BannerDTO;
-import com.ecom.javacodings.customer.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.BannerDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 
 @Service
 public interface CustomerService {
@@ -38,8 +38,5 @@ public interface CustomerService {
     int updateOrderState(ItemDTO item);
     //RQ - 013 - 02 주문 리스트
     int orderList(ItemDTO item);
-
-    
-	 
 
 }
