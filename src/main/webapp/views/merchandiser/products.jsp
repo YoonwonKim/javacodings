@@ -22,6 +22,7 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/form.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/multi-select.min.js"></script>
 
 	<%-- Custom Scripts --%>
 	<link rel="stylesheet" href="/resources/css/manage_products.css" />
@@ -138,20 +139,27 @@
 				</cds-modal-header>
 				<cds-modal-body>
 					<cds-form-group>
-						<cds-stack gap="16px" use-custom-gap-value>
+						<cds-stack gap="16px" orientation="horizontal" use-custom-gap-value>
 							<img src="/resources/images/">
-							<cds-text-input label="상품 이름" name="label"></cds-text-input>
-							<cds-text-input label="상품 설명" name="desc"></cds-text-input>
-							<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
-								<cds-number-input label="가격" name="price" step="1000"></cds-number-input>
-								<cds-number-input label="재고" name="stock" step="1"></cds-number-input>
-							</cds-stack>
-							<cds-stack gap="8" use-custom-gap-value>
-								<cds-select label-text="상품 분류" placeholder="Optional placeholder text">
-									<c:forEach var="category" items="${categoryList}">
-										<cds-select-item value="${category}">${category}</cds-select-item>
-									</c:forEach>
-								</cds-select>
+							<cds-stack gap="16px" use-custom-gap-value>
+								<cds-text-input label="상품 이름" name="label"></cds-text-input>
+								<cds-text-input label="상품 설명" name="desc"></cds-text-input>
+								<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
+									<cds-number-input label="가격" name="price" step="1000"></cds-number-input>
+									<cds-number-input label="재고" name="stock" step="1"></cds-number-input>
+								</cds-stack>
+								<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
+									<cds-select label-text="상품 분류" placeholder="다음 중 하나를 골라주세요">
+										<c:forEach var="category" items="${categoryList}">
+											<cds-select-item value="${category}">${category}</cds-select-item>
+										</c:forEach>
+									</cds-select>
+									<cds-multi-select filterable title-text="상품 태그" direction="top">
+										<c:forEach var="tag" items="${tagList}">
+											<cds-multi-select-item value="${tag}">${tag}</cds-multi-select-item>
+										</c:forEach>
+									</cds-multi-select>
+								</cds-stack>
 							</cds-stack>
 						</cds-stack>
 					</cds-form-group>
