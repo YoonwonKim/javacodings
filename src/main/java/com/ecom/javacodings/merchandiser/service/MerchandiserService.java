@@ -14,12 +14,11 @@ import java.util.Map;
 
 @Service("mdService")
 public class MerchandiserService implements ManagerService {
+    // Region Data access objects
+    @Autowired ItemManagerDAO itemDAO;
+    @Autowired TagManagerDAO  tagDAO;
+    // End Region Data access objects
     // Region 상품 관리
-    @Autowired
-    ItemManagerDAO itemDAO;
-
-    @Autowired
-    TagManagerDAO tagDAO;
 
     @Override
     public List<ItemDTO> listItem(PageDTO page){

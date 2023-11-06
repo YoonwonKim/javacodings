@@ -7,23 +7,19 @@ import com.ecom.javacodings.common.transfer.TagDTO;
 import java.util.List;
 
 public interface ManagerService {
-    // Region 상품 관리
+    // Region Item
+    // Read table
     List<ItemDTO> listItem(PageDTO page);
-
+    ItemDTO getItemById(String id);
+    // Create and Update
     int updateItem(ItemDTO item);
     int updateTags(String item_id, List<String> tags);
-
-
-
-
+    // Delete
     int deleteItem(ItemDTO item);
 
-    ItemDTO getItemById(String id);
+    //? Get Metadata
     List<String> listCategory();
-
-
-
     List<String> listTags();
-
     List<TagDTO> listTagsById(String itemId);
+    // End Region Item
 }

@@ -8,8 +8,17 @@ import java.util.List;
 
 @Mapper
 public interface ItemManagerDAO {
+	// Region Read
+	//? List
 	List<ItemDTO> listItem(PageDTO page);
-	int updateList(ItemDTO item);
+	List<String> listCategory();
+	//? Get
+	ItemDTO getItemById(String item_id);
+	// End Region Read
+	// Region Create or Update
+	int updateItem(ItemDTO item);
+	// End Region Create or Update
+	// Region Delete
 	int deleteItem(ItemDTO item);
 	int updateItem(ItemDTO item);
 
