@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +58,6 @@ public class MerchandiserController {
             throws JsonProcessingException {
         String item_id = request.getParameter("item_id");
         List<TagDTO> tags = managerService.listTagsById(item_id);
-
         ObjectMapper mapper = new ObjectMapper();
         String result = mapper.writeValueAsString(tags);
         return result;
