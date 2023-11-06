@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.transfer.BannerDTO;
+import com.ecom.javacodings.customer.transfer.ItemDTO;
 
 @Service
 public interface CustomerService {
@@ -20,4 +21,25 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
+	List<ItemDTO> listItem(int item);
+	int updateList(ItemDTO item);
+	int deleteItem(ItemDTO item);
+	//RQ - 011 - 05 재고 데이터 변경
+	int updateStockItem(ItemDTO item);
+	//RQ - 012 - 02 상품관리페이지 제품 정보
+	int listItemByItemId(ItemDTO item);
+	//RQ - 011 - 06 가격 데이터 변경
+	int updatePrice(ItemDTO item);
+	//회원가입
+	int register(MemberDTO member);
+	//상품담기
+    int insertOrder(ItemDTO item);
+    //상품 상태변경
+    int updateOrderState(ItemDTO item);
+    //RQ - 013 - 02 주문 리스트
+    int orderList(ItemDTO item);
+
+    
+	 
+
 }
