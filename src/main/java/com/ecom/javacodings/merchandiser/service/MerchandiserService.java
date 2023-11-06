@@ -8,7 +8,9 @@ import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("mdService")
 public class MerchandiserService implements ManagerService {
@@ -28,6 +30,19 @@ public class MerchandiserService implements ManagerService {
     public int updateItem(ItemDTO item) {
         return itemDAO.updateItem(item);
     }
+    @Override
+    public int updateTags(String item_id, List<String> tags) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("item_id", item_id);
+        params.put("tags", tags);
+
+        System.out.println(params);
+        int result = 0;
+        result += tagDAO.deleteTagsByItemId(item_id);
+        if (!tags.isEmpty()) result *= tagDAO.insertTags(params);
+        return result;
+    }
+
     @Override
     public int deleteItem(ItemDTO item) {
         return itemDAO.deleteItem(item);

@@ -69,9 +69,10 @@ public class MerchandiserController {
     public String setItem(HttpServletRequest request, HttpServletResponse response,
                           ItemDTO item, @RequestParam(required=false, name="tags") List<String> tags)
             throws JsonProcessingException {
-        int result = managerService.updateItem(item);
-//        if (result > 0) return "success";
-//        int result = managerService.updateTags(item.getItem_id(), asd);
+        int result = 0;
+        result += managerService.updateItem(item);
+        result *= managerService.updateTags(item.getItem_id(), tags);
+        if (result > 0) return "success";
         return "error";
     }
     // End Region Set Data
