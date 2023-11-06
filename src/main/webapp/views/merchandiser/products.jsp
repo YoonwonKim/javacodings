@@ -166,7 +166,7 @@
 				</cds-modal-body>
 				<cds-modal-footer>
 					<cds-modal-footer-button kind="secondary" data-modal-close>취소</cds-modal-footer-button>
-					<cds-modal-footer-button kind="primary">변경사항 등록</cds-modal-footer-button>
+					<cds-modal-footer-button kind="primary" onclick="updateItem()">변경사항 등록</cds-modal-footer-button>
 				</cds-modal-footer>
 			</cds-modal>
 		</cds-layer>

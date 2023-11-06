@@ -1,3 +1,4 @@
+let id;
 $().ready(() => {
     let buttons = $('cds-table-cell.button-cell');
     for(let item of buttons) {
@@ -6,14 +7,56 @@ $().ready(() => {
             .shadowRoot
             .querySelector('button');
         button.onclick = () => {
-            let id = item.getAttribute('item-id');
+            id = item.getAttribute('item-id');
             setItemInfo(id);
         }
     }
 })
 
-function setItemInfo(id) {
+// Region Modal executor
+function updateItem() {
     let modal = document.getElementById('item-modal');
+
+    //? Get Item metadata
+    let item = {};
+    item.label = modal
+        .querySelector('cds-text-input[name="label"]')
+        .getAttribute('value');
+    item.desc = modal
+        .querySelector('cds-text-input[name="desc"]')
+        .getAttribute('value');
+    item.price = modal
+        .querySelector('cds-number-input[name="price"]')
+        .getAttribute('value');
+    item.stock = modal
+        .querySelector('cds-number-input[name="stock"]')
+        .getAttribute('value');
+    item.category = modal
+        .querySelector('cds-select-item[selected]')
+        .getAttribute('value');
+
+    //? Get Tags
+    let tags = {};
+    tags.tags = modal
+        .querySelector('cds-multi-select')
+        .getAttribute('value');
+
+    //! Send data to Database.
+    $.ajax({
+        url: "/manager/action/set_item?item_id=" + id,
+        type: 'POST',
+        dataType: 'json',
+        data: Object.assign(item, tags),
+        success: function(data) {
+            // Modal close
+            document.getElementById('item-modal').open = false;
+        }
+    });
+}
+// End Region Modal executor
+// Region Modal constructor
+function setItemInfo(id) {
+    //? Get Item metadata from Database.
     let item;
     $.ajax({
         url: "/manager/action/get_item?item_id=" + id,
@@ -22,9 +65,24 @@ function setItemInfo(id) {
         success: function(data) { item = JSON.parse(data); }
     });
 
+    let tags;
+    $.ajax({
+        url: "/manager/action/get_tags?item_id=" + id,
+        async: false,
+        type: 'POST',
+        success: function(data) { tags = JSON.parse(data); }
+    });
+
+    console.log("TAGS : ", tags);
+
+
+
+
+
+    //? Input Item metadata into Modal.
+    let modal = document.getElementById('item-modal');
     modal.querySelector('cds-modal-heading').innerHTML = item.label;
     modal.querySelector('cds-modal-body-content').innerHTML = item.desc;
-
     modal.querySelector('cds-number-input[name="price"]')
         .setAttribute('value', item.price);
     modal.querySelector('cds-number-input[name="stock"]')
@@ -37,9 +95,12 @@ function setItemInfo(id) {
     let url = '/resources/images/';
     image.setAttribute('src', url+item.image);
 
+    modal.querySelector('cds-select-item[value="'+item.category+'"]')
+        .setAttribute('selected', true);
+
+    // Open Modal
     document.getElementById('item-modal').open = true;
 }
-
 function setModal() {
     let modal = document.getElementById('item-modal');
 
@@ -60,3 +121,4 @@ function setModal() {
 
     document.getElementById('item-modal').open = true;
 }
+// End Region Modal constructor
