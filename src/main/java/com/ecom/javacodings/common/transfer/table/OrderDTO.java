@@ -1,4 +1,4 @@
-package com.ecom.javacodings.common.transfer;
+package com.ecom.javacodings.common.transfer.table;
 
 import java.sql.Date;
 

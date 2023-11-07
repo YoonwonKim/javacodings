@@ -3,6 +3,7 @@ package com.ecom.javacodings.merchandiser.service;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
@@ -18,6 +19,7 @@ public class MerchandiserService implements ManagerService {
     // Region Data access objects
     @Autowired ItemManagerDAO itemDAO;
     @Autowired TagManagerDAO  tagDAO;
+    @Autowired OrderManagerDAO  orderDAO;
     // End Region Data access objects
     // Region 상품 관리
 
@@ -67,17 +69,17 @@ public class MerchandiserService implements ManagerService {
     
     @Override
     public OrderDTO orderUpdate(OrderDTO order) {
-        return ordermanagerDAO.orderUpdate(order); // 주문 상태 변경                                             
+        return orderDAO.orderUpdate(order); // 주문 상태 변경
     }
     
     @Override
     public List<OrderDTO> orderList(PageDTO page) {
-    	return ordermanagerDAO.orderList(page);
+    	return orderDAO.orderList(page);
     }
     
   //RQ - 013 - 05 주문 상태 요약
     @Override
     public int orderStateCnt(OrderDTO order) {
-    	return ordermanagerDAO.orderStateCnt(order);
+    	return orderDAO.orderStateCnt(order);
     }
 }

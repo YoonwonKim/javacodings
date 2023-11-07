@@ -3,6 +3,7 @@ package com.ecom.javacodings.merchandiser.service;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 
 import java.util.List;
 
@@ -21,5 +22,8 @@ public interface ManagerService {
     List<String> listCategory();
     List<String> listTags();
     List<TagDTO> listTagsById(String itemId);
+
+    OrderDTO orderUpdate(OrderDTO order);
+    List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
     // End Region Item
 }
