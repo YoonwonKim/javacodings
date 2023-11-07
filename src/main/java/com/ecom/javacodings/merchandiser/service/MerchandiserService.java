@@ -80,6 +80,4 @@ public class MerchandiserService implements ManagerService {
     public List<OrderDTO> orderList(PageDTO page) {
     	return ordermanagerDAO.orderList(page);
     }
-    
-    
 }
