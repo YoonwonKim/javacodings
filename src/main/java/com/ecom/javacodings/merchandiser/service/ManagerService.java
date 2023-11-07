@@ -1,8 +1,8 @@
 package com.ecom.javacodings.merchandiser.service;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 
 import java.util.List;
 
