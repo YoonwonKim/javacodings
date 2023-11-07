@@ -1,9 +1,8 @@
 package com.ecom.javacodings.merchandiser.service;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
@@ -16,15 +15,11 @@ import java.util.Map;
 
 @Service("mdService")
 public class MerchandiserService implements ManagerService {
+    // Region Data access objects
+    @Autowired ItemManagerDAO itemDAO;
+    @Autowired TagManagerDAO  tagDAO;
+    // End Region Data access objects
     // Region 상품 관리
-    @Autowired
-    ItemManagerDAO itemDAO;
-
-    @Autowired
-    TagManagerDAO tagDAO;
-    
-    @Autowired
-    OrderManagerDAO ordermanagerDAO;
 
     @Override
     public List<ItemDTO> listItem(PageDTO page){
@@ -41,7 +36,6 @@ public class MerchandiserService implements ManagerService {
         params.put("item_id", item_id);
         params.put("tags", tags);
 
-        System.out.println(params);
         int result = 0;
         result += tagDAO.deleteTagsByItemId(item_id);
         if (!tags.isEmpty()) result *= tagDAO.insertTags(params);

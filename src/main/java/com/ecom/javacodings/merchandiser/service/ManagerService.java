@@ -1,39 +1,25 @@
 package com.ecom.javacodings.merchandiser.service;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 
 import java.util.List;
 
 public interface ManagerService {
-    // Region 상품 관리
+    // Region Item
+    // Read table
     List<ItemDTO> listItem(PageDTO page);
-
+    ItemDTO getItemById(String id);
+    // Create and Update
     int updateItem(ItemDTO item);
     int updateTags(String item_id, List<String> tags);
-
-
-
-
+    // Delete
     int deleteItem(ItemDTO item);
 
-    ItemDTO getItemById(String id);
+    //? Get Metadata
     List<String> listCategory();
-
-
-
     List<String> listTags();
-
     List<TagDTO> listTagsById(String itemId);
-
-	OrderDTO orderUpdate(OrderDTO order); //주문 상태 변경
-	
-	//RQ - 013 - 02 주문 리스트
-    List<OrderDTO> orderList(PageDTO page);
-    
-
-    //RQ - 013 - 05 주문 상태 요약
-    int orderStateCnt(OrderDTO order);
+    // End Region Item
 }

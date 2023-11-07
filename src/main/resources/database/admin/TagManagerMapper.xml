@@ -3,25 +3,24 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.TagManagerDAO">
 
-<select id="listTags" resultType="String">
-    SELECT TAG_ID
-    FROM TAGS
-</select>
-<select id="listTagsById" resultType="String">
-    SELECT TAG_ID
-    FROM ITEMS_TAGS
-    WHERE ITEM_ID = #{value}
-</select>
+    <select id="listTags" resultType="String">
+        SELECT TAG_ID
+        FROM TAGS
+    </select>
+    <select id="listTagsById" resultType="String">
+        SELECT TAG_ID
+        FROM ITEMS_TAGS
+        WHERE ITEM_ID LIKE #{value}
+    </select>
 
     <delete id="deleteTagsByItemId" parameterType="String">
         DELETE
         FROM ITEMS_TAGS
-        WHERE ITEM_ID = #{value}
+        WHERE ITEM_ID LIKE #{value}
     </delete>
     <insert id="insertTags" parameterType="map">
-        INSERT INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES
-        <foreach collection="tags" item="tag" index="index" separator=",">
-            ( #{item_id}, #{tag} )
+        <foreach collection="tags" item="tag" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
+            INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES (#{item_id}, #{tag})
         </foreach>
     </insert>
 </mapper>

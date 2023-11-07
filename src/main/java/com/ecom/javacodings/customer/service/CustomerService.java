@@ -5,9 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.ecom.javacodings.common.transfer.MemberDTO;
-import com.ecom.javacodings.common.transfer.BannerDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
 
 @Service
 public interface CustomerService {

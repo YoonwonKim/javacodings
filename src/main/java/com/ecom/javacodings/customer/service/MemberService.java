@@ -1,18 +1,18 @@
 package com.ecom.javacodings.customer.service;
 
-import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
 import com.ecom.javacodings.customer.access.ItemDAO;
 import com.ecom.javacodings.customer.access.MemberDAO;
 import com.ecom.javacodings.customer.access.TagDAO;
-import com.ecom.javacodings.common.transfer.BannerDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
