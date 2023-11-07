@@ -10,17 +10,18 @@
 	FROM ORDER
 	ORDER BY REG_DATE DESC
 	WHERE ORDER_ID = {order_id}
-   
    </insert>
-   
    <select id="orderList" parameterType="pageDTO">
 	 SELECT * 
 	 FROM (SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
       FROM ORDER)
         WHERE RN BETWEEN #{start} AND #{end} 
 	</select>
-	
-	
-	
-	
+	<select id="orderStateCnt" resultType="int">
+      SELECT COUNT(state)
+        FROM ORDER
+        ORDER BY REG_DATE DESC 
+        GROUP BY order_id
+        WHERE state = #{value}
+    </select>
 </mapper>

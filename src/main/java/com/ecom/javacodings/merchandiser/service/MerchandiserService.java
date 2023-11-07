@@ -80,4 +80,10 @@ public class MerchandiserService implements ManagerService {
     public List<OrderDTO> orderList(PageDTO page) {
     	return ordermanagerDAO.orderList(page);
     }
+    
+  //RQ - 013 - 05 주문 상태 요약
+    @Override
+    public int orderStateCnt(OrderDTO order) {
+    	return ordermanagerDAO.orderStateCnt(order);
+    }
 }

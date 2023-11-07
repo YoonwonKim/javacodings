@@ -32,4 +32,8 @@ public interface ManagerService {
 	
 	//RQ - 013 - 02 주문 리스트
     List<OrderDTO> orderList(PageDTO page);
+    
+
+    //RQ - 013 - 05 주문 상태 요약
+    int orderStateCnt(OrderDTO order);
 }
