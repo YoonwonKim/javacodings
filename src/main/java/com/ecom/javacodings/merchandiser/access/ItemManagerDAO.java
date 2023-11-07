@@ -1,6 +1,6 @@
 package com.ecom.javacodings.merchandiser.access;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,12 +16,10 @@ public interface ItemManagerDAO {
 	ItemDTO getItemById(String item_id);
 	// End Region Read
 	// Region Create or Update
+	int createItem(ItemDTO item);
 	int updateItem(ItemDTO item);
 	// End Region Create or Update
 	// Region Delete
 	int deleteItem(ItemDTO item);
-	int updateItem(ItemDTO item);
-
-	List<String> listCategory();
-	ItemDTO getItemById(String item_id);
+	// End Region Delete
 }
