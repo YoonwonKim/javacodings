@@ -1,6 +1,6 @@
 package com.ecom.javacodings.customer.access;
 
-import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
