@@ -2,7 +2,6 @@ package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
-import com.ecom.javacodings.customer.transfer.BannerDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

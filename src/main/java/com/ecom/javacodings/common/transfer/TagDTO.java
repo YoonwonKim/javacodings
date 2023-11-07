@@ -1,4 +1,4 @@
-package com.ecom.javacodings.customer.transfer;
+package com.ecom.javacodings.common.transfer;
 
 import lombok.Data;
 import lombok.ToString;

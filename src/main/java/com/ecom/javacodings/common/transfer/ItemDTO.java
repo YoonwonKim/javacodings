@@ -1,4 +1,4 @@
-package com.ecom.javacodings.customer.transfer;
+package com.ecom.javacodings.common.transfer;
 
 import lombok.Data;
 import lombok.ToString;
@@ -11,8 +11,9 @@ public class ItemDTO {
 	private String category    ;
 	private String reg_date    ;
 	private String label       ;
-	private String description ;
+	private String desc;
 	private String image       ;
 	private int price       ;
 	private int stock       ;
+	private int orders;
 }

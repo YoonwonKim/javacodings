@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.merchandiser.access.ItemManagerDAO">
+    <select id="listItem" parameterType="pageDTO">
+		SELECT *
+		FROM (SELECT LABEL, "DESC", CATEGORY, IMAGE, PRICE, STOCK, ORDERS, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+			  FROM ITEMS)
+	    WHERE RN BETWEEN #{start} AND #{end}
+    </select>
+    
+    <update id="updateList" parameterType="ItemDTO">
+		UPDATE ITEMS SET 
+	   				<if test="category!=null">CATEGORY=#{category}, </if>
+	    			<if test="label!=null">LABEL=#{label}, </if>
+	    			<if test="desc!=null">DESC=#{desc}, </if>
+					<if test="image!=null">IMAGE=#{image}, </if>
+					<if test="price!=null">PRICE=#{price}, </if>
+					<if test="stock!=null">STOCK=#{stock} </if>
+		WHERE ITEM_ID=#{item_id}			
+    </update>
+    
+    <delete id="deleteItem" parameterType="string">
+		DELETE 
+		FROM ITEMS
+		WHERE ITEM_ID = #{value}
+	</delete>
+	
+	
+
+</mapper>
