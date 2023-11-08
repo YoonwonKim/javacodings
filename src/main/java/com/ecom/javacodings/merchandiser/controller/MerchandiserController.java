@@ -2,17 +2,26 @@ package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.transfer.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
+import com.ecom4.custom.dto.MemberDTO;
+import com.ecom4.order.web.OrderController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,6 +32,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/manager/")
 public class MerchandiserController {
+	
+	private static final Logger logger 
+	= LoggerFactory.getLogger(MerchandiserController.class);
+	
     @Autowired
     ManagerService managerService;
 
@@ -76,4 +89,36 @@ public class MerchandiserController {
         return "error";
     }
     // End Region Set Data
+    
+    @RequestMapping("/orders")
+    public String orders(HttpServletRequest request, HttpServletResponse response,
+                          Model model) {
+        PageDTO page = new PageDTO();
+        page.setStart(0);
+        page.setRow(15);
+        page.setEnd(page.getRow() + page.getStart());
+        model.addAttribute("orderList", managerService.orderList(page));
+
+
+        return "/merchandiser/orders";
+    }
+    
+    //orderUpdate 구동되지 않음
+    @PostMapping("/orderUpdate")
+    @ResponseBody
+    public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
+    						OrderDTO order, Model model) {
+    	logger.info("success");
+    	HttpSession session = request.getSession();
+        
+    	try {
+    		managerService.orderUpdate(order);
+    	} catch (Exception e) {
+    		logger.info(e.getMessage());
+    	}
+
+    	model.addAttribute("orderUpdate", order);
+    	return "success";
+    }
+
 }

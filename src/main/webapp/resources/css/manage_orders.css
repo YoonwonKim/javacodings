@@ -1,0 +1,10 @@
+.layer-01 {
+    width: 1280px;
+    margin: 0 auto;
+}
+tr {
+    cursor: grab;
+}
+cds-dropdown-item {
+    background-color: white;
+}
