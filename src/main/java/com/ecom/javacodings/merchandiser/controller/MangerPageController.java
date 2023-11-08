@@ -16,6 +16,12 @@ public class MangerPageController {
     @Autowired ManagerService managerService;
     // End Region Services
     // Region Pages
+    @RequestMapping()
+    public String landing(HttpServletRequest request, HttpServletResponse response,
+                          Model model) {
+        return "/merchandiser/index";
+    }
+
     @RequestMapping("/products")
     public String products(HttpServletRequest request, HttpServletResponse response,
                            Model model) {
