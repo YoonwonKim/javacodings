@@ -37,4 +37,10 @@ public class PageController {
 
     	return "index";
     }
+    @RequestMapping("/loginpage")
+    public String login(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+    	
+    	return "customer/login";
+    }
 }
