@@ -4,4 +4,23 @@
     <select id="login" parameterType="memberDTO" resultType="memberDTO">
         SELECT MEMBER_ID, PASSWORD, ROLE FROM MEMBER;
     </select>
+    
+    <select id="idCheck" resultType="int">
+      select count(member_id) from member
+    	where member_id = #{member_id}
+    </select>
+      
+    
+    <insert id="memberJoin" parameterType="memberDTO" useGeneratedKeys="false">
+    INSERT ALL
+        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
+        VALUES (#{member_id}, #{password}, 'custom')
+        
+        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE) 
+        VALUES (#{member_id}, #{name}, #{email}, #{phone})
+        
+        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
+        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
+     	SELECT 1 FROM DUAL
+    </insert>
 </mapper>
