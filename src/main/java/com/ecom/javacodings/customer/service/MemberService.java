@@ -78,4 +78,16 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    
+    //회원가입                           
+    @Override
+    public int memberJoin(MemberDTO mdto) {
+    	System.out.println(mdto);
+    	return memberDAO.memberJoin(mdto);
+    }
+
+	@Override
+	public int idCheck(String member_id) {
+		return memberDAO.idCheck(member_id);
+	}
 }
