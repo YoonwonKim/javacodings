@@ -88,14 +88,14 @@
  			<tr>
  				<td >휴대전화</td> 
  				<td>
- 				<select name="phone">
+ 				<select name="telecom">
  						<option>LG</option>
  						<option>SKT</option>
  						<option>KT</option>
  						<option>알뜰폰</option>
  					</select>
  				
- 					<input type="text" name="phone" class="chk" value="010" readonly="readonly">-
+ 					<input type="text" class="chk" value="010" readonly="readonly">-
  					<input type="text" name="phone1" class="chk">-
  					<input type="text" name="phone2" class="chk">
  				</td>
