@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/login.css" />
 
 	<title>자바코딩즈</title>
 	<link rel="stylesheet" href="/resources/css/landing.css" />
@@ -23,14 +24,21 @@
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
 <main>
-	<div>
-	<form legend-text="로그인" action="/actions/login" method="post">
-		<ul id="lage_login_input"><li><input type="text" name="member_id" id="id"  title="아이디" class="chkt"></li>
-			<li><input type="password" name="password" id="pw" title="비밀번호" class="chkt"></li>
+	<div class="loginform">
+	<h1 class="test"><span class="entypo-login"><i class="fa fa-sign-in"></i></span>LOGIN</h1>
+	<form legend-text="로그인" action="/actions/login" method="post" class="loginform_text">
+		<ul id="lage_login_input"><li><input type="text" name="member_id"  title="아이디" class="user" placeholder="user_id">
+		<span class="entypo-user inputUserIcon">
+			<i class="fa fa-user"></i>
+		</span></li>
+			<li><input type="password" name="password" class="pass" title="비밀번호" placeholder="password">
+			 <span class="entypo-key inputPassIcon">
+   			  <i class="fa fa-key"></i>
+			</span></li>
 		</ul>
-		<div id="submitTop">
-		<button type="submit"> 로그인 </button>
-		</div>
+		<button type="submit"><span class="entypo-lock"><i class="fa fa-lock">로그인</i></span></button>
+	<div class="col1"><a href="#">회원가입</a></div>
+	<div class="col2"><a href="#">아이디/비밀번호 찾기</a></div>
 	</form>
 	</div>
 </main>
