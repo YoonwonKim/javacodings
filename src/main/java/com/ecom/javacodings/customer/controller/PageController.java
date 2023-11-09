@@ -56,7 +56,7 @@ public class PageController {
     							MemberDTO mdto, 
     							Model model) {
     	String phone = request.getParameter("phone1") + request.getParameter("phone2");
-    	mdto.setPhone(phone);
+    	mdto.setPhone(Integer.parseInt(phone));
     	
     	
     	try {
@@ -82,5 +82,11 @@ public class PageController {
 		  }
 		return cnt;
 	}
+    @RequestMapping("/loginpage")
+    public String login(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
+
+        return "customer/login";
+    }
     }
 
