@@ -10,7 +10,7 @@
 
 /* zocial */
 [class*="entypo-"]:before {
-  font-family: 'entypo', sans-serif;
+  /*font-family: 'entypo', sans-serif;*/
 }
 
 *,
@@ -39,8 +39,8 @@ h1.test {
 }
 
 body {
-  background: #272125;
-  font-family: 'Roboto', sans-serif;
+  /* background: #272125;
+  font-family: 'Roboto', sans-serif; */
   
 }
 
@@ -48,26 +48,27 @@ form.loginform_text {
   position:relative;
   margin: 22px auto;
   width: 380px;
+  height:400px;
   height: auto;
 }
 
 main input {
-  padding: 16px;
+  padding: 5px;
   border-radius:7px;
   border:1px solid black;
-  background: rgba(255,255,255,.2);
+  /* background: rgba(255,255,255,.2); */
   display: block;
-  margin: 15px;
+  margin-top: 15px;
   width: 300px;  
-  color:white;
+  color:black;
   font-size:18px;
   height: 54px;
 }
 
 main input:focus {
   outline-color: rgba(0,0,0,0);
-  background: rgba(255,255,255,.95);
-  color: #e74c3c;
+ /* background: rgba(255,255,255,.95); */
+  color: black;
 }
 
 main button {
@@ -75,7 +76,7 @@ main button {
   height: 121px;
   width: 50px;
   border: 0px;
-  background: #e74c3c;
+  background: black;
   border-radius:7px;
   padding: 10px;
   color:white;
@@ -84,10 +85,10 @@ main button {
 }
 
 .inputUserIcon {
-  position:absolute;
+ /*  position:absolute;
   top:68px;
   right: 80px;
-  color:#0080ff;
+  color:#0080ff; */
 }
 
 .inputPassIcon {
@@ -98,11 +99,11 @@ main button {
 }
 
 input::-webkit-input-placeholder {
-  color: white;
+  color: black;
 }
 
 input:focus::-webkit-input-placeholder {
-  color: #e74c3c;
+  color: black;
 }
 #lage_login_input{
 	display: inline-block;
@@ -114,19 +115,17 @@ input:focus::-webkit-input-placeholder {
 	
 }
 
-div.col1{
+div a.col1{
 	display:inline;
-	text-align: center;
+	font-size:12px;
 	color: black;
-	margin: 0 auto;
-	margin-left: 20px;
+	margin: 10px 20px 20px 20px;
 	
 }
-div.col2{
+div a.col2{
 	display:inline;
-	text-align: center;
+	font-size:12px;
 	color: black;
-	margin: 0 auto;
-	margin-left: 20px;
+	margin: 10px 20px 20px 20px;
 	
 }

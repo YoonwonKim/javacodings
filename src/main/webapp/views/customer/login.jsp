@@ -37,9 +37,8 @@
 			</span></li>
 		</ul>
 		<button type="submit"><span class="entypo-lock"><i class="fa fa-lock">로그인</i></span></button>
-	<div class="col1"><a href="#">회원가입</a></div>
-	<div class="col2"><a href="#">아이디/비밀번호 찾기</a></div>
 	</form>
+	<div><a href="#" class="col1">회원가입</a><a href="#" class="col2">아이디/비밀번호 찾기</a></div>
 	</div>
 </main>
 <%@ include file="/views/customer/fragments/footer.jsp" %>
