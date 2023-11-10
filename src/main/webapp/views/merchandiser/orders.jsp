@@ -88,20 +88,13 @@
 						<cds-table-cell>${order.member_id}</cds-table-cell>
 						<cds-table-cell>${order.quantity}</cds-table-cell>
 						<cds-table-cell>
-							<cds-dropdown id="${order.order_id}" value="${order.state}">
-								<c:forEach begin="${order.state}" end="8" varStatus="loop">
-									<cds-dropdown-item value="${loop.index}">
-										<c:choose>
-											<c:when test="${loop.index == 1}">장바구니 담기</c:when>
-											<c:when test="${loop.index == 2}">결제 완료</c:when>
-											<c:when test="${loop.index == 3}">주문 확인</c:when>
-											<c:when test="${loop.index == 4}">배송 시작</c:when>
-											<c:when test="${loop.index == 5}">배송 중</c:when>
-											<c:when test="${loop.index == 6}">배송 완료</c:when>
-											<c:when test="${loop.index == 7}">반품</c:when>
-											<c:when test="${loop.index == 8}">처리 완료</c:when>
-										</c:choose>
+							<cds-dropdown type="inline" id="${order.order_id}" value="${order.state}">
+								<c:forEach var="state" items="${stateList}">
+								<c:if test="${state.state >= order.state}">
+									<cds-dropdown-item value="${state.state}">
+											${state.order_id}
 									</cds-dropdown-item>
+								</c:if>
 								</c:forEach>
 							</cds-dropdown>
 						</cds-table-cell>

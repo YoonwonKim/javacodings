@@ -20,13 +20,16 @@ function sendOrderUpdateRequest() {
         column.state = $(this).attr('value');
         data.push(column);
     });
+    data = JSON.stringify(data);
+    console.log(data);
 
     // 각 주문에 대해 Ajax 요청을 보냄
     $.ajax({
         type: 'post',
         url: "/admin/actions/update_order",
-        data: JSON.stringify({data}),
+        data: data,
         dataType: "json",
+        contentType: 'application/json',
         success: function(response) {
             console.log("Order update successful");
             // 화면 업데이트
