@@ -51,18 +51,27 @@
  			<tr>
  				<td >이메일</td> 
  				<td>
- 				<input type="text" name="email">
+ 				<input type="text" name="email">@
+ 				<input type="email" id="email_address" list="user_email_address" name="email2">
+ 				<datalist id="user_email_address" >
+ 						<option value="naver.com"></option>
+ 						<option value="daum.net"></option>
+ 						<option value="email.com"></option>
+ 				</datalist>
  				
  				<input type="hidden" id="totalemail" name="email" value="">
  			</tr>
- 			<!-- <tr>
+ 			<tr>
  				<td >생년월일</td> 
  				<td>
- 				<select name="birth" id="year"></select>년
-				<select name="birth" id="month"></select>월
-				<select name="birth" id="day"></select>일
+ 				<select name="birth1" id="year">
+ 				</select>
+				<select name="birth2" id="month">
+				</select>
+				<select name="birth3" id="day">
+				</select>
 				</td>
-			</tr> -->
+			</tr>
  			
  			<tr>
        <td class="col1">우편번호</td>
