@@ -8,10 +8,6 @@
     font-style: normal;
 }
 
-/* zocial */
-[class*="entypo-"]:before {
-  /*font-family: 'entypo', sans-serif;*/
-}
 
 *,
 *:before,
@@ -31,11 +27,12 @@ div.loginform{
 	
 	
 }
-h1.test {
-  text-align:center; 
-  font-size: 48px;
-  color:black;
-  padding-top: 20px;
+h1.login_text {
+	font-family: 'Giants-Inline';
+	text-align:center; 
+	font-size: 48px;
+	color:black;
+	padding-top: 20px;
 }
 
 body {
@@ -44,7 +41,7 @@ body {
   
 }
 
-form.loginform_text {
+form.login_form {
   position:relative;
   margin: 22px auto;
   width: 380px;
@@ -81,22 +78,10 @@ main button {
   padding: 10px;
   color:white;
   font-size:22px;
-  margin-top: 16px;
+  margin-top: -122px;
 }
 
-.inputUserIcon {
- /*  position:absolute;
-  top:68px;
-  right: 80px;
-  color:#0080ff; */
-}
 
-.inputPassIcon {
-  position:absolute;
-  top:136px;
-  right: 80px;
-  color:#0080ff;
-}
 
 input::-webkit-input-placeholder {
   color: black;
@@ -105,15 +90,7 @@ input::-webkit-input-placeholder {
 input:focus::-webkit-input-placeholder {
   color: black;
 }
-#lage_login_input{
-	display: inline-block;
-}
-#entypo-login{
-	text-align: center;
-	font-size: 16px;
-	color: black;
-	
-}
+
 
 div a.col1{
 	display:inline;
