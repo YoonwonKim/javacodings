@@ -1,5 +1,6 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
@@ -26,4 +27,7 @@ public interface ManagerService {
     OrderDTO orderUpdate(OrderDTO order);
     List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
     // End Region Item
+    
+    BannerDTO bannermain(BannerDTO banner);
+    BannerDTO bannerevent(BannerDTO banner);
 }

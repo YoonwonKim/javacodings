@@ -1,9 +1,11 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.merchandiser.access.BannerManagerDAO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
@@ -20,6 +22,7 @@ public class MerchandiserService implements ManagerService {
     @Autowired ItemManagerDAO itemDAO;
     @Autowired TagManagerDAO  tagDAO;
     @Autowired OrderManagerDAO  orderDAO;
+    @Autowired BannerManagerDAO bannerDAO;
     // End Region Data access objects
     // Region 상품 관리
 
@@ -81,5 +84,14 @@ public class MerchandiserService implements ManagerService {
     @Override
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
+    }
+    
+    //배너관리 메인
+    public BannerDTO bannermain(BannerDTO banner) {
+    	return bannerDAO.bannermain(banner);
+    }
+    //배너관리 이벤트
+    public BannerDTO bannerevent(BannerDTO banner) {
+    	return bannerDAO.bannerevent(banner);
     }
 }
