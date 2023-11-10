@@ -12,7 +12,7 @@ public interface OrderManagerDAO {
 
 	OrderDTO orderUpdate(OrderDTO order);
 
-	List<OrderDTO> orderList(PageDTO page);
+	List<OrderDTO> listOrder(PageDTO page);
 	
-	int orderStateCnt(OrderDTO order);
+	List<OrderDTO> countState();
 }

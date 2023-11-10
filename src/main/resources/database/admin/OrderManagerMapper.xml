@@ -5,8 +5,8 @@
 	
 	<insert id="orderUpdate" parameterType="OrderDTO">
 		<foreach collection="orders" item="order" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
-			INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE) 
-			SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity}, #{state}+1, sysdate 
+			INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE)
+			SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity}, #{state}+1
 			FROM ORDERS 
 			ORDER BY REG_DATE DESC 
 			WHERE ORDER_ID = #{order_id}
@@ -20,18 +20,45 @@
 		</foreach>
 	</insert> -->
 
-   
-   <select id="orderList" parameterType="pageDTO" resultType="OrderDTO">
-	 SELECT * 
-	 FROM (SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN 
-      FROM ORDERS)
-        WHERE RN BETWEEN #{start} AND #{end}
+	<select id="listOrder" parameterType="pageDTO" resultType="OrderDTO">
+		SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE
+		FROM (
+				 SELECT O.ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE,
+						ROW_NUMBER() OVER (ORDER BY REG_DATE DESC) AS RN
+				 FROM ORDERS O
+						  JOIN
+					  (
+						  SELECT ORDER_ID, MAX(STATE) AS STATE, MAX(REG_DATE) AS REG_DATE
+						  FROM ORDER_STATE
+						  GROUP BY ORDER_ID
+					  ) S
+					  ON O.ORDER_ID = S.ORDER_ID
+			 )
+		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
-	<select id="orderStateCnt" resultType="int">
-      SELECT COUNT(state)
-        FROM ORDERS
-        ORDER BY REG_DATE DESC 
-        GROUP BY order_id
-        WHERE state = #{value}
+	
+	
+	<select id="countState" resultType="OrderDTO" parameterType="int">
+		select D.STATE, NVL(Q.QUANTITY, 0) AS QUANTITY
+		FROM
+		(
+			SELECT ROWNUM STATE
+			FROM DUAL
+			CONNECT BY ROWNUM &lt;= 8 AND ROWNUM &gt;= 1
+		) D
+		left JOIN
+		(
+			SELECT STATE, COUNT(STATE) AS QUANTITY
+			FROM
+				(
+				SELECT MAX(STATE) AS STATE
+				FROM ORDER_STATE
+				GROUP BY ORDER_ID
+				)
+			GROUP BY STATE
+			ORDER BY STATE
+		) Q
+		on Q.STATE = D.STATE
+		order by D.STATE
     </select>
 </mapper>
