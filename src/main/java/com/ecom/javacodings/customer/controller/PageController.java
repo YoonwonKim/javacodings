@@ -13,6 +13,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -48,8 +49,6 @@ public class PageController {
     	return "customer/fragments/join";
     }
     
-    
-    
     @RequestMapping("/registerProc")
     public String registerProc(HttpServletRequest request,
     							HttpServletResponse response,
@@ -82,11 +81,18 @@ public class PageController {
 		  }
 		return cnt;
 	}
+    
     @RequestMapping("/loginpage")
     public String login(HttpServletRequest request, HttpServletResponse response,
             Model model) {
-
-        return "customer/login";
-    }
-    }
+    	
+    	return "customer/login";
+    }        
+    
+	@RequestMapping("/searchMember")
+	public String searchMember(HttpServletRequest request, HttpServletResponse response) {
+	  	
+		return "customer/searchmember";
+	}
+}
 
