@@ -2,29 +2,28 @@ package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/actions")
-public class ActionManagerController {
+public class ManagerActionController {
 	
 	private static final Logger logger 
-	= LoggerFactory.getLogger(ActionManagerController.class);
+	= LoggerFactory.getLogger(ManagerActionController.class);
 	
     @Autowired
     ManagerService managerService;
@@ -70,13 +69,14 @@ public class ActionManagerController {
     //orderUpdate 구동되지 않음
     @PostMapping("/update_order")
     public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
-                              Model model) {
+                              @RequestBody String orders)
+            throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<OrderDTO> orderList  = objectMapper.readValue(orders, new TypeReference<List<OrderDTO>>() {});
+        int result = managerService.updateOrderStates(orderList);
+        logger.info("attempt to update order: " + orderList);
 
         //HttpSession session = request.getSession();
-        logger.info("attempt to update order: "+request.getParameter("data"));
-//        List<OrderDTO> orderList = new ObjectMapper().readValue(orders.toString(), List.class);
-
-
 //    	model.addAttribute("orderUpdate", order);
     	return "success";
     }
