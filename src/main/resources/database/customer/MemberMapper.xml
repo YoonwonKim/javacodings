@@ -7,6 +7,18 @@
         WHERE MEMBER_ID=#{member_id} AND PASSWORD=#{password}
     </select>
     
+	<select id="searchId" parameterType="memberDTO" resultType="string">
+		SELECT MEMBER_ID 
+		FROM MEMBER_INFOS
+		WHERE NAME = #{name} AND PHONE = #{phone}
+	</select>
+	
+	<update id="updatePasswd" parameterType="memberDTO">
+	    UPDATE MEMBER
+	    SET PASSWORD = #{password}
+	    WHERE MEMBER_ID = (SELECT MEMBER_ID FROM MEMBER_INFOS WHERE PHONE = #{phone})
+	</update>
+ 
     <select id="idCheck" resultType="int">
       select count(member_id) from member
     	where member_id = #{member_id}
