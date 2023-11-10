@@ -35,7 +35,7 @@ public class ActionController {
         ssKey.setPassword(request.getParameter("password"));
         ssKey = memberService.login(ssKey);
         if (ssKey == null) {
-            result = "failed, ssKey value is null;";
+            result = "failed";
         } else {
             result = "success";
             session.setAttribute("ssKey", ssKey);
