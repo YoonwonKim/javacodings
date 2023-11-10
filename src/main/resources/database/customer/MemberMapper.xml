@@ -7,6 +7,18 @@
         WHERE MEMBER_ID=#{member_id} AND PASSWORD=#{password}
     </select>
     
+	<select id="searchId" parameterType="memberDTO" resultType="string">
+		SELECT MEMBER_ID 
+		FROM MEMBER_INFOS
+		WHERE NAME = #{name} AND PHONE = #{phone}
+	</select>
+	
+	<update id="updatePasswd" parameterType="memberDTO">
+	    UPDATE MEMBER
+	    SET PASSWORD = #{password}
+	    WHERE MEMBER_ID = (SELECT MEMBER_ID FROM MEMBER_INFOS WHERE PHONE = #{phone})
+	</update>
+ 
     <select id="idCheck" resultType="int">
       select count(member_id) from member
     	where member_id = #{member_id}
@@ -18,8 +30,8 @@
         INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
         VALUES (#{member_id}, #{password}, 'custom')
         
-        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE) 
-        VALUES (#{member_id}, #{name}, #{email}, #{phone})
+        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
+        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
         
         INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
         VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})

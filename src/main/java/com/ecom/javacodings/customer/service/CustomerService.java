@@ -21,6 +21,8 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
+    String searchId(MemberDTO member);
+	int updatePasswd(MemberDTO member);
     
     //회원가입
     int memberJoin(MemberDTO mdto);

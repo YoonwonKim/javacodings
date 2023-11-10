@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Scope( value= WebApplicationContext.SCOPE_SESSION,
