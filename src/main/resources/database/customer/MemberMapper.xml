@@ -18,8 +18,8 @@
         INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
         VALUES (#{member_id}, #{password}, 'custom')
         
-        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE) 
-        VALUES (#{member_id}, #{name}, #{email}, #{phone})
+        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
+        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
         
         INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
         VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
