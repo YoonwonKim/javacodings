@@ -68,7 +68,8 @@ $().ready(function(){
 			pcheck=false;
 		}
 	});
-	
+	//출생년도 코드
+	setDateSelectBox();
 })
 
 function validate(){
@@ -99,4 +100,29 @@ function validate(){
 		    return false;
 		   }
 		return true;*/
+	} 
+
+function setDateSelectBox(){
+	var now = new Date();
+	var now_year = now.getFullYear();
+	var month = now.getMonth()+1;
+	var day = now.getDay;
+	
+	// 1950년 부터 올해까지
+	$("#year").append("<option value=''>년도</option>");
+	for(var i = now_year; i >= 1950; i--){
+	$("#year").append("<option value='"+ i +"'>"+ i + " 년" +"</option>");
 	}
+	
+	$("#month").append("<option value=''>월</option>");
+	for (var i = 1; i <= 12; i++) {
+      $("#month").append("<option value='" + i + "'>" + i + " 월" + "</option>");
+    }
+    
+    $("#day").append("<option value=''>일</option>");
+    for (var i = 1; i <= 31; i++) {
+      $("#day").append("<option value='" + i + "'>" + i + " 일" + "</option>");
+    }
+}
+
+
