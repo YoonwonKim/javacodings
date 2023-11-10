@@ -7,9 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +40,7 @@ public class ActionController {
         ssKey.setPassword(request.getParameter("password"));
         ssKey = memberService.login(ssKey);
         if (ssKey == null) {
-            result = "failed, ssKey value is null;";
+            result = "failed";
         } else {
             result = "success";
             session.setAttribute("ssKey", ssKey);
@@ -64,4 +69,37 @@ public class ActionController {
 
         return result;
     }
+    
+    @PostMapping("/searchId")
+    public String searchMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	
+    	String id = null;
+    	String msg = null;
+    	
+    	id = memberService.searchId(member);
+    	if(id!=null) msg = "회원아이디: " + id;
+		else msg = "회원정보가 없습니다.";	
+    	
+		model.addAttribute("msg", msg);
+		
+    	return msg;
+    }
+    
+    @PostMapping("/updatePasswd")
+    public String updatePasswd(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	
+        String msg = null;
+
+        System.out.println(member);
+        memberService.updatePasswd(member);  	
+    	
+		model.addAttribute("msg", msg);
+
+        return msg;
+    }
+    
+    
+
 }

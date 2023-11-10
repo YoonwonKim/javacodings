@@ -1,7 +1,7 @@
 footer.global {
     background-color: #262626;
     color: #f4f4f4;
-
+	margin-top: 64px;
     gap: 16px;
     padding-top: 32px;
     padding-bottom: 64px;

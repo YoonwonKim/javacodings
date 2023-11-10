@@ -2,12 +2,13 @@
 <header class="global">
 <span>
 	<div class="logo">
+		
 		<h2>Java</h2>
 		<h1>Codings</h1>
 	</div>
 	<ul id="sub-menu">
 		<li><a href="#">로그인</a></li>
-		<li><a href="#">회원가입</a></li>
+		<li><a href="/join">회원가입</a></li>
 		<li><a href="#">마이페이지</a></li>
 		<li><a href="#">장바구니</a></li>
 		<li><a href="#">고객센터</a></li>
