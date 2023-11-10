@@ -28,12 +28,12 @@ public interface ManagerService {
 
     List<TagDTO> listTagsById(String itemId);
 
-	OrderDTO orderUpdate(OrderDTO order); //주문 상태 변경
-	
-	//RQ - 013 - 02 주문 리스트
-    List<OrderDTO> orderList(PageDTO page);
-    
+    // Region Orders
+    OrderDTO orderUpdate(OrderDTO order); //주문 상태 변경
+    //RQ - 013 - 02 주문 리스트
+    List<OrderDTO> listOrder(PageDTO page);
 
     //RQ - 013 - 05 주문 상태 요약
-    int orderStateCnt(OrderDTO order);
+    List<OrderDTO> countOrderState();
+    // End Region Orders
 }
