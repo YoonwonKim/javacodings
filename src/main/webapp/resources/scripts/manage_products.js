@@ -62,10 +62,11 @@ function sendInfo() {
         type: 'PUT',
         dataType: 'json',
         data: result,
-        success: function() {
+        async: false,
+        complete: function() {
             // Modal close
             document.getElementById('item-modal').open = false;
-        }
+        },
     });
 }
 // End Region Modal executor
