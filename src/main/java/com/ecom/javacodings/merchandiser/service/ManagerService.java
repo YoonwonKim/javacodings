@@ -23,7 +23,12 @@ public interface ManagerService {
     List<String> listTags();
     List<TagDTO> listTagsById(String itemId);
 
-    OrderDTO orderUpdate(OrderDTO order);
-    List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
-    // End Region Item
+    // Region Orders
+    int updateOrderStates(List<OrderDTO> orders);
+    //RQ - 013 - 02 주문 리스트
+    List<OrderDTO> listOrder(PageDTO page);
+
+    //RQ - 013 - 05 주문 상태 요약
+    List<OrderDTO> countOrderState();
+    // End Region Orders
 }

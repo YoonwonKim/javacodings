@@ -10,9 +10,9 @@ import com.ecom.javacodings.common.transfer.PageDTO;
 @Mapper
 public interface OrderManagerDAO {
 
-	OrderDTO orderUpdate(OrderDTO order);
+	int updateOrderStates(List<OrderDTO> orders);
 
-	List<OrderDTO> orderList(PageDTO page);
+	List<OrderDTO> listOrder(PageDTO page);
 	
-	int orderStateCnt(OrderDTO order);
+	List<OrderDTO> countState();
 }

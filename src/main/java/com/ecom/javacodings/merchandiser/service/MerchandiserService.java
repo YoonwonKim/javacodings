@@ -68,18 +68,31 @@ public class MerchandiserService implements ManagerService {
     // End Region 상품 관리
     
     @Override
-    public OrderDTO orderUpdate(OrderDTO order) {
-        return orderDAO.orderUpdate(order); // 주문 상태 변경
+    public int updateOrderStates(List<OrderDTO> orders) {
+        return ordermanagerDAO.updateOrderStates(orders); // 주문 상태 변경
     }
     
     @Override
-    public List<OrderDTO> orderList(PageDTO page) {
-    	return orderDAO.orderList(page);
+    public List<OrderDTO> listOrder(PageDTO page) {
+    	return ordermanagerDAO.listOrder(page);
     }
     
   //RQ - 013 - 05 주문 상태 요약
     @Override
-    public int orderStateCnt(OrderDTO order) {
-    	return orderDAO.orderStateCnt(order);
+    public List<OrderDTO> countOrderState() {
+        List<OrderDTO> result = ordermanagerDAO.countState();
+        for (OrderDTO order : result) {
+            switch (order.getState()) {
+                case 1: order.setOrder_id("결제 완료"); break;
+                case 2: order.setOrder_id("주문 확인"); break;
+                case 3: order.setOrder_id("배송 시작"); break;
+                case 4: order.setOrder_id("배송 중"); break;
+                case 5: order.setOrder_id("배송 완료"); break;
+                case 6: order.setOrder_id("환불"); break;
+                case 7: order.setOrder_id("반품"); break;
+                case 8: order.setOrder_id("처리 완료"); break;
+            }
+        }
+        return result;
     }
 }
