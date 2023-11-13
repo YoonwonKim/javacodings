@@ -67,17 +67,11 @@ public class ManagerActionController {
     // End Region Set Data
     
     //orderUpdate 구동되지 않음
-    @PostMapping("/update_order")
+    @PutMapping("/update_order")
     public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
-                              @RequestBody String orders)
+                              @RequestBody List<OrderDTO> orders)
             throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<OrderDTO> orderList  = objectMapper.readValue(orders, new TypeReference<List<OrderDTO>>() {});
-        int result = managerService.updateOrderStates(orderList);
-        logger.info("attempt to update order: " + orderList);
-
-        //HttpSession session = request.getSession();
-//    	model.addAttribute("orderUpdate", order);
+        int result = managerService.updateOrderStates(orders);
     	return "success";
     }
 

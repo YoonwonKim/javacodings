@@ -25,7 +25,7 @@ function sendOrderUpdateRequest() {
 
     // 각 주문에 대해 Ajax 요청을 보냄
     $.ajax({
-        type: 'post',
+        type: 'PUT',
         url: "/admin/actions/update_order",
         data: data,
         dataType: "json",

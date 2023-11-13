@@ -72,8 +72,8 @@ public class MerchandiserService implements ManagerService {
     // End Region 상품 관리
     
     @Override
-    public OrderDTO orderUpdate(OrderDTO order) {
-        return ordermanagerDAO.orderUpdate(order); // 주문 상태 변경                                             
+    public int updateOrderStates(List<OrderDTO> orders) {
+        return ordermanagerDAO.updateOrderStates(orders); // 주문 상태 변경
     }
     
     @Override
