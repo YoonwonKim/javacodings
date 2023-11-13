@@ -87,11 +87,11 @@ public class MerchandiserService implements ManagerService {
     }
     
     //배너관리 메인
-    public BannerDTO bannermain(BannerDTO banner) {
-    	return bannerDAO.bannermain(banner);
+    public List<BannerDTO> bannermain(PageDTO page) {
+    	return bannerDAO.bannermain(page);
     }
     //배너관리 이벤트
-    public BannerDTO bannerevent(BannerDTO banner) {
-    	return bannerDAO.bannerevent(banner);
+    public List<BannerDTO> bannerevent(PageDTO page) {
+    	return bannerDAO.bannerevent(page);
     }
 }

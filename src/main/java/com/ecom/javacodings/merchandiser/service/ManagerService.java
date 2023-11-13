@@ -28,6 +28,6 @@ public interface ManagerService {
     List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
     // End Region Item
     
-    BannerDTO bannermain(BannerDTO banner);
-    BannerDTO bannerevent(BannerDTO banner);
+    List<BannerDTO> bannermain(PageDTO page);
+    List<BannerDTO> bannerevent(PageDTO page);
 }

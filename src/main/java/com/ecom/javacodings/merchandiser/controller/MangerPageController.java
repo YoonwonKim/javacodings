@@ -38,5 +38,20 @@ public class MangerPageController {
 
         return "/merchandiser/products";
     }
+    @RequestMapping("/banners")
+    public String banners(HttpServletRequest request, HttpServletResponse response,
+    		Model model) {
+    	//? Set Page
+    	PageDTO page = new PageDTO();
+    	page.setStart(0);
+    	page.setRow(15);
+    	page.setEnd(page.getRow() + page.getStart());
+    	
+    	//? Return data
+    	model.addAttribute("bannermain", managerService.bannermain(page));
+    	model.addAttribute("bannerevent", managerService.bannerevent(page));
+    	
+    	return "/merchandiser/banners";
+    }
     // End Region Pages
 }
