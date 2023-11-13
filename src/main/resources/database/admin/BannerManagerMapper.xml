@@ -2,12 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.BannerManagerDAO">
-<insert id="bannermain" parameterType="bannerDTO">
-	INSERT INTO BANNERS (BANNER_ID, ITEM_ID, CATEGORY, LABEL, "DESC", IMAGE)
-	VALUES(#{banner_id}, #{item_id}, 'MAIN', #{label}, #{desc}, #{image})
-</insert>
-<insert id="bannerevent" parameterType="bannerDTO">
-	INSERT INTO BANNERS (BANNER_ID, ITEM_ID, CATEGORY, LABEL, "DESC", IMAGE)
-	VALUES(#{banner_id}, #{item_id}, 'EVENT', #{label}, #{desc}, #{image})
-</insert>
+<select id="bannermain" parameterType="pageDTO">
+		SELECT *
+		FROM
+		(
+			SELECT BANNER_ID, ITEM_ID, LABEL, "DESC", CATEGORY, IMAGE,
+			ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS RN
+			FROM BANNERS
+			WHERE CATEGORY='MAIN'
+	  	)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+<select id="bannerevent" parameterType="pageDTO">
+		SELECT *
+		FROM
+		(
+			SELECT BANNER_ID, ITEM_ID, LABEL, "DESC", CATEGORY, IMAGE,
+			ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) AS RN
+			FROM BANNERS
+			WHERE CATEGORY='EVENT'
+	  	)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
 </mapper>
