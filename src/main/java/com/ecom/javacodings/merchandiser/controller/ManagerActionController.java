@@ -19,7 +19,7 @@ public class ManagerActionController {
     @Autowired ManagerService managerService;
     // End Region Services
     // Region Get Data
-    @PostMapping("/get_item")
+    @GetMapping("/get_item")
     public String getItem(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
         String item_id = request.getParameter("item_id");
@@ -29,7 +29,7 @@ public class ManagerActionController {
         String result = mapper.writeValueAsString(item);
         return result;
     }
-    @PostMapping("/get_tags")
+    @GetMapping("/get_tags")
     public String getTags(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
         String item_id = request.getParameter("item_id");
@@ -40,9 +40,9 @@ public class ManagerActionController {
     }
     // End Region Get Data
     // Region Set Data
-    @PostMapping("/set_item")
+    @PutMapping("/set_item")
     public String setItem(HttpServletRequest request, HttpServletResponse response,
-                          ItemDTO item, @RequestParam(required=false, name="tags") List<String> tags) {
+                          ItemDTO item, @RequestParam("tags") List<String> tags) {
         int result = 0;
         result += managerService.updateItem(item);
         result *= managerService.updateTags(item.getItem_id(), tags);

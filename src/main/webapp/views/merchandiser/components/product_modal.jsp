@@ -23,31 +23,35 @@
 		<cds-stack gap="32px" orientation="horizontal" use-custom-gap-value>
 			<img class="input">
 			<cds-stack gap="16px" orientation="vertical" use-custom-gap-value>
-				<cds-text-input label="상품 이름" invalid-text="Error message" name="label"
-				                class="input" category="item"></cds-text-input>
-				<cds-text-input label="상품 설명" invalid-text="Error message" name="desc"
-				                class="input" category="item"></cds-text-input>
+				<cds-text-input label="상품 이름" invalid-text="Error message"
+				                name="label"
+				                class="input"></cds-text-input>
+				<cds-text-input label="상품 설명" invalid-text="Error message"
+				                name="desc"
+				                class="input"></cds-text-input>
 				<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
 					<cds-number-input value="0" step="1000" min="0"
 					                  label="가격" name="price"
-					                  class="input" category="item"></cds-number-input>
+					                  class="input"></cds-number-input>
 					<cds-number-input value="0" min="0"
 					                  label="재고 수량" name="stock"
-					                  class="input" category="item"></cds-number-input>
+					                  class="input"></cds-number-input>
 				</cds-stack>
 				<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
 					<cds-select label-text="분류" placeholder="Optional placeholder text"
-					            class="input" category="item">
+					            class="input" name="category">
 					<c:forEach items="${categoryList}" var="category">
 						<cds-select-item value="${category}">${category}</cds-select-item>
 					</c:forEach>
 					</cds-select>
+
+					<cds-multi-select title-text="태그" direction="top" label="태그 선택" filterable
+					                  class="input" name="tags">
+						<c:forEach items="${tagList}" var="tag">
+							<cds-multi-select-item value="${tag}">${tag}</cds-multi-select-item>
+						</c:forEach>
+					</cds-multi-select>
 				</cds-stack>
-				<cds-multi-select title-text="태그" direction="top" label="태그 선택" filterable class="input" category="tags">
-					<c:forEach items="${tagList}" var="tag">
-						<cds-multi-select-item value="${tag}">${tag}</cds-multi-select-item>
-					</c:forEach>
-				</cds-multi-select>
 			</cds-stack>
 		</cds-stack>
 	</cds-modal-body>
