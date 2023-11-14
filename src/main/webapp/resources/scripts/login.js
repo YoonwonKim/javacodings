@@ -22,7 +22,7 @@ $().ready(function(){
 		$.ajax({
 			
 			type:'post',
-			url:"/actions/login",
+			url:"/actions/account/login",
 			data:{
 				"member_id":userId,
 				"password":userPw
@@ -31,7 +31,7 @@ $().ready(function(){
 			success:function(data){
 				if(data == 'failed'){
 					alert("아이디/비밀번호를 다시 확인해주세요");
-					location.href="/loginpage";
+					location.href="/account/login";
 				}else{
 					location.href="/";
 				}

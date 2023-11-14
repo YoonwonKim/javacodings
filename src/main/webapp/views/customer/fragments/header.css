@@ -8,6 +8,7 @@
 header.global {
     background-color: #262626;
     color: #f4f4f4;
+    user-select: none;
 }
 header.global span {
     display: flex;
@@ -16,8 +17,14 @@ header.global span {
     padding-top: 16px;
     padding-bottom: 32px;
 }
-header.global h1, h2 { font-family: 'Giants-Inline'; }
-header.global .logo { flex: 1; }
+header.global .logo h1, h2 {
+    font-family: 'Giants-Inline';
+    user-select: none;
+}
+header.global .logo {
+    flex: 1;
+    cursor: grab;
+}
 header.global .logo h1 { font-size: 32px; }
 header.global .logo h2 {
     font-size: 24px;
@@ -33,6 +40,7 @@ header.global ul#sub-menu {
 header.global a, header.global a:focus, header.global a:visited {
     color: #f4f4f4;
     text-decoration: none;
+    user-select: none;
 }
 
 header.global #global-menu {
@@ -55,4 +63,13 @@ header.global #global-menu li a {
     padding-left: 16px;
     padding-right: 16px;
     font-size: 18px;
+    user-select: none;
+}
+
+
+
+#register-modal .icon {
+    height: 16px;
+    width:  16px;
+    margin: 12px;
 }
