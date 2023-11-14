@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.customer.access.OrderDAO">
+
+	<select id="orderItems" parameterType="map">
+		SELECT O.ORDER_ID, O.ITEM_ID AS ORDER_ITEM_ID, O.MEMBER_ID, O.QUANTITY,
+		       I.ITEM_ID AS ITEM_ITEM_ID, I.LABEL, I.IMAGE, I.PRICE
+		FROM ORDERS O
+		INNER JOIN ITEMS I
+		    ON O.ITEM_ID = I.ITEM_ID
+		INNER JOIN MEMBER M
+		    ON O.MEMBER_ID = M.MEMBER_ID
+		WHERE O.MEMBER_ID = #{member_id, jdbcType=VARCHAR} and M.ROLE = 'custom'
+		ORDER BY O.ORDER_ID DESC
+	</select>
+	
+</mapper>
