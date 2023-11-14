@@ -1,10 +1,13 @@
 package com.ecom.javacodings.customer.service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
 import com.ecom.javacodings.customer.access.ItemDAO;
 import com.ecom.javacodings.customer.access.MemberDAO;
+import com.ecom.javacodings.customer.access.OrderDAO;
 import com.ecom.javacodings.customer.access.TagDAO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
@@ -47,6 +50,9 @@ public class MemberService implements CustomerService {
 
     @Autowired
     TagDAO tagDAO;
+    
+    @Autowired
+    OrderDAO orderDAO;
 
     @Override
     public Map<String, Object> listNew(int number) {
@@ -78,4 +84,16 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    
+    @Override
+    public Map<String, Object> orderItems(PageDTO page) {
+    	
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	List<OrderDTO> orderItem = orderDAO.orderItems(page);
+    	
+    	params.put("orderItems", orderItem);
+    	return params;
+    	
+    }
+    
 }
