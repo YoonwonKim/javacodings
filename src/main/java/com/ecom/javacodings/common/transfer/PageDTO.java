@@ -9,4 +9,5 @@ public class PageDTO {
     private int start;
     private int row;
     private int end;
+    private int member_id;
 }
