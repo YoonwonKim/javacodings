@@ -27,7 +27,7 @@
 	<script src="/resources/scripts/landing.js"></script>
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/common/policies/validates.js"></script>
-	<script src="/resources/scripts/login.js"></script>
+	<script src="/resources/scripts/customer/account.js"></script>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
@@ -44,7 +44,7 @@
 				<cds-text-input placeholder="비밀번호" invalid-text=""
 								name="password" type="password" show-password-visibility-toggle></cds-text-input>
 			</cds-stack>
-			<cds-button type="button" onclick="login()">로그인</cds-button>
+			<cds-button type="button" onclick="account()">로그인</cds-button>
 			<cds-stack orientation="horizontal">
 				<a href="/account/register">회원가입</a>
 				<a href="/account/search">아이디 및 비밀번호 찾기</a>

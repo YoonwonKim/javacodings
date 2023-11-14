@@ -1,4 +1,10 @@
-function login() {
+// Region Register
+function register() {
+
+}
+// End Region Register
+// Region Login
+function account() {
 	let member_id = document.getElementsByName("member_id")[0];
 	switch (validate_id(member_id.value)) {
 		case  0: {
@@ -38,3 +44,4 @@ function login() {
 		complete: function(data) { location.reload(); }
 	})
 }
+// End Region Login

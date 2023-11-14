@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,13 +56,13 @@ public class PageController {
 		HttpSession session = request.getSession();
 		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 		if (ssKey != null) return "redirect:/";
-		return "customer/login";
+		return "customer/account/login";
 	}
 
 	@RequestMapping("/account/register")
     public String join(HttpServletRequest request, HttpServletResponse response,
     					MemberDTO mdto, Model model) {
-    	return "customer/register";
+    	return "customer/account/register";
     }
     
     @RequestMapping("/registerProc")
