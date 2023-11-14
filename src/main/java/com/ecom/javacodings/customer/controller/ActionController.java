@@ -29,7 +29,7 @@ public class ActionController {
      * 비동기 통신 후 문자열 형태로 결과를 반환한다.
      * 성공 시 세션에 값을 저장한다.
      */
-    @PostMapping("/login")
+    @PostMapping("/account/login")
     @ResponseBody
     public String login(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
@@ -53,14 +53,14 @@ public class ActionController {
      * RQ-002 로그아웃 기능 구현
      * 비동기 통신 후 결과를 반환하고 세션을 초기화한다.
      */
-    @PostMapping("/logout")
+    @PostMapping("/account/logout")
     @ResponseBody
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 
-        if (ssKey != null) {
+        if (ssKey == null) {
             result = "success, but already logged out";
         } else {
             session.removeAttribute("ssKey");
@@ -70,7 +70,7 @@ public class ActionController {
         return result;
     }
     
-    @PostMapping("/searchId")
+    @PostMapping("/account/search/id")
     public String searchMember(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member, Model model) {
     	
@@ -86,7 +86,7 @@ public class ActionController {
     	return msg;
     }
     
-    @PostMapping("/updatePasswd")
+    @PostMapping("/account/search/password")
     public String updatePasswd(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member, Model model) {
     	

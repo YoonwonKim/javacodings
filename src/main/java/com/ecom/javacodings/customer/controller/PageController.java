@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +32,15 @@ public class PageController {
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
                        Model model) {
+		//? Session
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		model.addAttribute("ssKey", ssKey);
 
+		//? Infos
     	model.addAttribute("mainList", memberService.listMain(8));
     	model.addAttribute("eventList", memberService.listEvent());
-
+		// Tag List
     	List<Map<String, Object>> mdList = new ArrayList<>();
     	mdList.add(memberService.listNew(8));
     	mdList.add(memberService.listBest(8));
@@ -44,12 +51,17 @@ public class PageController {
 
     	return "index";
     }
-    
-    @RequestMapping("/join")
+
+	@RequestMapping("/account/login")
+	public String login(HttpServletRequest request, HttpServletResponse response,
+						Model model) {
+		return "customer/login";
+	}
+
+	@RequestMapping("/account/register")
     public String join(HttpServletRequest request, HttpServletResponse response,
     					MemberDTO mdto, Model model) {
-    	
-    	return "customer/fragments/join";
+    	return "customer/register";
     }
     
     @RequestMapping("/registerProc")
@@ -89,15 +101,8 @@ public class PageController {
 		  }
 		return cnt;
 	}
-    
-    @RequestMapping("/loginpage")
-    public String login(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
-    	
-    	return "customer/login";
-    }        
-    
-	@RequestMapping("/searchMember")
+
+	@RequestMapping("account/search")
 	public String searchMember(HttpServletRequest request, HttpServletResponse response) {
 	  	
 		return "customer/searchmember";
