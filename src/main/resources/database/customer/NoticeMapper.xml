@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.customer.access.NoticeDAO">
+<select id="NoticeList" parameterType="pageDTO" resultType="noticeDTO">
+SELECT * FROM
+(SELECT NOTICE_ID, RED_DATE, "LABEL", CONTENT,
+ROW_NUMBER() over(ORDER BY RED_DATE DESC) as rr
+
+FROM NOTICE
+)
+WHERE RR BETWEEN #{start} AND #{end}
+</select>
+
+</mapper>
+ 
