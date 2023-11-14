@@ -1,10 +1,13 @@
 package com.ecom.javacodings.customer.service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
 import com.ecom.javacodings.customer.access.ItemDAO;
 import com.ecom.javacodings.customer.access.MemberDAO;
+import com.ecom.javacodings.customer.access.NoticeDAO;
 import com.ecom.javacodings.customer.access.TagDAO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
@@ -99,5 +102,11 @@ public class MemberService implements CustomerService {
 	@Override
 	public int idCheck(String member_id) {
 		return memberDAO.idCheck(member_id);
+	}
+	@Autowired
+	NoticeDAO noticeDAO;
+	@Override
+	public List<NoticeDTO>NoticeList(PageDTO page) {
+		return noticeDAO.NoticeList(page);
 	}
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
@@ -27,4 +29,7 @@ public interface CustomerService {
     //회원가입
     int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
+	
+	//공지사항
+	List<NoticeDTO> NoticeList(PageDTO page);
 }
