@@ -1,8 +1,8 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,7 +29,7 @@ public class ManagerActionController {
     ManagerService managerService;
 
     // Region Get Data
-    @PostMapping("/get_item")
+    @GetMapping("/get_item")
     @ResponseBody
     public String getItem(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
@@ -40,7 +40,7 @@ public class ManagerActionController {
         String result = mapper.writeValueAsString(item);
         return result;
     }
-    @PostMapping("/get_tags")
+    @GetMapping("/get_tags")
     @ResponseBody
     public String getTags(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
@@ -53,7 +53,7 @@ public class ManagerActionController {
 
     // End Region Get Data
     // Region Set Data
-    @PostMapping("/set_item")
+    @PutMapping("/set_item")
     @ResponseBody
     public String setItem(HttpServletRequest request, HttpServletResponse response,
                           ItemDTO item, @RequestParam(required=false, name="tags") List<String> tags)

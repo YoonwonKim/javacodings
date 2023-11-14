@@ -1,6 +1,6 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/manager/")
+@RequestMapping("/admin/")
 public class ManagerPageController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ManagerPageController.class);

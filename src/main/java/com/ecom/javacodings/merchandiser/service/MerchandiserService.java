@@ -69,18 +69,18 @@ public class MerchandiserService implements ManagerService {
     
     @Override
     public int updateOrderStates(List<OrderDTO> orders) {
-        return ordermanagerDAO.updateOrderStates(orders); // 주문 상태 변경
+        return orderDAO.updateOrderStates(orders); // 주문 상태 변경
     }
     
     @Override
     public List<OrderDTO> listOrder(PageDTO page) {
-    	return ordermanagerDAO.listOrder(page);
+    	return orderDAO.listOrder(page);
     }
     
   //RQ - 013 - 05 주문 상태 요약
     @Override
     public List<OrderDTO> countOrderState() {
-        List<OrderDTO> result = ordermanagerDAO.countState();
+        List<OrderDTO> result = orderDAO.countState();
         for (OrderDTO order : result) {
             switch (order.getState()) {
                 case 1: order.setOrder_id("결제 완료"); break;
