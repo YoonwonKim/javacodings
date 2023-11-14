@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,5 +37,18 @@ public class PageController {
     	model.addAttribute("mdList", mdList);
 
     	return "index";
+    }
+    
+    @RequestMapping("/orderItems")
+    public String orderItems(HttpServletRequest request, HttpServletResponse response,
+    					Model model, PageDTO page) {
+        page.setStart(0);
+        page.setRow(15);
+        page.setEnd(page.getRow() + page.getStart());
+        
+        
+        model.addAttribute("orderItems", memberService.orderItems(page));
+    	
+    	return "customer/orderlist";
     }
 }
