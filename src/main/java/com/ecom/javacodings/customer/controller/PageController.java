@@ -55,6 +55,9 @@ public class PageController {
 	@RequestMapping("/account/login")
 	public String login(HttpServletRequest request, HttpServletResponse response,
 						Model model) {
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey != null) return "redirect:/";
 		return "customer/login";
 	}
 

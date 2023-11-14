@@ -1,41 +1,40 @@
-/**
- * 
- */
-$().ready(function(){
-		
-		
-		$('#submitTop').on('click',function(){
-			var userId = $('#user').val();
-			var userPw = $('#pass').val();
-			
-			var flen = $("form[name=topForm] .chkt").length;
-		for(var i=0; i<flen; i++){
-			if($('.chkt').eq(i).val()=="" ||
-		       $('.chkt').eq(i).val()==null ||
-		       $('.chkt').eq(i).val().trim()==""){
-			  alert($('.chkt').eq(i).attr('title')+'를 입력하시오');
-			  $('.chkt').eq(i).focus();
-			  return false;
-			}
+function login() {
+	let member_id = document.getElementsByName("member_id")[0];
+	switch (validate_id(member_id.value)) {
+		case  0: {
+			alert("아이디를 입력해주세요.");
+			member_id.focus();
+			return;
 		}
-			console.log(userId, userPw)
-		$.ajax({
-			
-			type:'post',
-			url:"/actions/account/login",
-			data:{
-				"member_id":userId,
-				"password":userPw
-			},
-	
-			success:function(data){
-				if(data == 'failed'){
-					alert("아이디/비밀번호를 다시 확인해주세요");
-					location.href="/account/login";
-				}else{
-					location.href="/";
-				}
-			}
-		})
-		}); 
-		})
+		case -1: {
+			alert("아이디 형식이 올바르지 않습니다.");
+			member_id.focus();
+			return;
+		}
+		default: member_id = member_id.value;
+	}
+
+	let password  = document.getElementsByName("password")[0];
+	switch (validate_pw(password.value)) {
+		case  0: {
+			alert("비밀번호를 입력해주세요.");
+			password.focus();
+			return;
+		}
+		case -1: {
+			alert("비밀번호가 올바르지 않습니다.");
+			password.focus();
+			password.value = "";
+			return;
+		}
+		default: password = password.value;
+	}
+
+	$.ajax({
+		method: 'POST',
+		url: '/actions/account/login',
+		data: {member_id, password},
+		dataType: 'json',
+		complete: function(data) { location.reload(); }
+	})
+}
