@@ -18,5 +18,6 @@
         <typeAlias alias="tagDTO" type="com.ecom.javacodings.common.transfer.table.TagDTO" />
         <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.transfer.PageDTO" />
         <typeAlias alias="orderDTO" type="com.ecom.javacodings.common.transfer.table.OrderDTO" />
+        <typeAlias alias="noticeDTO" type="com.ecom.javacodings.common.transfer.table.NoticeDTO" />
     </typeAliases>
 </configuration>
