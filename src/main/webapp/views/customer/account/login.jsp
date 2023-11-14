@@ -20,7 +20,6 @@
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
 	<link rel="stylesheet" href="/resources/css/account.css" />
-<%--	<link rel="stylesheet" href="/views/customer/login.css" />--%>
 
 	<title>자바코딩즈</title>
 	<link rel="stylesheet" href="/resources/css/landing.css" />
@@ -32,27 +31,22 @@
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
 <main>
-	<div class="loginform">
-		<h1 class="login_text">LOGIN</h1>
-
-		<form method="post" action="/actions/account/login">
-		<cds-layer level="1" id="login">
-		<cds-stack gap="16px" use-custom-gap-value>
-			<cds-stack gap="0" use-custom-gap-value>
-				<cds-text-input placeholder="아이디" invalid-text=""
-								name="member_id" type="text"></cds-text-input>
-				<cds-text-input placeholder="비밀번호" invalid-text=""
-								name="password" type="password" show-password-visibility-toggle></cds-text-input>
-			</cds-stack>
-			<cds-button type="button" onclick="account()">로그인</cds-button>
-			<cds-stack orientation="horizontal">
-				<a href="/account/register">회원가입</a>
-				<a href="/account/search">아이디 및 비밀번호 찾기</a>
-			</cds-stack>
+	<h1 class="login_text">LOGIN</h1>
+	<cds-layer level="1" id="login">
+	<cds-stack gap="16px" use-custom-gap-value>
+		<cds-stack gap="0" use-custom-gap-value>
+			<cds-text-input placeholder="아이디" invalid-text=""
+							name="member_id" type="text"></cds-text-input>
+			<cds-text-input placeholder="비밀번호" invalid-text=""
+							name="password" type="password" show-password-visibility-toggle></cds-text-input>
 		</cds-stack>
-		</cds-layer>
-		</form>
-	</div>
+		<cds-button type="button" onclick="account()">로그인</cds-button>
+		<cds-stack orientation="horizontal">
+			<a href="/account/register">회원가입</a>
+			<a href="/account/search">아이디 및 비밀번호 찾기</a>
+		</cds-stack>
+	</cds-stack>
+	</cds-layer>
 </main>
 <%@ include file="/views/customer/fragments/footer.jsp" %>
 </body>
