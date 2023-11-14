@@ -48,9 +48,12 @@ public class MangerPageController {
     	page.setEnd(page.getRow() + page.getStart());
     	
     	//? Return data
+        model.addAttribute("mainList", managerService.listMain(8));
+        model.addAttribute("eventList", managerService.listEvent());
+
     	model.addAttribute("bannermain", managerService.bannermain(page));
     	model.addAttribute("bannerevent", managerService.bannerevent(page));
-    	
+
     	return "/merchandiser/banners";
     }
     // End Region Pages

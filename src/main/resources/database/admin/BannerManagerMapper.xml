@@ -24,4 +24,25 @@
 	  	)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+	<select id="listMain" resultType="bannerDTO" parameterType="int">
+		SELECT *
+		FROM (
+				 SELECT LABEL, "DESC", IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE) AS RN
+				 FROM  BANNERS
+				 WHERE CATEGORY='MAIN'
+				 ORDER BY REG_DATE
+			 )
+		WHERE RN BETWEEN 1 AND #{value}
+	</select>
+
+	<select id="listEvent" resultType="bannerDTO">
+		SELECT *
+		FROM (
+				 SELECT LABEL, "DESC", IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE) AS RN
+				 FROM  BANNERS
+				 WHERE CATEGORY='EVENT'
+				 ORDER BY REG_DATE
+			 )
+		WHERE RN BETWEEN 1 AND 3
+	</select>
 </mapper>

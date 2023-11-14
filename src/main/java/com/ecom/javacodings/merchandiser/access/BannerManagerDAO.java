@@ -13,4 +13,7 @@ public interface BannerManagerDAO {
 	
 	List<BannerDTO> bannermain(PageDTO page);
 	List<BannerDTO> bannerevent(PageDTO page);
+
+	List<BannerDTO> listEvent();
+	List<BannerDTO> listMain(int number);
 }

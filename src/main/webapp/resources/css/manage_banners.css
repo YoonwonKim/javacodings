@@ -1,0 +1,6 @@
+main {
+    padding: 16px;
+}
+
+#main-preview { overflow: hidden; max-height: 400px; max-width: 1000px; }
+#main-preview img {  max-width: 1000px; }

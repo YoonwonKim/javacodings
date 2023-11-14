@@ -94,4 +94,14 @@ public class MerchandiserService implements ManagerService {
     public List<BannerDTO> bannerevent(PageDTO page) {
     	return bannerDAO.bannerevent(page);
     }
+
+    @Override
+    public List<BannerDTO> listMain(int number) {
+        return bannerDAO.listMain(number);
+    }
+
+    @Override
+    public List<BannerDTO> listEvent() {
+        return bannerDAO.listEvent();
+    }
 }

@@ -30,4 +30,8 @@ public interface ManagerService {
     
     List<BannerDTO> bannermain(PageDTO page);
     List<BannerDTO> bannerevent(PageDTO page);
+
+    List<BannerDTO> listMain(int number);
+
+    List<BannerDTO> listEvent();
 }
