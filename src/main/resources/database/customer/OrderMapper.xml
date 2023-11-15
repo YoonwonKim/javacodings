@@ -2,17 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.OrderDAO">
-
-	<select id="orderItems" parameterType="map">
-		SELECT O.ORDER_ID, O.ITEM_ID AS ORDER_ITEM_ID, O.MEMBER_ID, O.QUANTITY,
-		       I.ITEM_ID AS ITEM_ITEM_ID, I.LABEL, I.IMAGE, I.PRICE
+	<!-- 장바구니 -->
+	<select id="cartLists" parameterType="map">
+		SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.QUANTITY, M.MEMBER_ID, OS.REG_DATE, OS.STATE, I.CATEGORY, I.REG_DATE, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, I.ITEM_ID
 		FROM ORDERS O
-		INNER JOIN ITEMS I
-		    ON O.ITEM_ID = I.ITEM_ID
 		INNER JOIN MEMBER M
-		    ON O.MEMBER_ID = M.MEMBER_ID
-		WHERE O.MEMBER_ID = #{member_id, jdbcType=VARCHAR} and M.ROLE = 'custom'
-		ORDER BY O.ORDER_ID DESC
+			ON O.MEMBER_ID = M.MEMBER_ID
+		INNER JOIN ITEMS I
+			ON O.ITEM_ID = I.ITEM_ID
+		INNER JOIN (
+			SELECT OS.ORDER_ID, OS.STATE, OS.REG_DATE
+			FROM ORDER_STATE OS
+			WHERE (ORDER_ID, REG_DATE) IN (
+				SELECT OS.ORDER_ID, MAX(OS.REG_DATE)
+				FROM ORDER_STATE
+				WHERE OS.STATE = '0'
+				GROUP BY ORDER_ID
+			)
+		) OS
+			ON O.ORDER_ID = OS.ORDER_ID
+		ORDER BY OS.REG_DATE DESC
 	</select>
+	
+	<update id="updateCart" parameterType="orderDTO">
+		UPDATE ORDERS O
+		SET QUANTITY = #{quantity}
+		WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
+			SELECT OS.ORDER_ID
+			FROM ORDER_STATE OS
+			WHERE O.ORDER_ID = OS.ORDER_ID AND OS.STATE = '0')
+	</update>
+	
+	<delete id="deleteCart" parameterType="orderDTO">
+		DELETE 
+		FROM ORDERS O, ORDER_STATE
+		WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
+			SELECT OS.ORDER_ID
+			FROM ORDER_STATE OS
+			WHERE O.ORDER_ID = OS.ORDER_ID AND OS.STATE = '0')
+	</delete>
+	<!-- 장바구니 -->
 	
 </mapper>
