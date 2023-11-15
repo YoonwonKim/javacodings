@@ -1,6 +1,7 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,4 +65,34 @@ public class ActionController {
 
         return result;
     }
+    //장바구니 시작
+	@PostMapping("/updateCart")
+	@ResponseBody
+	public String updateCart(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
+		
+		if(order != null) {
+			memberService.updateCart(order);
+			return "success";
+		}
+		
+		return "failed";
+	}
+	
+	@PostMapping("/deleteCart")
+	@ResponseBody
+	public String deleteCart(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
+		
+		if(order != null) {
+			memberService.deleteCart(order);
+			return "success";
+		}
+		
+		return "failed";
+	}
+	//장바구니 끝
+
 }

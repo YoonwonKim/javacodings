@@ -39,7 +39,7 @@ public class PageController {
     	return "index";
     }
     
-    @RequestMapping("/orderItems")
+    @RequestMapping("/cartLists")
     public String orderItems(HttpServletRequest request, HttpServletResponse response,
     					Model model, PageDTO page) {
         page.setStart(0);
@@ -47,8 +47,16 @@ public class PageController {
         page.setEnd(page.getRow() + page.getStart());
         
         
-        model.addAttribute("orderItems", memberService.orderItems(page));
+        model.addAttribute("cartLists", memberService.cartLists(page));
     	
-    	return "customer/orderlist";
+    	return "customer/cartlist";
+    }
+    
+    @RequestMapping("/order")
+    public String order(HttpServletRequest request, HttpServletResponse response,
+    		Model model, PageDTO page) {
+    	
+    	
+    	return "index";
     }
 }
