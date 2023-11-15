@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
 
@@ -21,5 +22,8 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
-    Map<String, Object> orderItems(PageDTO page);
+    //장바구니
+    Map<String, Object> cartLists(PageDTO page);
+	int updateCart(OrderDTO order);
+	int deleteCart(OrderDTO order);
 }
