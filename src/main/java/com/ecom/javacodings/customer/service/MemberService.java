@@ -1,20 +1,21 @@
 package com.ecom.javacodings.customer.service;
 
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.customer.access.BannerDAO;
-import com.ecom.javacodings.customer.access.ItemDAO;
-import com.ecom.javacodings.customer.access.MemberDAO;
-import com.ecom.javacodings.customer.access.TagDAO;
-import com.ecom.javacodings.common.transfer.table.BannerDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.transfer.table.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.customer.access.BannerDAO;
+import com.ecom.javacodings.customer.access.ItemDAO;
+import com.ecom.javacodings.customer.access.MemberDAO;
+import com.ecom.javacodings.customer.access.TagDAO;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
@@ -78,4 +79,23 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    
+    //아이템 리스트 받아오기
+    @Override
+    public Map<String, Object> getListItem(PageDTO pageDTO){
+    	
+    	int cnt = itemDAO.getItemCnt();
+    	Map<String, Object> reSet = new HashMap<String, Object>();
+    	List<ItemDTO> iList = itemDAO.getListItem();
+    	reSet.put("cnt", cnt);
+    	reSet.put("iList", iList);
+    	return reSet;
+    }
+    
+    @Override
+    public ItemDTO listItemDt(ItemDTO itemDTO){
+    	return itemDAO.listItemDt(itemDTO);
+    	
+    	
+    }
 }

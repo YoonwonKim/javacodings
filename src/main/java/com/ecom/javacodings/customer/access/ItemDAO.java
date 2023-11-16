@@ -11,4 +11,7 @@ public interface ItemDAO {
 	List<ItemDTO> listNew(int number);
 	List<ItemDTO> listBest(int number);
 	List<ItemDTO> listItemsByTagId(String tagId);
+	List<ItemDTO> getListItem();
+	int getItemCnt();
+	ItemDTO listItemDt(ItemDTO itemDTO);
 }
