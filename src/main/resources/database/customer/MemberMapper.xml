@@ -26,15 +26,44 @@
       
     
     <insert id="memberJoin" parameterType="memberDTO" useGeneratedKeys="false">
-    INSERT ALL
-        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
-        VALUES (#{member_id}, #{password}, 'custom')
-        
-        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
-        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
-        
-        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
-        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
-     	SELECT 1 FROM DUAL
+    	INSERT ALL
+	        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
+	        VALUES (#{member_id}, #{password}, 'custom')
+	        
+	        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
+	        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
+	        
+	        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
+	        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
+	     	SELECT 1 FROM DUAL
     </insert>
+    
+	<update id="updateMember" parameterType="memberDTO">
+		UPDATE MEMBER 
+		SET PASSWORD = #{password}, 
+		    ROLE = 'custom' 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+
+	<update id="updateMemberInfo" parameterType="memberDTO">
+		UPDATE MEMBER_INFO 
+		SET NAME = #{name}, 
+			EMAIL = #{email}, 
+			PHONE = #{phone}, 
+			BIRTH = #{birth} 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+
+	<update id="updateAddress" parameterType="memberDTO">
+		UPDATE ADDRESS 
+		SET ZIPCODE = #{zipcode}, 
+			ADDRESS = #{address}, 
+			ADDRESS2 = #{address2} 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+	
+	<delete id="deleteMember" parameterType="memberDTO">
+		DELETE FROM MEMBER, MEMBER_INFO, ADDRESS
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
 </mapper>
