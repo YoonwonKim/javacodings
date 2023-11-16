@@ -64,32 +64,7 @@ public class PageController {
     					Model model) {
     	return "customer/account/register";
     }
-    
-    @RequestMapping("/registerProc")
-    public String registerProc(HttpServletRequest request,
-    							HttpServletResponse response,
-    							MemberDTO mdto, 
-    							Model model) throws ParseException {
-    	String phone = request.getParameter("phone1") + request.getParameter("phone2");
-    	String email = request.getParameter("email") + "@" + request.getParameter("email2");
-    	String birth = request.getParameter("birth1")  + "-" + request.getParameter("birth2")
-    	+ "-" + request.getParameter("birth3");
-    	
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    	Date to = formatter.parse(birth);
-    	
-    	mdto.setPhone(phone);
-    	mdto.setEmail(email);
-//    	mdto.setBirth(to);
-    	
-    	System.out.println(to);
-    	try {
-			int r = memberService.memberJoin(mdto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "redirect:/";
-	}
+
     @RequestMapping("/idCheck")
 	@ResponseBody
 	public int idCheck(HttpServletRequest request, 
