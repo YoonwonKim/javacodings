@@ -108,5 +108,13 @@ public class PageController {
 	  	
 		return "customer/searchmember";
 	}
+	@RequestMapping("/information")
+	public String information(HttpServletRequest request, HttpServletResponse response, 
+						MemberDTO member, Model model) {
+		HttpSession session = request.getSession();
+		
+		model.addAttribute(member);
+		return "customer/account/information";
+	}
 }
 

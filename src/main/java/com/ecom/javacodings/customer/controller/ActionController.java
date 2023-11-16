@@ -100,6 +100,11 @@ public class ActionController {
         return msg;
     }
     
-    
+    @PostMapping("/account/updateMember")
+    public String updateMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	
+    	return "/information";
+    }
 
 }
