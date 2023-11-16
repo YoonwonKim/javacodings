@@ -1,9 +1,13 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +40,36 @@ public class PageController {
     	model.addAttribute("mdList", mdList);
 
     	return "index";
+    }
+    
+    @RequestMapping("/listItem")
+    public String listItem(HttpServletRequest request,
+    					HttpServletResponse response,
+    					ItemDTO idto,
+    					Model model,
+    					PageDTO pageDTO) {
+    	
+    	Map<String, Object> reSet = 
+    			memberService.getListItem(pageDTO);
+    	
+    	model.addAttribute("cnt", reSet.get("cnt"));
+    	model.addAttribute("itemList", reSet.get("iList"));
+    	System.out.println("-----------iList"+ reSet);
+    	return "customer/item";
+    }
+    
+    @RequestMapping("/listItemDt")
+    public String listItemDt(HttpServletRequest request,
+	    					HttpServletResponse response,
+	    					ItemDTO idto,
+	    					Model model) {
+    	
+    	String page = null;
+    	String itemList = null;
+    	
+    	ItemDTO item = memberService.listItemDt(idto);
+    	
+    	model.addAttribute("item", item);
+    	return "customer/itemdt";	
     }
 }
