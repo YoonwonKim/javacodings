@@ -61,7 +61,7 @@ public class PageController {
 
 	@RequestMapping("/account/register")
     public String join(HttpServletRequest request, HttpServletResponse response,
-    					MemberDTO mdto, Model model) {
+    					Model model) {
     	return "customer/account/register";
     }
     
@@ -78,9 +78,9 @@ public class PageController {
     	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     	Date to = formatter.parse(birth);
     	
-    	mdto.setPhone(Integer.parseInt(phone));
+    	mdto.setPhone(phone);
     	mdto.setEmail(email);
-    	mdto.setBirth(to);
+//    	mdto.setBirth(to);
     	
     	System.out.println(to);
     	try {

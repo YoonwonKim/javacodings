@@ -12,11 +12,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/actions")
@@ -69,6 +65,17 @@ public class ActionController {
 
         return result;
     }
+
+    @PutMapping("/account/register")
+    public String register(HttpServletRequest request, HttpServletResponse response,
+                           MemberDTO member) {
+        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
+        memberService.memberJoin(member);
+
+        response.setContentType("application/json");
+        return "success";
+    }
+
     
     @PostMapping("/account/search/id")
     public String searchMember(HttpServletRequest request, HttpServletResponse response,
@@ -100,6 +107,13 @@ public class ActionController {
         return msg;
     }
     
-    
 
+    @PostMapping("/account/duplicate")
+    public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
+                                 MemberDTO member) {
+        System.out.println(member.getMember_id());
+        int r = memberService.idCheck(member.getMember_id());
+        if (r > 0) return "duplicated";
+        return "not-duplicated";
+    }
 }
