@@ -100,4 +100,24 @@ public class MemberService implements CustomerService {
 	public int idCheck(String member_id) {
 		return memberDAO.idCheck(member_id);
 	}
+
+	@Override
+	public int updateMember(MemberDTO member) {
+		return memberDAO.updateMember(member);
+	}
+
+	@Override
+	public int updateMemberInfo(MemberDTO member) {
+		return memberDAO.updateMemberInfo(member);
+	}
+
+	@Override
+	public int updateAddress(MemberDTO member) {
+		return memberDAO.updateAddress(member);
+	}
+
+	@Override
+	public int deleteMember(MemberDTO member) {
+		return memberDAO.deleteMember(member);
+	}
 }

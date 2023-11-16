@@ -27,4 +27,9 @@ public interface CustomerService {
     //회원가입
     int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
+	//회원정보(수정, 탈퇴)
+	int updateMember(MemberDTO member);
+	int updateMemberInfo(MemberDTO member);
+	int updateAddress(MemberDTO member);
+	int deleteMember(MemberDTO member);
 }

@@ -10,4 +10,8 @@ public interface MemberDAO {
 	int updatePasswd(MemberDTO member);
 	int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
+	int updateMember(MemberDTO member);
+	int updateMemberInfo(MemberDTO member);
+	int updateAddress(MemberDTO member);
+	int deleteMember(MemberDTO member);
 }
