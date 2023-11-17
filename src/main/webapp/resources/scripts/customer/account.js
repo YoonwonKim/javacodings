@@ -1,31 +1,4 @@
 // Region Register
-$(document).ready(function() {
-	let emailPrefix = document.getElementById('email-prefix');
-	let emailDomain = document.getElementById('email-domain');
-	emailPrefix.addEventListener('input',
-		function() {
-		emailDomain.value = emailPrefix.value;
-	});
-	emailDomain.addEventListener('input',
-		function() {
-		emailPrefix.value = '';
-		console.log(emailDomain.value);
-		});
-
-	let memberID = document.getElementById('member_id');
-	memberID.addEventListener('focusout', function() {register_validate.member_id(memberID)});
-
-	let form = document.getElementById("register");
-	let inputs = form.querySelectorAll('.input');
-	for(let i = 0; i < inputs.length; i++) {
-		let input = inputs[i];
-		let func   = register_validate[input.id];
-		if (!func) func = register_validate['common'];
-
-		input.addEventListener('focusout', function() {func(input)});
-	}
-});
-
 function register() {
 	let form = document.getElementById("register");
 	let inputs = form.querySelectorAll('.input');
@@ -35,8 +8,8 @@ function register() {
 
 	for(let i = 0; i < inputs.length; i++) {
 		let input = inputs[i];
-		let func   = register_validate[input.id];
-		if (!func) func = register_validate['common'];
+		let func   = input_validate[input.id];
+		if (!func) func = input_validate['common'];
 
 		let r = func(input);
 		result = (!r) ? false : true;
@@ -56,8 +29,8 @@ function register() {
 function validate_proc(input) {
 }
 
-register_validate = [];
-register_validate.common = function(input) {
+input_validate = [];
+input_validate.common = function(input) {
 	let func   = validate[input.id];
 	if (!func) return input.value;
 	let result = func(input.value);
@@ -75,7 +48,7 @@ register_validate.common = function(input) {
 	input.removeAttribute('invalid');
 	return input.value;
 }
-register_validate['password-repeat'] = function(input) {
+input_validate['password-repeat'] = function(input) {
 	let result = validate.password(input.value);
 	if (result < 1) {
 		let text = (result == 0) ?
@@ -90,7 +63,7 @@ register_validate['password-repeat'] = function(input) {
 	return input.value;
 }
 
-register_validate.member_id = function(input) {
+input_validate.member_id = function(input) {
 	let result = validate.member_id(input.value);
 	if (result < 1) {
 		let text = (result == 0) ?
@@ -121,7 +94,7 @@ register_validate.member_id = function(input) {
 // Region Login
 function account() {
 	let member_id = document.getElementsByName("member_id")[0];
-	switch (validate_id(member_id.value)) {
+	switch (validate.member_id(member_id.value)) {
 		case  0: {
 			alert("아이디를 입력해주세요.");
 			member_id.focus();
@@ -136,7 +109,7 @@ function account() {
 	}
 
 	let password  = document.getElementsByName("password")[0];
-	switch (validate_pw(password.value)) {
+	switch (validate.password(password.value)) {
 		case  0: {
 			alert("비밀번호를 입력해주세요.");
 			password.focus();
@@ -160,3 +133,40 @@ function account() {
 	});
 }
 // End Region Login
+// Region Search
+function search() {
+	let name   = document.getElementById("name").value;
+	let email  = document.getElementById("email").value
+
+	let email_split = email.split("@");
+	let result = validate.name(name) * validate.email(email_split[0]) * validate['email-domain']('@'+email_split[1]);
+	if (result != 1) return -1;
+
+	$.ajax({
+		data: {name, email},
+		method: 'GET',
+		url: '/actions/account/search/id',
+		success: function(data) {
+			if(data != 'error') alert('고객님의 아이디는 ' + data + '입니다');
+		}
+	});
+}
+
+function tempPassword() {
+	let name   = document.getElementById("name").value;
+	let email  = document.getElementById("email").value
+
+	let email_split = email.split("@");
+	let result = validate.name(name) * validate.email(email_split[0]) * validate['email-domain']('@'+email_split[1]);
+	if (result != 1) return -1;
+
+	$.ajax({
+		data: {name, email},
+		method: 'POST',
+		url: '/actions/account/search/password',
+		success: function(data) {
+			alert('임시 비밀번호는 ' + data + '입니다')
+		}
+	});
+}
+// End Region Search
