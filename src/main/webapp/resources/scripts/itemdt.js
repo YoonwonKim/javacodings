@@ -27,5 +27,9 @@ $().ready(function(){
 	 }
 	 $('form[name=itemForm]').submit();
   });
+  
+  $('itemDt').on('click', function(){
+	  
+  })
 });
 

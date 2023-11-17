@@ -55,8 +55,8 @@
 		</cds-table-head>
 		<cds-table-body>
 			<c:forEach var="item" items="${itemList}">
-				<cds-table-row  class="itemDt">
-					<cds-table-cell><img src="/resources/images/${item.image}"></cds-table-cell>
+				<cds-table-row class="itemDt" onClick="location.href='/listItemDt?item_id=${item.item_id}'">
+					<cds-table-cell><img src="/resources/images/${item.image}" width="200px;"></cds-table-cell>
 					<cds-table-cell>${item.label}</cds-table-cell>
 					<cds-table-cell>${item.price}</cds-table-cell>
 					<cds-table-cell>${item.desc}</cds-table-cell>
