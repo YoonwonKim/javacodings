@@ -30,7 +30,7 @@ header.global li {
 
 
 
-header.global a, a:focus, a:visited {
+header.global a,header.global a:focus,header.global a:visited {
     color: #f4f4f4;
     text-decoration: none;
 }
