@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -77,34 +79,29 @@ public class ActionController {
     }
 
     
-    @PostMapping("/account/search/id")
+    @GetMapping("/account/search/id")
     public String searchMember(HttpServletRequest request, HttpServletResponse response,
-    							MemberDTO member, Model model) {
-    	
-    	String id = null;
-    	String msg = null;
-    	
-    	id = memberService.searchId(member);
-    	if(id!=null) msg = "회원아이디: " + id;
-		else msg = "회원정보가 없습니다.";	
-    	
-		model.addAttribute("msg", msg);
-		
-    	return msg;
+    							MemberDTO member) {
+    	String member_id = memberService.searchId(member);
+        if (member_id == null) return "error";
+    	return member_id;
     }
-    
+
     @PostMapping("/account/search/password")
     public String updatePasswd(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member, Model model) {
-    	
-        String msg = null;
-
-        System.out.println(member);
-        memberService.updatePasswd(member);  	
-    	
-		model.addAttribute("msg", msg);
-
-        return msg;
+        Random random = new Random();
+        int leftLimit  = 48;  // numeral '0'
+        int rightLimit = 122; // letter  'z'
+        int targetStringLength = 9;
+        String randomPassword = random.ints(leftLimit, rightLimit+1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        member.setPassword(randomPassword);
+        memberService.temporaryPassword(member);
+        return randomPassword;
     }
     
 
