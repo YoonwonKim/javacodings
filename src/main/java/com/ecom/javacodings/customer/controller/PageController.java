@@ -6,10 +6,7 @@ import com.ecom.javacodings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +47,9 @@ public class PageController {
     	return "index";
     }
 
+
+
+	// Region Account
 	@RequestMapping("/account/login")
 	public String login(HttpServletRequest request, HttpServletResponse response,
 						Model model) {
@@ -60,28 +60,14 @@ public class PageController {
 	}
 
 	@RequestMapping("/account/register")
-    public String join(HttpServletRequest request, HttpServletResponse response,
-    					Model model) {
+    public String join() {
     	return "customer/account/register";
     }
 
-    @RequestMapping("/idCheck")
-	@ResponseBody
-	public int idCheck(HttpServletRequest request, 
-						HttpServletResponse response,
-						Model model,
-						MemberDTO mdto) {
-		int cnt = 0;	
-		  if(mdto.getMember_id()!=null) {
-			  cnt = memberService.idCheck(mdto.getMember_id());
-		  }
-		return cnt;
-	}
-
 	@RequestMapping("account/search")
-	public String searchMember(HttpServletRequest request, HttpServletResponse response) {
-	  	
-		return "customer/searchmember";
+	public String searchMember() {
+		return "customer/account/search";
 	}
+	// End Region Account
 }
 
