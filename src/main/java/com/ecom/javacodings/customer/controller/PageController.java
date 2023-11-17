@@ -2,6 +2,7 @@ package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -111,6 +112,14 @@ public class PageController {
         page.setEnd(page.getRow() + page.getStart());
 
 		model.addAttribute("notice", memberService.NoticeList(page));
+		return "customer/noticelist";
+	}
+	@RequestMapping("/noticepage")
+	public String noticepage(HttpServletRequest request, HttpServletResponse response, Model model,
+			                 NoticeDTO notice) {
+		
+		model.addAttribute("notice", memberService.noticepage(notice));
+	
 		return "customer/notice";
 	}
 }
