@@ -10,8 +10,9 @@ import lombok.ToString;
 public class NoticeDTO {
 	private int rr;
 	private String notice_id;
-	private Date red_date;
-	private int label;
+	private Date reg_date;
+	private String label;
 	private String content;
+	private String author_id;
 	private String state;
 }
