@@ -26,54 +26,39 @@
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
 <main>
-<form action="noticepage?flag=insert" name="noticeForm" method="post">
-<table>
+	<table class="noticelist">
+		<cds-table-head>
+			<cds-table-header-row hide-checkbox>
+				<cds-table-header-cell></cds-table-header-cell>
+				<cds-table-header-cell>번호</cds-table-header-cell>
+				<cds-table-header-cell>제목</cds-table-header-cell>
+				<cds-table-header-cell>작성자</cds-table-header-cell>
+				<cds-table-header-cell>등록일</cds-table-header-cell>
 
-	<thead>
-		<tr>
-			<th colspan="2">공지사항</th>
-		</tr>
-	</thead>
-	
-	<tbody>
-		<tr>
-			<td class="col1">공지사항번호</td>
-			<td class="col2">
-			<input type="text" name="noti_no" readonly="readonly" value="${notice.notice_id}">
-			</td>
-		</tr>
-		<tr>
-			<td class="col1">제목</td>
-			<td class="col2">
-			<input type="text" name="subject" readonly="readonly" value="${notice.label}">
-			</td>
-		</tr>
-		<tr>
-			<td class="col1">내용</td>
-			<td class="col2">
-			<textarea readonly="readonly" rows="10" cols="30" name="content" style="resize: none;">${notice.content}</textarea>
-		</td>
-		</tr>
-		<tr>
-			<td class="col1">작성일자</td>
-			<td class="col2"><input type="text" name="regdate" readonly="readonly" value="${notice.reg_date}">
-		</td>
-			
-		</tr>
-	
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="3">
-				<button type="button" onclick="location.href='/noticelist'">공지사항 목록</button>
-			</td>
-		
-		</tr>
-	</tfoot>
-
-</table>
-
-</form>
+			</cds-table-header-row>
+		</cds-table-head>
+				<cds-table-body>
+					<cds-table-row>
+	<c:choose>
+		<c:when test="${fn:length(notice)>0}">
+			<c:forEach var="notice" items="${notice}">
+				<tr>
+					<cds-table-cell><td class="col1">${notice.rr}
+					<input type="hidden" value="${notice.notice_id}"></td></cds-table-cell>
+					<cds-table-cell><td><a href="/noticepage?notice_id=${notice.notice_id}">${notice.label}</a></td></cds-table-cell>
+					<cds-table-cell><td>${notice.author_id}</td></cds-table-cell>
+					<cds-table-cell><td>${notice.reg_date}</td></cds-table-cell>
+				</tr>
+			</c:forEach>
+		</c:when>
+		<c:when test="${fn:length(notice)==0}">
+		<cds-table-cell><tr style="text-align: center; height: 30px;"><th colspan="5">등록된 공지사항이 없습니다</th></tr>	</cds-table-cell>		
+		</c:when>
+	</c:choose>
+		</cds-table-cell>
+</cds-table-row>
+		</cds-table-body>
+	</table>
 </main>
 <%@ include file="/views/customer/fragments/footer.jsp" %>
 </body>

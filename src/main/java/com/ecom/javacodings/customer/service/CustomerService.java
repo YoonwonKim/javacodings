@@ -32,4 +32,5 @@ public interface CustomerService {
 	
 	//공지사항
 	List<NoticeDTO> NoticeList(PageDTO page);
+	NoticeDTO noticepage(NoticeDTO notice);
 }

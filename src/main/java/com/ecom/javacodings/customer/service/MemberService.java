@@ -109,4 +109,8 @@ public class MemberService implements CustomerService {
 	public List<NoticeDTO>NoticeList(PageDTO page) {
 		return noticeDAO.NoticeList(page);
 	}
+	@Override
+	public NoticeDTO noticepage(NoticeDTO notice) {
+		return noticeDAO.noticepage(notice);
+	}
 }
