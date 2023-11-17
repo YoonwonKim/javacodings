@@ -1,10 +1,12 @@
 package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
+import com.ecom.javacodings.merchandiser.access.NoticeManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +83,33 @@ public class MerchandiserService implements ManagerService {
     @Override
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
+    }
+    
+    //공지사항
+    @Autowired
+    NoticeManagerDAO noticeDAO;
+    @Override
+    public List<NoticeDTO>NoticeList(PageDTO page) {
+    	return noticeDAO.NoticeList(page);
+    }
+    @Override
+    public int NoticeGenerate(NoticeDTO notice) {
+    	return noticeDAO.NoticeGenerate(notice);
+    }
+    @Override
+    public int deleteNotice(NoticeDTO notice) {
+    	return noticeDAO.deleteNotice(notice);
+    }
+    @Override
+    public int updateNotice(NoticeDTO notice) {
+    	return noticeDAO.updateNotice(notice);
+    }
+    @Override
+    public NoticeDTO noticepage(NoticeDTO notice) {
+    	return noticeDAO.noticepage(notice);
+    }
+    @Override
+    public NoticeDTO updateformnotice(NoticeDTO notice) {
+    	return noticeDAO.noticepage(notice);
     }
 }
