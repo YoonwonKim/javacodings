@@ -9,7 +9,7 @@
 			sysdate
 	FROM ORDERS
 	ORDER BY REG_DATE DESC
-# 	WHERE ORDER_ID = {order_id}
+	WHERE ORDER_ID = #{order_id}
    </insert>
    <select id="orderList" parameterType="pageDTO">
 	 SELECT * 
