@@ -3,6 +3,7 @@ package com.ecom.javacodings.customer.controller;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
