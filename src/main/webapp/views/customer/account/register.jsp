@@ -26,6 +26,7 @@
 	<script src="/resources/scripts/common/policies/validates.js"></script>
 	<script src="/resources/scripts/common/postcode.js"></script>
 	<script src="/resources/scripts/customer/account.js"></script>
+	<script src="/resources/scripts/customer/register.js"></script>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
