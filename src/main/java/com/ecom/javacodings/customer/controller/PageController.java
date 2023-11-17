@@ -6,17 +6,14 @@ import com.ecom.javacodings.customer.service.CustomerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,10 +27,15 @@ public class PageController {
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
                        Model model) {
+		//? Session
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		model.addAttribute("ssKey", ssKey);
 
+		//? Infos
     	model.addAttribute("mainList", memberService.listMain(8));
     	model.addAttribute("eventList", memberService.listEvent());
-
+		// Tag List
     	List<Map<String, Object>> mdList = new ArrayList<>();
     	mdList.add(memberService.listNew(8));
     	mdList.add(memberService.listBest(8));
@@ -44,63 +46,28 @@ public class PageController {
 
     	return "index";
     }
-    
-    @RequestMapping("/join")
-    public String join(HttpServletRequest request, HttpServletResponse response,
-    					MemberDTO mdto, Model model) {
-    	
-    	return "customer/fragments/join";
+
+
+
+	// Region Account
+	@RequestMapping("/account/login")
+	public String login(HttpServletRequest request, HttpServletResponse response,
+						Model model) {
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey != null) return "redirect:/";
+		return "customer/account/login";
+	}
+
+	@RequestMapping("/account/register")
+    public String join() {
+    	return "customer/account/register";
     }
-    
-    @RequestMapping("/registerProc")
-    public String registerProc(HttpServletRequest request,
-    							HttpServletResponse response,
-    							MemberDTO mdto, 
-    							Model model) throws ParseException {
-    	String phone = request.getParameter("phone1") + request.getParameter("phone2");
-    	String email = request.getParameter("email") + "@" + request.getParameter("email2");
-    	String birth = request.getParameter("birth1")  + "-" + request.getParameter("birth2")
-    	+ "-" + request.getParameter("birth3");
-    	
-    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    	Date to = formatter.parse(birth);
-    	
-    	mdto.setPhone(Integer.parseInt(phone));
-    	mdto.setEmail(email);
-    	mdto.setBirth(to);
-    	
-    	System.out.println(to);
-    	try {
-			int r = memberService.memberJoin(mdto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "redirect:/";
+
+	@RequestMapping("account/search")
+	public String searchMember() {
+		return "customer/account/search";
 	}
-    @RequestMapping("/idCheck")
-	@ResponseBody
-	public int idCheck(HttpServletRequest request, 
-						HttpServletResponse response,
-						Model model,
-						MemberDTO mdto) {
-		int cnt = 0;	
-		  if(mdto.getMember_id()!=null) {
-			  cnt = memberService.idCheck(mdto.getMember_id());
-		  }
-		return cnt;
-	}
-    
-    @RequestMapping("/loginpage")
-    public String login(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
-    	
-    	return "customer/login";
-    }        
-    
-	@RequestMapping("/searchMember")
-	public String searchMember(HttpServletRequest request, HttpServletResponse response) {
-	  	
-		return "customer/searchmember";
-	}
+	// End Region Account
 }
 

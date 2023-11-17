@@ -1,15 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <header class="global">
+<script src="/views/customer/fragments/header.js"></script>
 <span>
-	<div class="logo">
-		
+	<a class="logo" href="/">
 		<h2>Java</h2>
 		<h1>Codings</h1>
-	</div>
+	</a>
 	<ul id="sub-menu">
-		<li><a href="#">로그인</a></li>
-		<li><a href="/join">회원가입</a></li>
-		<li><a href="#">마이페이지</a></li>
+		<c:choose>
+			<c:when test="${ssKey == null}">
+				<li><a href="/account/login">로그인</a></li>
+				<li><a href="/account/register">회원가입</a></li>
+			</c:when>
+			<c:otherwise>
+				<li><a id="logout">로그아웃</a></li>
+				<li><a href="/account">마이페이지</a></li>
+			</c:otherwise>
+		</c:choose>
 		<li><a href="#">장바구니</a></li>
 		<li><a href="#">고객센터</a></li>
 	</ul>

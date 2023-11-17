@@ -83,13 +83,13 @@ public class MemberService implements CustomerService {
 	public String searchId(MemberDTO member) {
 		return memberDAO.searchId(member);
 	}
-	
-	@Override
-	public int updatePasswd(MemberDTO member) {
-		return memberDAO.updatePasswd(member);
-	}
-    
-    //회원가입                           
+
+    @Override
+    public int temporaryPassword(MemberDTO member) {
+        return memberDAO.temporaryPassword(member);
+    }
+
+    //회원가입
     @Override
     public int memberJoin(MemberDTO mdto) {
     	System.out.println(mdto);

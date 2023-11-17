@@ -22,8 +22,8 @@ public interface CustomerService {
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
     String searchId(MemberDTO member);
-	int updatePasswd(MemberDTO member);
-    
+    int temporaryPassword(MemberDTO member);
+
     //회원가입
     int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
