@@ -1,6 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +38,44 @@ public class MangerPageController {
         model.addAttribute("tagList", managerService.listTags());
 
         return "/merchandiser/products";
+    }
+    @RequestMapping("/noticelist")
+    public String noticelist(HttpServletRequest request, HttpServletResponse response,
+                           Model model) {
+        //? Set Page
+        PageDTO page = new PageDTO();
+        page.setStart(0);
+        page.setRow(15);
+        page.setEnd(page.getRow() + page.getStart());
+
+        //? Return data
+		model.addAttribute("notice", managerService.NoticeList(page));
+		return "merchandiser/noticelist";
+
+    }
+    @RequestMapping("/noticepage")
+    public String noticepage(HttpServletRequest request, HttpServletResponse response,
+    		Model model, NoticeDTO notice) {
+    	
+    	model.addAttribute("notice", managerService.noticepage(notice));
+    	return "merchandiser/notice";
+    	
+    }
+    @RequestMapping("/noticeganerate")
+    public String noticeganerate(HttpServletRequest request, HttpServletResponse response,
+    		Model model, NoticeDTO notice) {
+    	
+    	return "merchandiser/noticeganerate";
+    	
+    }
+    @RequestMapping("/updateformnotice")
+    public String updateformnotice(HttpServletRequest request, HttpServletResponse response,
+    		Model model, NoticeDTO notice) {
+    	
+    	model.addAttribute("notice", managerService.updateformnotice(notice));
+
+    	return "merchandiser/noticeupdate";
+    	
     }
     // End Region Pages
 }

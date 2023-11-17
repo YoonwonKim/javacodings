@@ -1,6 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,6 +49,30 @@ public class ManagerActionController {
         result *= managerService.updateTags(item.getItem_id(), tags);
         if (result > 0) return "success";
         return "error";
+    }
+    @PostMapping("/NoticeGenerate")
+    public String NoticeGenerate(HttpServletRequest request, HttpServletResponse response,
+    					  NoticeDTO notice) {
+    	int result = 0;
+    	result = managerService.NoticeGenerate(notice);
+    	if(result>0) return "success";
+    	return "error";
+    }
+    @PostMapping("/updateNotice")
+    public String updateNotice(HttpServletRequest request, HttpServletResponse response,
+    		NoticeDTO notice) {
+    	int result = 0;
+    	result = managerService.updateNotice(notice);
+    	if(result>0) return "success";
+    	return "error";
+    }
+    @PostMapping("/deleteNotice")
+    public String deleteNotice(HttpServletRequest request, HttpServletResponse response,
+    		NoticeDTO notice) {
+    	int result = 0;
+    	result = managerService.deleteNotice(notice);
+    	if(result>0) return "success";
+    	return "error";
     }
     // End Region Set Data
 }
