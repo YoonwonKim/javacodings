@@ -11,4 +11,6 @@ import com.ecom.javacodings.common.transfer.table.NoticeDTO;
 public interface NoticeDAO {
 	List<NoticeDTO> NoticeList(PageDTO page);
 	
+	NoticeDTO noticepage(NoticeDTO notice);
+	
 }
