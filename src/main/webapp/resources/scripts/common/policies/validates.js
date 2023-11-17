@@ -65,7 +65,6 @@ validate.email = function(data) {
 }
 validate['email-domain'] = function(data) {
     let pattern = /^\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    // let pattern = /^\@([0-9a-zA-Z@.]{1, 10})+\.([a-zA-Z]{2,4})$/;
     if (!data) return 0;
     if (!pattern.test(data)) return -1;
 
