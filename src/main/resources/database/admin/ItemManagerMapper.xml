@@ -25,6 +25,10 @@
 	<select id="listCategory" resultType="String">
 		SELECT CATEGORY FROM ITEMS GROUP BY CATEGORY
 	</select>
+
+	<select id="countItems" resultType="int">
+		SELECT COUNT(ITEM_ID) FROM ITEMS
+	</select>
 <!-- End Region Read -->
 <!-- Region Update -->
 	<update id="updateItem" parameterType="ItemDTO">

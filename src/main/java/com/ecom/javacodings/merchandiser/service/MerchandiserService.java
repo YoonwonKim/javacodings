@@ -22,7 +22,6 @@ public class MerchandiserService implements ManagerService {
     @Autowired OrderManagerDAO  orderDAO;
     // End Region Data access objects
     // Region 상품 관리
-
     @Override
     public List<ItemDTO> listItem(PageDTO page){
         List<ItemDTO> result = itemDAO.listItem(page);
@@ -64,6 +63,7 @@ public class MerchandiserService implements ManagerService {
     public List<TagDTO> listTagsById(String itemId) {
         return tagDAO.listTagsById(itemId);
     }
+    public int countItems() { return itemDAO.countItems(); }
     // End Region 상품 메타 정보
     // End Region 상품 관리
     

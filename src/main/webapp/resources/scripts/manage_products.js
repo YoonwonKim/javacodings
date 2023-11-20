@@ -60,10 +60,9 @@ function sendInfo() {
     $.ajax({
         url: "/admin/actions/set_item?item_id=" + id,
         type: 'PUT',
-        dataType: 'json',
         data: result,
         async: false,
-        complete: function() {
+        success: function() {
             // Modal close
             document.getElementById('item-modal').open = false;
         },
