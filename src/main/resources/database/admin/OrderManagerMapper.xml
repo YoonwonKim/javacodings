@@ -20,6 +20,7 @@
 					  (
 						  SELECT ORDER_ID, MAX(STATE) AS STATE, MAX(REG_DATE) AS REG_DATE
 						  FROM ORDER_STATE
+						  WHERE STATE &gt; 0
 						  GROUP BY ORDER_ID
 					  ) S
 					  ON O.ORDER_ID = S.ORDER_ID
@@ -58,4 +59,9 @@
 		VALUES (#{order.order_id}, #{order.state})
 	</foreach>
 	</insert>
+
+	<select id="countOrders" resultType="int">
+		SELECT COUNT(ORDER_ID)
+		FROM ORDERS
+	</select>
 </mapper>

@@ -43,7 +43,6 @@ public class ManagerPageController {
         }
 
         model.addAllAttributes(pageMap);
-        model.addAttribute("totalPages", pageMap.get("totalPages"));
         model.addAttribute("categoryList", managerService.listCategory());
         model.addAttribute("tagList", managerService.listTags());
 
@@ -53,8 +52,18 @@ public class ManagerPageController {
     @RequestMapping("/orders")
     public String orders(HttpServletRequest request, HttpServletResponse response,
                           Model model) {
-        PageDTO page = new PageDTO(1, 15);
-        model.addAttribute("orderList", managerService.listOrder(page));
+        Map<String, Object> pageMap = pageConstructor.getPages(
+                (PageDTO pageSet) -> Collections.singletonList(managerService.listOrder(pageSet)),
+                request.getParameter("page"),
+                request.getParameter("row"),
+                managerService.countOrders()
+        );
+
+        if((Integer) pageMap.get("currentPage") > (Integer) pageMap.get("totalPages")) {
+            return "redirect:/admin/orders?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
+        }
+
+        model.addAllAttributes(pageMap);
         model.addAttribute("stateList", managerService.countOrderState());
 
         return "/merchandiser/orders";

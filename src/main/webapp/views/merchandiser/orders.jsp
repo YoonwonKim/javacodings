@@ -24,6 +24,7 @@
 	<%-- Page Component --%>
 	<script type="module" src="${pageContext.request.contextPath}/resources/scripts/manage_orders.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/manage_orders.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/components/pagination.css" />
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/header.jsp" %>
@@ -81,7 +82,7 @@
 				</cds-table-header-row>
 			</cds-table-head>
 			<cds-table-body>
-				<c:forEach var="order" items="${orderList}">
+				<c:forEach var="order" items="${objectList}">
 					<cds-table-row>
 						<cds-table-cell>${order.order_id}</cds-table-cell>
 						<cds-table-cell>${order.item_id}</cds-table-cell>
@@ -103,16 +104,7 @@
 				</c:forEach>
 			</cds-table-body>
 		</cds-table>
-
-		<cds-pagination page-size="10" total-items="100" page="1" start="1">
-			<cds-page-sizes-select>
-				<cds-select-item value="10">10</cds-select-item>
-				<cds-select-item value="20">20</cds-select-item>
-				<cds-select-item value="30">30</cds-select-item>
-				<cds-select-item value="40">40</cds-select-item>
-				<cds-select-item value="50">50</cds-select-item>
-			</cds-page-sizes-select>
-		</cds-pagination>
+		<%@ include file="/resources/components/pagination.jsp" %>
 	</cds-tile>
 	<%-- End Region Order List ---------------------------------------------------------------------%>
 </cds-stack>

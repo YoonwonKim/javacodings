@@ -15,4 +15,6 @@ public interface OrderManagerDAO {
 	List<OrderDTO> listOrder(PageDTO page);
 	
 	List<OrderDTO> countState();
+
+    int countOrders();
 }
