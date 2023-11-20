@@ -53,11 +53,9 @@
 		order by D.STATE
     </select>
 
-	<insert id="updateOrderStates" parameterType="list" useGeneratedKeys="false">
-	<foreach collection="orders" item="order" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
-		INTO ORDER_STATE (ORDER_ID, STATE)
-		VALUES (#{order.order_id}, #{order.state})
-	</foreach>
+	<insert id="updateOrderStates" parameterType="orderDTO" useGeneratedKeys="false">
+		INSERT INTO ORDER_STATE (ORDER_ID, STATE)
+		VALUES (#{order_id}, #{state})
 	</insert>
 
 	<select id="countOrders" resultType="int">

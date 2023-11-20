@@ -69,9 +69,8 @@ public class ManagerActionController {
     //orderUpdate 구동되지 않음
     @PutMapping("/update_order")
     public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
-                              @RequestBody List<OrderDTO> orders)
-            throws JsonProcessingException {
-        int result = managerService.updateOrderStates(orders);
+                              OrderDTO order) {
+        int result = managerService.updateOrderStates(order);
     	return "success";
     }
 }
