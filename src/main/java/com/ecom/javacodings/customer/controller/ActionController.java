@@ -29,21 +29,18 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        String result = "failed";
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        MemberDTO loginInfo) {
+        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO ssKey = new MemberDTO();
+        MemberDTO loginAttempt = memberService.login(loginInfo);
 
-        ssKey.setMember_id(request.getParameter("member_id"));
-        ssKey.setPassword(request.getParameter("password"));
-        ssKey = memberService.login(ssKey);
-        if (ssKey == null) {
+        if (loginAttempt == null) {
             result = "failed";
         } else {
             result = "success";
-            session.setAttribute("ssKey", ssKey);
+            session.setAttribute("ssKey", loginAttempt);
         }
-
         return result;
     }
 

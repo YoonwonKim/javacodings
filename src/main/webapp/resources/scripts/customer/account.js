@@ -116,7 +116,7 @@ function account() {
 			return;
 		}
 		case -1: {
-			alert("비밀번호가 올바르지 않습니다.");
+			alert("비밀번호가 올바르지 않습니다");
 			password.focus();
 			password.value = "";
 			return;
@@ -128,8 +128,10 @@ function account() {
 		method: 'POST',
 		url: '/actions/account/login',
 		data: {member_id, password},
-		dataType: 'json',
-		complete: function(data) { location.reload(); }
+		success:  function(data) {
+			if (data == 'failed') alert('아이디 또는 비밀번호가 올바르지 않습니다');
+			else location.reload();
+		}
 	});
 }
 // End Region Login
