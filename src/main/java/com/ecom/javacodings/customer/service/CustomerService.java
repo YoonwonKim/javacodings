@@ -22,8 +22,10 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
-    //장바구니
+    //장바구니 시작
     Map<String, Object> cartLists(PageDTO page);
-	int updateCart(OrderDTO order);
-	int deleteCart(OrderDTO order);
+    List<OrderDTO> updateCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
+    //장바구니 끝
 }

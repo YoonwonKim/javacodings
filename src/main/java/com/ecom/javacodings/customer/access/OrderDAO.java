@@ -9,8 +9,10 @@ import com.ecom.javacodings.common.transfer.table.OrderDTO;
 
 @Mapper
 public interface OrderDAO {
-	//장바구니
+	//장바구니 시작
 	List<OrderDTO> cartLists(PageDTO page);
-	int updateCart(OrderDTO order);
-	int deleteCart(OrderDTO order);
+	List<OrderDTO> updateCart(List<OrderDTO> orderList);
+	List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
+	List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
+	//장바구니 끝
 }

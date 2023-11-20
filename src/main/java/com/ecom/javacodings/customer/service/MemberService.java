@@ -84,7 +84,7 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
-    //장바구니
+    //장바구니 시작
     @Override
     public Map<String, Object> cartLists(PageDTO page) {    	
     	Map<String, Object> params = new HashMap<String, Object>();
@@ -93,14 +93,20 @@ public class MemberService implements CustomerService {
     	params.put("cartLists", cartList);
     	return params;    	
     }
-    @Override
-    public int updateCart(OrderDTO ordrer) {
-    	
-    	return orderDAO.updateCart(ordrer);
-    }
-    @Override
-    public int deleteCart(OrderDTO ordrer) {
-    	
-    	return orderDAO.deleteCart(ordrer);
-    }
+
+	@Override
+	public List<OrderDTO> updateCart(List<OrderDTO> orderList) {
+		return orderDAO.updateCart(orderList);
+	}
+
+	@Override
+	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrdersByCart(orderList);
+	}
+	
+	@Override
+	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrderStateByCart(orderList);
+	}
+	//장바구니 끝
 }

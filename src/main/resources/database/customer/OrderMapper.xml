@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.OrderDAO">
-	<!-- 장바구니 -->
+	<!-- 장바구니 시작 -->
 	<select id="cartLists" parameterType="map">
 		SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.QUANTITY, M.MEMBER_ID, OS.REG_DATE, OS.STATE, I.CATEGORY, I.REG_DATE, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, I.ITEM_ID
 		FROM ORDERS O
-		INNER JOIN MEMBER M
+		INNER JOIN MEMBERS M
 			ON O.MEMBER_ID = M.MEMBER_ID
 		INNER JOIN ITEMS I
 			ON O.ITEM_ID = I.ITEM_ID
@@ -24,23 +24,38 @@
 		ORDER BY OS.REG_DATE DESC
 	</select>
 	
-	<update id="updateCart" parameterType="orderDTO">
-		UPDATE ORDERS O
-		SET QUANTITY = #{quantity}
-		WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
-			SELECT OS.ORDER_ID
-			FROM ORDER_STATE OS
-			WHERE O.ORDER_ID = OS.ORDER_ID AND OS.STATE = '0')
+	<update id="updateCart" parameterType="list">
+		<foreach item="item" index="index" collection="list" open="DECLARE BEGIN" separator=";" close="; END">
+			UPDATE ORDERS O
+			SET QUANTITY = #{quantity}
+			WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
+				SELECT OS.ORDER_ID
+				FROM ORDER_STATE OS
+				WHERE O.ORDER_ID = OS.ORDER_ID AND OS.STATE = '0')
+		</foreach>
 	</update>
 	
-	<delete id="deleteCart" parameterType="orderDTO">
-		DELETE 
-		FROM ORDERS O, ORDER_STATE
-		WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
-			SELECT OS.ORDER_ID
-			FROM ORDER_STATE OS
-			WHERE O.ORDER_ID = OS.ORDER_ID AND OS.STATE = '0')
+	<delete id="deleteOrderStateByCart" parameterType="list">
+		<foreach item="item" index="index" collection="list" open="DECLARE BEGIN" separator=";" close="; END">
+			DELETE 
+			FROM ORDER_STATE OS 
+			WHERE OS.STATE = '0' AND ORDER_ID IN (
+				SELECT O.ORDER_ID
+				FROM ORDERS O
+				WHERE O.MEMBER_ID = #{member_id})
+		</foreach>
 	</delete>
-	<!-- 장바구니 -->
+	
+	<delete id="deleteOrdersByCart" parameterType="list">
+		<foreach item="item" index="index" collection="list" open="DECLARE BEGIN" separator=";" close="; END">
+			DELETE 
+			FROM ORDERS O
+			WHERE MEMBER_ID = #{member_id} AND O.ORDER_ID IN (
+				SELECT OS.ORDER_ID
+				FROM ORDER_STATE OS
+				WHERE O.ORDER_ID = OS.ORDER_ID)
+		</foreach>
+	</delete>	
+	<!-- 장바구니 끝 -->
 	
 </mapper>
