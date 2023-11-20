@@ -6,8 +6,10 @@ import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ManagerService {
+    // End Region Data access objects
     // Region Item
     // Read table
     List<ItemDTO> listItem(PageDTO page);
@@ -22,7 +24,7 @@ public interface ManagerService {
     List<String> listCategory();
     List<String> listTags();
     List<TagDTO> listTagsById(String itemId);
-
+    int countItems();
     // Region Orders
     int updateOrderStates(List<OrderDTO> orders);
     //RQ - 013 - 02 주문 리스트

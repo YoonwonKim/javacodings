@@ -14,6 +14,7 @@ public interface ItemManagerDAO {
 	List<String> listCategory();
 	//? Get
 	ItemDTO getItemById(String item_id);
+	int countItems();
 	// End Region Read
 	// Region Create or Update
 	int createItem(ItemDTO item);
