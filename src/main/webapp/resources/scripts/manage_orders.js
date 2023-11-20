@@ -10,33 +10,28 @@ $().ready(() => {
         }
     }
 })
+// Region Events
+$(document).ready(function() {
+    let inputs = document.getElementsByClassName("order-state");
+    for( let item of inputs) {
+        item.addEventListener("input", function() {
+            updateOrder(this);
+        });
+    };
+});
+// End Region Events
+// Region Processing
+function updateOrder(selectBox) {
+    let order_id = selectBox.getAttribute("id");
+    let state = selectBox.getAttribute("value");
+    let order = {order_id, state};
 
-function sendOrderUpdateRequest() {
-    // 모든 드롭다운에 대해
-    let data = [];
-    $("cds-dropdown").each(function() {
-        let column = {};
-        column.order_id = $(this).attr('id').replace('state', '');
-        column.state = $(this).attr('value');
-        data.push(column);
-    });
-    data = JSON.stringify(data);
-    console.log(data);
-
-    // 각 주문에 대해 Ajax 요청을 보냄
     $.ajax({
         type: 'PUT',
         url: "/admin/actions/update_order",
-        data: data,
-        dataType: "json",
-        contentType: 'application/json',
+        data: order,
         success: function(response) {
-            console.log("Order update successful");
-            // 화면 업데이트
-            $("#state" + response.id).val(response.state);
-        },
-        error: function(error) {
-            console.log("Order update failed");
         }
     });
 }
+// End Region Processing

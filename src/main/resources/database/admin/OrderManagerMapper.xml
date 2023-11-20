@@ -20,6 +20,7 @@
 					  (
 						  SELECT ORDER_ID, MAX(STATE) AS STATE, MAX(REG_DATE) AS REG_DATE
 						  FROM ORDER_STATE
+						  WHERE STATE &gt; 0
 						  GROUP BY ORDER_ID
 					  ) S
 					  ON O.ORDER_ID = S.ORDER_ID
@@ -52,10 +53,13 @@
 		order by D.STATE
     </select>
 
-	<insert id="updateOrderStates" parameterType="list" useGeneratedKeys="false">
-	<foreach collection="orders" item="order" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
-		INTO ORDER_STATE (ORDER_ID, STATE)
-		VALUES (#{order.order_id}, #{order.state})
-	</foreach>
+	<insert id="updateOrderStates" parameterType="orderDTO" useGeneratedKeys="false">
+		INSERT INTO ORDER_STATE (ORDER_ID, STATE)
+		VALUES (#{order_id}, #{state})
 	</insert>
+
+	<select id="countOrders" resultType="int">
+		SELECT COUNT(ORDER_ID)
+		FROM ORDERS
+	</select>
 </mapper>

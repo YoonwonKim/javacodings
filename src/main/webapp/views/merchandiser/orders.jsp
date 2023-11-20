@@ -24,6 +24,7 @@
 	<%-- Page Component --%>
 	<script type="module" src="${pageContext.request.contextPath}/resources/scripts/manage_orders.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/manage_orders.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/components/pagination.css" />
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/header.jsp" %>
@@ -49,27 +50,6 @@
 		<cds-table is-selectable is-sortable use-zebra-styles>
 			<cds-table-header-title slot="title">주문 관리</cds-table-header-title>
 			<cds-table-header-description slot="description">주문 관리용 테이블입니다.</cds-table-header-description>
-			<cds-table-toolbar slot="toolbar">
-				<cds-table-toolbar-content>
-					<cds-table-toolbar-search
-							placeholder="Filter table"></cds-table-toolbar-search>
-					<cds-button id="modify">수정하기</cds-button>
-				</cds-table-toolbar-content>
-				<cds-table-batch-actions>
-					<cds-button tooltip-position="bottom" onclick="sendOrderUpdateRequest()">Save
-						<svg focusable="false"
-						     preserveAspectRatio="xMidYMid meet"
-						     xmlns="http://www.w3.org/2000/svg"
-						     fill="currentColor"
-						     aria-hidden="true"
-						     width="16"
-						     height="16"
-						     viewBox="0 0 16 16"
-						     slot="icon">
-							<path d="M13.9,4.6l-2.5-2.5C11.3,2.1,11.1,2,11,2H3C2.4,2,2,2.4,2,3v10c0,0.6,0.4,1,1,1h10c0.6,0,1-0.4,1-1V5  C14,4.9,13.9,4.7,13.9,4.6z M6,3h4v2H6V3z M10,13H6V9h4V13z M11,13V9c0-0.6-0.4-1-1-1H6C5.4,8,5,8.4,5,9v4H3V3h2v2c0,0.6,0.4,1,1,1  h4c0.6,0,1-0.4,1-1V3.2l2,2V13H11z"></path></svg>
-					</cds-button>
-				</cds-table-batch-actions>
-			</cds-table-toolbar>
 			<cds-table-head>
 				<cds-table-header-row hide-checkbox>
 					<cds-table-header-cell>주문 ID</cds-table-header-cell>
@@ -81,38 +61,29 @@
 				</cds-table-header-row>
 			</cds-table-head>
 			<cds-table-body>
-				<c:forEach var="order" items="${orderList}">
+				<c:forEach var="order" items="${objectList}">
 					<cds-table-row>
 						<cds-table-cell>${order.order_id}</cds-table-cell>
 						<cds-table-cell>${order.item_id}</cds-table-cell>
 						<cds-table-cell>${order.member_id}</cds-table-cell>
 						<cds-table-cell>${order.quantity}</cds-table-cell>
 						<cds-table-cell>
-							<cds-dropdown type="inline" id="${order.order_id}" value="${order.state}">
+							<cds-select inline class="order-state" id="${order.order_id}" value="${order.state}">
 								<c:forEach var="state" items="${stateList}">
 								<c:if test="${state.state >= order.state}">
-									<cds-dropdown-item value="${state.state}">
+									<cds-select-item value="${state.state}">
 											${state.order_id}
-									</cds-dropdown-item>
+									</cds-select-item>
 								</c:if>
 								</c:forEach>
-							</cds-dropdown>
+							</cds-select>
 						</cds-table-cell>
 						<cds-table-cell>${order.reg_date}</cds-table-cell>
 					</cds-table-row>
 				</c:forEach>
 			</cds-table-body>
 		</cds-table>
-
-		<cds-pagination page-size="10" total-items="100" page="1" start="1">
-			<cds-page-sizes-select>
-				<cds-select-item value="10">10</cds-select-item>
-				<cds-select-item value="20">20</cds-select-item>
-				<cds-select-item value="30">30</cds-select-item>
-				<cds-select-item value="40">40</cds-select-item>
-				<cds-select-item value="50">50</cds-select-item>
-			</cds-page-sizes-select>
-		</cds-pagination>
+		<%@ include file="/resources/components/pagination.jsp" %>
 	</cds-tile>
 	<%-- End Region Order List ---------------------------------------------------------------------%>
 </cds-stack>
