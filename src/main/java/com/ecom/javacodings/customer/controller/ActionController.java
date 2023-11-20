@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
@@ -8,9 +9,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,26 +74,33 @@ public class ActionController {
     //장바구니 시작
 	@PostMapping("/updateCart")
 	@ResponseBody
-	public String updateCart(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String updateCart(HttpServletRequest request, HttpServletResponse response,
+								@RequestBody List<OrderDTO> orderList) {
+		
+		HttpSession session = request.getSession();		
 		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
 		
+		System.out.println("---------"+orderList);
+		
 		if(order != null) {
-			memberService.updateCart(order);
-			return "success";
+			memberService.updateCart(orderList);
 		}
 		
-		return "failed";
+		
+		return "redirect:/";
 	}
 	
 	@PostMapping("/deleteCart")
-	@ResponseBody
-	public String deleteCart(HttpServletRequest request) {
+	public String deleteCart(HttpServletRequest request, HttpServletResponse response,
+								@RequestBody List<OrderDTO> orderList) {
 		HttpSession session = request.getSession();
-		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
+		OrderDTO order = (OrderDTO) session.getAttribute("cartLists");
+		
+		System.out.println("---------"+orderList);
 		
 		if(order != null) {
-			memberService.deleteCart(order);
+			memberService.deleteOrderStateByCart(orderList);
+			memberService.deleteOrdersByCart(orderList);
 			return "success";
 		}
 		
