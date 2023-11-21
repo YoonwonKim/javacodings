@@ -10,7 +10,6 @@ import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +22,16 @@ public class MerchandiserService implements ManagerService {
     @Autowired OrderManagerDAO  orderDAO;
     // End Region Data access objects
     // Region 상품 관리
+    // 기본 CRUD 메소드 =================================
+    @Override public int createItem(ItemDTO item) { return itemDAO.createItem(item); }
+    @Override public ItemDTO readItemById(String id) { return itemDAO.getItemById(id); }
+    @Override public int updateItem(ItemDTO item) { return itemDAO.updateItem(item); }
+    @Override public int deleteItem(ItemDTO item) { return itemDAO.deleteItem(item); }
+
     @Override
     public List<ItemDTO> listItem(PageDTO page){
         List<ItemDTO> result = itemDAO.listItem(page);
         return result;
-    }
-    @Override
-    public int updateItem(ItemDTO item) {
-        return itemDAO.updateItem(item);
     }
     @Override
     public int updateTags(String item_id, List<String> tags) {
@@ -44,12 +45,7 @@ public class MerchandiserService implements ManagerService {
         return result;
     }
 
-    @Override
-    public int deleteItem(ItemDTO item) {
-        return itemDAO.deleteItem(item);
-    }
-    @Override
-    public ItemDTO getItemById(String id) { return itemDAO.getItemById(id); }
+
     // Region 상품 메타 정보
     public List<String> listCategory() {
         List<String> result = itemDAO.listCategory();

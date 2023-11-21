@@ -70,7 +70,7 @@
 
 	<cds-modal-footer>
 		<cds-modal-footer-button kind="secondary" data-modal-close>그만두기</cds-modal-footer-button>
-		<cds-modal-footer-button kind="primary" id="update">수정하기</cds-modal-footer-button>
+		<cds-modal-footer-button kind="primary" id="submit">수정하기</cds-modal-footer-button>
 	</cds-modal-footer>
 </cds-modal>
 </cds-layer>

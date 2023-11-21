@@ -6,16 +6,18 @@ import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ManagerService {
     // End Region Data access objects
     // Region Item
     // Read table
     List<ItemDTO> listItem(PageDTO page);
-    ItemDTO getItemById(String id);
+    ItemDTO readItemById(String id);
     // Create and Update
     int updateItem(ItemDTO item);
+
+    int createItem(ItemDTO item);
+
     int updateTags(String item_id, List<String> tags);
     // Delete
     int deleteItem(ItemDTO item);

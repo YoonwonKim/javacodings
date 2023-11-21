@@ -38,7 +38,7 @@
 			<cds-table-toolbar-content>
 				<cds-table-toolbar-search
 						placeholder="Filter table"></cds-table-toolbar-search>
-				<cds-button>상품 추가</cds-button>
+				<cds-button onclick="create()">상품 추가</cds-button>
 			</cds-table-toolbar-content>
 			<cds-table-batch-actions>
 				<cds-button>Delete

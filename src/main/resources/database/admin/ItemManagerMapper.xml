@@ -3,6 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.ItemManagerDAO">
 <!-- Region Create -->
+	<insert id="createItem" parameterType="itemDTO">
+		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", IMAGE, PRICE, STOCK, CATEGORY)
+		VALUES (#{item_id}, #{label}, #{desc}, #{image}, #{price}, #{stock}, #{category})
+	</insert>
 <!-- End Region Create -->
 <!-- Region Read -->
 	<select id="listItem" parameterType="pageDTO">

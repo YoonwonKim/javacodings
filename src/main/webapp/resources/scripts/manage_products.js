@@ -16,10 +16,6 @@ $().ready(() => {
         item.innerHTML = result;
     }
 
-    $('cds-modal-footer-button#update').on('click', () => {
-        sendInfo();
-    });
-
     document.getElementById('file').addEventListener('change', function() {
         let file = $("input#file").val();
         file = file.split('\\');
@@ -43,12 +39,29 @@ function modify(item) {
         success: function(data) { result.tags = JSON.parse(data); }
     });
 
-    setModal(id, result);
+    setModal(result, 'update');
+    document.getElementById('item-modal').open = true;
+}
+
+function create() {
+    let result;
+    result = {
+        item_id: '',
+        label: '이름을 입력해주세요',
+        desc:  '상품 설명을 입력해주세요',
+        image: 'z7aJr1675ceCG44iioek',
+        price: '10000',
+        stock: '100',
+        category: '',
+        tags: []
+    };
+
+    setModal(result, 'create');
     document.getElementById('item-modal').open = true;
 }
 
 // Region Modal constructor
-function setModal(id, data) {
+function setModal(data, mode) {
     let inputs = modal.querySelectorAll('.input');
     for(let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
@@ -60,10 +73,46 @@ function setModal(id, data) {
                 'this.src=\'/resources/images/z7aJr1675ceCG44iioek.png\'');
         input.setAttribute('value', data[value]);
     }
+
+    let value;
+    if (mode == 'create') value = 'createItem()';
+    else value = '() => updateItem();'
+    modal.querySelector('#submit')
+        .setAttribute('onclick', value);
 }
 // End Region Modal constructor
 // Region Modal executor
-function sendInfo() {
+function createItem() {
+    let inputs = modal.querySelectorAll('.input');
+    let file = document.getElementById('file');
+    let form = new FormData();
+
+    try {
+        form.append('file', file.files[0]);
+        for(let i = 0; i < inputs.length; i++) {
+            let input = inputs[i];
+            let value = input.getAttribute('name') ?? 'image';
+            form.append(value, input.getAttribute('value'));
+        }
+    }
+    catch (e) {}
+
+    console.log("Attempting to create");
+    //! Send data to Database.
+    $.ajax({
+        url: "/admin/actions/item/create",
+        type: 'POST',
+        data: form,
+        async: false,
+        processData: false,
+        contentType: false,
+        success: function() {
+            document.getElementById('item-modal').open = false;
+            location.reload();
+        },
+    });
+}
+function updateItem() {
     let inputs = modal.querySelectorAll('.input');
     let result = {};
     for(let i = 0; i < inputs.length; i++) {
@@ -71,10 +120,6 @@ function sendInfo() {
         let value = input.getAttribute('name') ?? 'image';
         result[value] = input.getAttribute('value');
     }
-
-    let file = document.getElementById('file');
-    let form = new FormData();
-    form.append('file', file.files[0]);
 
     //! Send data to Database.
     $.ajax({
@@ -88,14 +133,22 @@ function sendInfo() {
             location.reload();
         },
     });
-    //! Send image to Database.
-    $.ajax({
-        url: "/admin/actions/set_image?item_id=" + id,
-        type: 'PUT',
-        async: false,
-        data: form,
-        processData: false,
-        contentType: false
-    });
+
+    try {
+        let file = document.getElementById('file');
+        let form = new FormData();
+        form.append('file', file.files[0]);
+
+        //! Send image to Database.
+        $.ajax({
+            url: "/admin/actions/set_image?item_id=" + id,
+            type: 'PUT',
+            async: false,
+            data: form,
+            processData: false,
+            contentType: false
+        });
+    }
+    catch (e) {};
 }
 // End Region Modal executor
