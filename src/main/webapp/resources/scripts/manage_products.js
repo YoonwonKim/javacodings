@@ -8,7 +8,7 @@ $().ready(() => {
         let id = item.parentNode.getAttribute('item-id');
         let result;
         $.ajax({
-            url: "/admin/actions/get_tags?item_id=" + id,
+            url: "/admin/actions/item/tags?item_id=" + id,
             async: false,
             type: 'GET',
             success: function(data) { result = JSON.parse(data); }
@@ -27,13 +27,13 @@ function modify(item) {
     id = item.closest('.row').getAttribute('item-id');
     let result;
     $.ajax({
-        url: "/admin/actions/get_item?item_id=" + id,
+        url: "/admin/actions/item/read?item_id=" + id,
         async: false,
         type: 'GET',
         success: function(data) { result = JSON.parse(data); }
     });
     $.ajax({
-        url: "/admin/actions/get_tags?item_id=" + id,
+        url: "/admin/actions/item/tags?item_id=" + id,
         async: false,
         type: 'GET',
         success: function(data) { result.tags = JSON.parse(data); }

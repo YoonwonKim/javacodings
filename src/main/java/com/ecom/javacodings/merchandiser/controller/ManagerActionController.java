@@ -30,7 +30,7 @@ public class ManagerActionController {
     ManagerService managerService;
 
     // Region Get Data
-    @GetMapping("/get_item")
+    @GetMapping("/item/read")
     @ResponseBody
     public String getItem(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
@@ -41,7 +41,7 @@ public class ManagerActionController {
         String result = mapper.writeValueAsString(item);
         return result;
     }
-    @GetMapping("/get_tags")
+    @GetMapping("/item/tags")
     @ResponseBody
     public String getTags(HttpServletRequest request, HttpServletResponse response)
             throws JsonProcessingException {
