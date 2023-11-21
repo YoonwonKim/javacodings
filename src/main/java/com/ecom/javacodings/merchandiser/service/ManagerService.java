@@ -4,18 +4,23 @@ import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ManagerService {
+    int updateImage(ItemDTO item, MultipartFile file);
+
     // End Region Data access objects
     // Region Item
     // Read table
     List<ItemDTO> listItem(PageDTO page);
-    ItemDTO getItemById(String id);
+    ItemDTO readItemById(String id);
     // Create and Update
     int updateItem(ItemDTO item);
+
+    int createItem(ItemDTO item);
+
     int updateTags(String item_id, List<String> tags);
     // Delete
     int deleteItem(ItemDTO item);
@@ -33,5 +38,6 @@ public interface ManagerService {
 
     //RQ - 013 - 05 주문 상태 요약
     List<OrderDTO> countOrderState();
+
     // End Region Orders
 }

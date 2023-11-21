@@ -5,3 +5,50 @@
 tr {
     cursor: grab;
 }
+
+#modal-div {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+#modal-div div, #modal-div cds-stack {
+    flex: 1;
+}
+#modal-div img {
+    margin-top:  24px;
+    margin-left: 16px;
+    max-width:  400px;
+}
+
+
+.button {
+    display: inline-block;
+    height:40px;
+    line-height:   40px;
+    padding-left:  16px;
+    padding-right: 64px;
+
+    background-color: #393939;
+    border: 1px solid #393939;
+    color: #fff;
+}
+.button:hover  { background-color: #4c4c4c; }
+.button:active { background-color: #6f6f6f; }
+.button:focus  { border: 1px solid #0f62fe; }
+
+#upload-label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+#uploaded-file {
+    display: block;
+    flex: 1;
+
+    height:40px;
+    line-height:   40px;
+    padding-left:  16px;
+    padding-right: 16px;
+
+    background-color: #fff;
+}
