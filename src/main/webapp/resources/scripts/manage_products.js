@@ -76,7 +76,7 @@ function setModal(data, mode) {
 
     let value;
     if (mode == 'create') value = 'createItem()';
-    else value = '() => updateItem();'
+    else value = 'updateItem()';
     modal.querySelector('#submit')
         .setAttribute('onclick', value);
 }
@@ -115,6 +115,7 @@ function createItem() {
 function updateItem() {
     let inputs = modal.querySelectorAll('.input');
     let result = {};
+    result.item_id = id;
     for(let i = 0; i < inputs.length; i++) {
         let input = inputs[i];
         let value = input.getAttribute('name') ?? 'image';
@@ -123,7 +124,7 @@ function updateItem() {
 
     //! Send data to Database.
     $.ajax({
-        url: "/admin/actions/set_item?item_id=" + id,
+        url: "/admin/actions/item/update",
         type: 'PUT',
         data: result,
         async: false,
@@ -138,10 +139,11 @@ function updateItem() {
         let file = document.getElementById('file');
         let form = new FormData();
         form.append('file', file.files[0]);
+        form.append('item_id', id);
 
         //! Send image to Database.
         $.ajax({
-            url: "/admin/actions/set_image?item_id=" + id,
+            url: "/admin/actions/item/image",
             type: 'PUT',
             async: false,
             data: form,
