@@ -3,25 +3,25 @@
 <mapper namespace="com.ecom.javacodings.customer.access.MemberDAO">
     <select id="login" parameterType="memberDTO" resultType="memberDTO">
         SELECT MEMBER_ID, PASSWORD, ROLE 
-        FROM MEMBER
+        FROM MEMBERS
         WHERE MEMBER_ID=#{member_id} AND PASSWORD=#{password}
     </select>
     
 	<select id="searchId" parameterType="memberDTO" resultType="string">
 		SELECT MEMBER_ID 
 		FROM MEMBER_INFOS
-		WHERE NAME = #{name} AND PHONE = #{phone}
+		WHERE NAME = #{name} AND EMAIL = #{email}
 	</select>
 	
-	<update id="updatePasswd" parameterType="memberDTO">
-	    UPDATE MEMBER
+	<update id="temporaryPassword" parameterType="memberDTO">
+	    UPDATE MEMBERS
 	    SET PASSWORD = #{password}
-	    WHERE MEMBER_ID = (SELECT MEMBER_ID FROM MEMBER_INFOS WHERE PHONE = #{phone})
+	    WHERE MEMBER_ID = (SELECT MEMBER_ID FROM MEMBER_INFOS WHERE EMAIL = #{email})
 	</update>
  
     <select id="idCheck" resultType="int">
-      select count(member_id) from member
-    	where member_id = #{member_id}
+      SELECT COUNT(MEMBER_ID) FROM MEMBERS
+    	WHERE MEMBER_ID = #{member_id}
     </select>
       
     
@@ -45,8 +45,8 @@
 		WHERE MEMBER_ID = #{member_id};
 	</update>
 
-	<update id="updateMemberInfo" parameterType="memberDTO">
-		UPDATE MEMBER_INFO 
+	<update id="updateMemberInfos" parameterType="memberDTO">
+		UPDATE MEMBER_INFOS 
 		SET NAME = #{name}, 
 			EMAIL = #{email}, 
 			PHONE = #{phone}, 
@@ -62,8 +62,18 @@
 		WHERE MEMBER_ID = #{member_id};
 	</update>
 	
-	<delete id="deleteMember" parameterType="memberDTO">
-		DELETE FROM MEMBER, MEMBER_INFO, ADDRESS
+	<delete id="deleteMembers" parameterType="memberDTO">
+		DELETE FROM MEMBERS
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
+
+	<delete id="deleteMember_Infos" parameterType="memberDTO">
+		DELETE FROM MEMBER_INFOS
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
+	
+	<delete id="deleteAddress" parameterType="memberDTO">
+		DELETE FROM ADDRESS 
 		WHERE MEMBER_ID = #{member_id}		
 	</delete>
 </mapper>

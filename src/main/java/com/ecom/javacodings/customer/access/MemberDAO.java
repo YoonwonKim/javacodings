@@ -7,11 +7,13 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberDAO {
     MemberDTO login(MemberDTO member);    
     String searchId(MemberDTO member);
-	int updatePasswd(MemberDTO member);
 	int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
-	int updateMember(MemberDTO member);
-	int updateMemberInfo(MemberDTO member);
+	int updateMembers(MemberDTO member);
+	int updateMemberInfos(MemberDTO member);
 	int updateAddress(MemberDTO member);
-	int deleteMember(MemberDTO member);
+	int deleteMemberInfos(MemberDTO member);
+	int deleteMembers(MemberDTO member);
+	int deleteAddress(MemberDTO member);
+	int temporaryPassword(MemberDTO member);
 }

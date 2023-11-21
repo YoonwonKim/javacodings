@@ -7,16 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/actions")
@@ -31,21 +29,18 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        String result = "failed";
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        MemberDTO loginInfo) {
+        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO ssKey = new MemberDTO();
+        MemberDTO loginAttempt = memberService.login(loginInfo);
 
-        ssKey.setMember_id(request.getParameter("member_id"));
-        ssKey.setPassword(request.getParameter("password"));
-        ssKey = memberService.login(ssKey);
-        if (ssKey == null) {
+        if (loginAttempt == null) {
             result = "failed";
         } else {
             result = "success";
-            session.setAttribute("ssKey", ssKey);
+            session.setAttribute("ssKey", loginAttempt);
         }
-
         return result;
     }
 
@@ -69,42 +64,89 @@ public class ActionController {
 
         return result;
     }
-    
-    @PostMapping("/account/search/id")
-    public String searchMember(HttpServletRequest request, HttpServletResponse response,
-    							MemberDTO member, Model model) {
-    	
-    	String id = null;
-    	String msg = null;
-    	
-    	id = memberService.searchId(member);
-    	if(id!=null) msg = "회원아이디: " + id;
-		else msg = "회원정보가 없습니다.";	
-    	
-		model.addAttribute("msg", msg);
-		
-    	return msg;
+
+    @PutMapping("/account/register")
+    public String register(HttpServletRequest request, HttpServletResponse response,
+                           MemberDTO member) {
+        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
+        memberService.memberJoin(member);
+
+        response.setContentType("application/json");
+        return "success";
     }
+
     
+    @GetMapping("/account/search/id")
+    public String searchMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member) {
+    	String member_id = memberService.searchId(member);
+        if (member_id == null) return "error";
+    	return member_id;
+    }
+
     @PostMapping("/account/search/password")
     public String updatePasswd(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member, Model model) {
-    	
-        String msg = null;
-
-        System.out.println(member);
-        memberService.updatePasswd(member);  	
-    	
-		model.addAttribute("msg", msg);
-
-        return msg;
+        Random random = new Random();
+        int leftLimit  = 48;  // numeral '0'
+        int rightLimit = 122; // letter  'z'
+        int targetStringLength = 9;
+        String randomPassword = random.ints(leftLimit, rightLimit+1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        member.setPassword(randomPassword);
+        memberService.temporaryPassword(member);
+        return randomPassword;
     }
     
     @PostMapping("/account/updateMember")
+    @ResponseBody
     public String updateMember(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
     	
-    	return "/information";
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.updateMembers(member);
+    		memberService.updateMemberInfos(member);
+    		memberService.updateAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
     }
-
+    
+    @PostMapping("/accoint/deleteMember")
+    @ResponseBody
+    public String deleteMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.deleteMembers(member);
+    		memberService.deleteMemberInfos(member);
+    		memberService.deleteAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
+    @PostMapping("/account/duplicate")
+    public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
+                                 MemberDTO member) {
+        System.out.println(member.getMember_id());
+        int r = memberService.idCheck(member.getMember_id());
+        if (r > 0) return "duplicated";
+        return "not-duplicated";
+    }
 }

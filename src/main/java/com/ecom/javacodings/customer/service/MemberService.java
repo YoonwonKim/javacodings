@@ -83,13 +83,13 @@ public class MemberService implements CustomerService {
 	public String searchId(MemberDTO member) {
 		return memberDAO.searchId(member);
 	}
-	
-	@Override
-	public int updatePasswd(MemberDTO member) {
-		return memberDAO.updatePasswd(member);
-	}
-    
-    //회원가입                           
+
+    @Override
+    public int temporaryPassword(MemberDTO member) {
+        return memberDAO.temporaryPassword(member);
+    }
+
+    //회원가입
     @Override
     public int memberJoin(MemberDTO mdto) {
     	System.out.println(mdto);
@@ -102,13 +102,13 @@ public class MemberService implements CustomerService {
 	}
 
 	@Override
-	public int updateMember(MemberDTO member) {
-		return memberDAO.updateMember(member);
+	public int updateMembers(MemberDTO member) {
+		return memberDAO.updateMembers(member);
 	}
 
 	@Override
-	public int updateMemberInfo(MemberDTO member) {
-		return memberDAO.updateMemberInfo(member);
+	public int updateMemberInfos(MemberDTO member) {
+		return memberDAO.updateMemberInfos(member);
 	}
 
 	@Override
@@ -117,7 +117,17 @@ public class MemberService implements CustomerService {
 	}
 
 	@Override
-	public int deleteMember(MemberDTO member) {
-		return memberDAO.deleteMember(member);
+	public int deleteMembers(MemberDTO member) {
+		return memberDAO.deleteMembers(member);
+	}
+	
+	@Override
+	public int deleteMemberInfos(MemberDTO member) {
+		return memberDAO.deleteMemberInfos(member);
+	}
+	
+	@Override
+	public int deleteAddress(MemberDTO member) {
+		return memberDAO.deleteAddress(member);
 	}
 }
