@@ -12,11 +12,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("/admin/actions")
@@ -27,6 +32,9 @@ public class ManagerActionController {
 	
     @Autowired
     ManagerService managerService;
+
+    @Value("${spring.servlet.multipart.location}")
+    String filePath;
 
     // Region Get Data
     @GetMapping("/get_item")
@@ -54,7 +62,6 @@ public class ManagerActionController {
     // End Region Get Data
     // Region Set Data
     @PutMapping("/set_item")
-    @ResponseBody
     public String setItem(HttpServletRequest request, HttpServletResponse response,
                           ItemDTO item, @RequestParam(required=false, name="tags") List<String> tags)
             throws JsonProcessingException {
@@ -62,6 +69,32 @@ public class ManagerActionController {
         result += managerService.updateItem(item);
         result *= managerService.updateTags(item.getItem_id(), tags);
         if (result > 0) return "success";
+        return "error";
+    }
+    @PutMapping("/set_image")
+    public String setImage(HttpServletRequest request, HttpServletResponse response,
+                           ItemDTO item, @RequestParam("file") MultipartFile file) {
+        // 이미지 파일 이름을 20자리 랜덤 문자열로 지정
+        int leftLimit  =  48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 20;
+        Random random = new Random();
+        String randomImageName = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        // 파일 저장 및 데이터베이스 업데이트
+        String absoluteClassPath = new File("").getAbsolutePath() + "/src/main/webapp/";
+        File targetFile = new File(absoluteClassPath + filePath + "/" + randomImageName + ".png");
+        targetFile.getParentFile().mkdirs();
+        try {
+            file.transferTo(targetFile);
+            item.setImage(randomImageName);
+            int r = managerService.updateImageById(item);
+        }
+        catch (IOException e) { return "error, IOException"; };
         return "error";
     }
     // End Region Set Data

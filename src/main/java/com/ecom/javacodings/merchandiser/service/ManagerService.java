@@ -33,5 +33,7 @@ public interface ManagerService {
 
     //RQ - 013 - 05 주문 상태 요약
     List<OrderDTO> countOrderState();
+
+    int updateImageById(ItemDTO item);
     // End Region Orders
 }

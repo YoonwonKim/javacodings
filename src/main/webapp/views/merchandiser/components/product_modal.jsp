@@ -8,11 +8,11 @@
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.rtl.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/multi-select.min.js"></script>
-<script type="module" src="/resources/scripts/manage_products.js"></script>
+<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/file-uploader.min.js"></script>
 
 
 <cds-layer>
-<cds-modal id="item-modal" >
+<cds-modal id="item-modal">
 	<cds-modal-header>
 		<cds-modal-close-button></cds-modal-close-button>
 		<cds-modal-label value="item_id">Item ID</cds-modal-label>
@@ -20,8 +20,10 @@
 	</cds-modal-header>
 
 	<cds-modal-body class="cds--layout">
-		<cds-stack gap="32px" orientation="horizontal" use-custom-gap-value>
-			<img class="input">
+		<div id="modal-div">
+			<div>
+				<img class="input">
+			</div>
 			<cds-stack gap="16px" orientation="vertical" use-custom-gap-value>
 				<cds-text-input label="상품 이름" invalid-text="Error message"
 				                name="label"
@@ -52,8 +54,18 @@
 						</c:forEach>
 					</cds-multi-select>
 				</cds-stack>
+				<div id="uploader" role="button">
+					<p>이미지 업로드</p>
+					<p style="color: #525252; padding-bottom: 16px;">PNG 형식 만 업로드 가능합니다</p>
+					<div id="upload-label">
+						<label for="file" class="button">업로드</label>
+						<p id="uploaded-file"></p>
+					</div>
+					<input id="file" name="file" type="file"
+					       accept="image/png" hidden="true"/>
+				</div>
 			</cds-stack>
-		</cds-stack>
+		</div>
 	</cds-modal-body>
 
 	<cds-modal-footer>

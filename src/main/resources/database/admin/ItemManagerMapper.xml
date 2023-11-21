@@ -42,6 +42,11 @@
 		<if test="stock!=null">STOCK=#{stock} </if>
 		WHERE ITEM_ID=#{item_id}
 	</update>
+	<update id="updateImageById">
+		UPDATE ITEMS
+		SET IMAGE=#{image}
+		WHERE ITEM_ID=#{item_id}
+	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->
 	<delete id="deleteItem" parameterType="string">

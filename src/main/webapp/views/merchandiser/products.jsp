@@ -15,12 +15,14 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/pagination.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/file-uploader.min.js"></script>
 	<%-- Fragment CSS --%>
 	<link rel="stylesheet" href="/views/merchandiser/fragments/init.css" />
 	<link rel="stylesheet" href="/views/merchandiser/fragments/header.css" />
 	<link rel="stylesheet" href="/views/merchandiser/fragments/footer.css" />
 	<link rel="stylesheet" href="/resources/css/components/pagination.css" />
 	<script src="/resources/scripts/common/components/pagination.js"></script>
+	<script src="/resources/scripts/manage_products.js"></script>
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/header.jsp" %>
@@ -51,28 +53,31 @@
 		<cds-table-head>
 			<cds-table-header-row hide-checkbox>
 				<cds-table-header-cell></cds-table-header-cell>
-				<cds-table-header-cell>이미지</cds-table-header-cell>
 				<cds-table-header-cell>이름</cds-table-header-cell>
 				<cds-table-header-cell>설명</cds-table-header-cell>
-				<cds-table-header-cell>분류</cds-table-header-cell>
 				<cds-table-header-cell>가격</cds-table-header-cell>
 				<cds-table-header-cell>재고</cds-table-header-cell>
-				<cds-table-header-cell>주문량</cds-table-header-cell>
+				<cds-table-header-cell>분류</cds-table-header-cell>
+				<cds-table-header-cell>태그</cds-table-header-cell>
 				<cds-table-header-cell></cds-table-header-cell>
 			</cds-table-header-row>
 		</cds-table-head>
 		<cds-table-body>
 			<c:forEach var="item" items="${objectList}">
-				<cds-table-row>
+				<cds-table-row class="row" item-id="${item.item_id}">
 					<cds-table-cell><cds-checkbox></cds-checkbox></cds-table-cell>
-					<cds-table-cell>${item.image}</cds-table-cell>
 					<cds-table-cell>${item.label}</cds-table-cell>
 					<cds-table-cell>${item.desc}</cds-table-cell>
-					<cds-table-cell>${item.category}</cds-table-cell>
 					<cds-table-cell>${item.price}</cds-table-cell>
 					<cds-table-cell>${item.stock}</cds-table-cell>
-					<cds-table-cell>${item.orders}</cds-table-cell>
-					<cds-table-cell class="button-cell" item-id="${item.item_id}"><cds-button kind="ghost" id="item-modal-button">수정</cds-button></cds-table-cell>
+					<cds-table-cell>${item.category}</cds-table-cell>
+					<cds-table-cell class="item-tags"></cds-table-cell>
+					<cds-table-cell class="button-cell">
+						<cds-button kind="ghost" id="item-modal-button"
+						            onclick="modify(this)">
+							수정
+						</cds-button>
+					</cds-table-cell>
 				</cds-table-row>
 			</c:forEach>
 		</cds-table-body>

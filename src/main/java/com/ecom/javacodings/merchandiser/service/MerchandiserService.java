@@ -85,6 +85,11 @@ public class MerchandiserService implements ManagerService {
         return result;
     }
 
+    @Override
+    public int updateImageById(ItemDTO item) {
+        return itemDAO.updateImageById(item);
+    }
+
     // EDIT ===============================
     @Override
     public int updateOrderStates(OrderDTO orders) {
