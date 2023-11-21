@@ -8,6 +8,7 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
 	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"/>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/date-picker.min.js"></script>
 	<%-- Fragement CSS --%>
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
@@ -69,12 +70,13 @@
 		<tr>
 			<td >생년월일</td>
 			<td>
-				<select name="birth1" id="year">
-				</select>
-				<select name="birth2" id="month">
-				</select>
-				<select name="birth3" id="day">
-				</select>
+				<cds-date-picker>
+					<cds-date-picker-input
+						kind="from"
+						label-text="Date Picker label"
+						value="${member_infos.phone}"
+						size="lg">
+				</cds-date-picker-input>
 			</td>
 		</tr>
 
@@ -110,8 +112,7 @@
 				</select>
 
 				<input type="text" class="chk" value="010" readonly="readonly">-
-				<input type="text" name="phone1" class="chk">-
-				<input type="text" name="phone2" class="chk">
+				<input type="text" name="phone" class="chk" value="${member_infos.phone}">
 			</td>
 			<td>010을 제외한 나머지 번호를 입력해주십시오.</td>
 		</tr>
