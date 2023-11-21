@@ -19,7 +19,7 @@
 </head>
 <body>
 <c:import url="../fragments/header.jsp" />
-<form name="form1" method="post">
+<form name="info" method="post">
 	<table>
 		<thead>
 		<tr>
@@ -121,10 +121,10 @@
 		<tfoot>
 		<tr>
 			<td colspan="3">
-				<button type="button">회원 정보 수정</button>
+				<button type="button" onclick="updateMemberInfo">회원 정보 수정</button>
 			</td>
 			<td colspan="3">
-				<button type="button">회원 탈퇴</button>
+				<button type="button" onclick="deleteMember">회원 탈퇴</button>
 			</td>
 		</tr>
 		</tfoot>
