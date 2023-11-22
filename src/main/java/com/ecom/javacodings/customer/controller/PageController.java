@@ -68,6 +68,11 @@ public class PageController {
 	public String searchMember() {
 		return "customer/account/search";
 	}
+	
+	@RequestMapping("account/customercenter")
+	public String customercenter() {
+		return "customer/account/customercenter";
+	}
 	// End Region Account
 }
 
