@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.merchandiser.access.MemberManagerDAO">
+	<select id="listMember" parameterType="pageDTO" resultType="memberDTO">	
+		SELECT M.MEMBER_ID, M.REG_DATE, M.ROLE, 
+			MI.NAME, MI.EMAIL, MI.BIRTH, MI.PHONE 
+			FROM MEMBERS M
+			INNER JOIN MEMBER_INFOS MI
+				ON MI.MEMBER_ID = M.MEMBER_ID
+	</select>
+	<select id="countMembers" parameterType="int">
+		SELECT COUNT(MEMBER_ID)
+		FROM MEMBERS
+	</select>
+	<delete id="deleteMembers" parameterType="memberDTO">
+		DELETE FROM MEMBERS
+		WHERE MEMBER_ID = #{member_id}
+	</delete>
+	<delete id="deleteMember_Infos" parameterType="memberDTO">
+		DELETE FROM MEMBER_INFOS
+		WHERE MEMBER_ID = #{member_id}
+	</delete>
+	<delete id="deleteOrders" parameterType="orderDTO">
+		DELETE FROM ORDERS 
+		WHERE MEMBER_ID = #{member_id}
+	</delete>
+</mapper>
