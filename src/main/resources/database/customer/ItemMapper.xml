@@ -36,4 +36,11 @@
               ORDER BY I.REG_DATE)
         WHERE RN BETWEEN 1 AND 8
     </select>
+    <select id="getcategorylist" parameterType="map">
+    SELECT *
+        FROM (SELECT LABEL, CATEGORY,"DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+              FROM ITEMS
+              WHERE CATEGORY = #{category})
+    WHERE RN BETWEEN 1 AND 20
+    </select>
 </mapper>
