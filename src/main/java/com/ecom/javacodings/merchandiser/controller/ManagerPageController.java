@@ -68,4 +68,22 @@ public class ManagerPageController {
 
         return "/merchandiser/orders";
     }
+    
+    @RequestMapping("/members")
+	public String members(HttpServletRequest request, HttpServletResponse response, 
+							Model model) { 
+    	Map<String, Object> pageMap = pageConstructor.getPages(
+                (PageDTO pageSet) -> Collections.singletonList(managerService.listMember(pageSet)),
+                request.getParameter("page"),
+                request.getParameter("row"),
+                managerService.countMembers()
+        );
+        if((Integer) pageMap.get("currentPage") > (Integer) pageMap.get("totalPages")) {
+            return "redirect:/admin/members?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
+        }
+        
+        model.addAllAttributes(pageMap);
+        
+		return "merchandiser/members";
+	}
 }
