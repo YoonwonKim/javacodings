@@ -1,11 +1,13 @@
 package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import org.springframework.beans.factory.annotation.Value;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
+import com.ecom.javacodings.merchandiser.access.MemberManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class MerchandiserService implements ManagerService {
     @Autowired ItemManagerDAO itemDAO;
     @Autowired TagManagerDAO  tagDAO;
     @Autowired OrderManagerDAO  orderDAO;
+    @Autowired MemberManagerDAO memberDAO;
     // End Region Data access objects
     // Region 상품 관리
     // 기본 CRUD 메소드 =================================
@@ -147,4 +150,27 @@ public class MerchandiserService implements ManagerService {
         return orderDAO.updateOrderStates(orders); // 주문 상태 변경
     }
     // End Region Order
+    // Region MemberList
+    @Override
+    public List<MemberDTO> listMember(PageDTO page) {
+    	return memberDAO.listMember(page);
+    }
+    @Override
+    public int countMembers() { 
+    	return memberDAO.countMembers(); 
+    }
+    // End MemebrList
+	@Override
+	public int deleteMembers(MemberDTO member) {
+		return memberDAO.deleteMembers(member);
+	}
+	@Override
+	public int deleteMember_Infos(MemberDTO member) {
+		return memberDAO.deleteMember_Infos(member);
+	}
+	@Override
+	public int deleteOrders(MemberDTO member) {
+		return memberDAO.deleteOrders(member);
+	}
+    
 }

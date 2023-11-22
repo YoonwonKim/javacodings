@@ -18,7 +18,7 @@ public class MemberDTO {
     String role;
 
     // Region Metadata
-    Date reg_date;
+    String reg_date;
     String name;
     String email;
     String phone;

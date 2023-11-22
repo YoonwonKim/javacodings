@@ -1,6 +1,7 @@
 package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
@@ -40,4 +41,13 @@ public interface ManagerService {
     List<OrderDTO> countOrderState();
 
     // End Region Orders
+    // Region MemberList
+    List<MemberDTO> listMember(PageDTO page);
+    int countMembers();
+    int deleteMembers(MemberDTO member);	
+	int deleteMember_Infos(MemberDTO member);	
+	int deleteOrders(MemberDTO member);
+    // End MemberList
+
+    
 }

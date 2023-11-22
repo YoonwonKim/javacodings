@@ -1,6 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
@@ -8,6 +9,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import oracle.jdbc.proxy.annotation.Post;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +97,17 @@ public class ManagerActionController {
                               OrderDTO order) {
         int result = managerService.updateOrderStates(order);
     	return "success";
+    }
+    //deleteMember
+    @PostMapping("/deleteMember")
+    public String deleteMember(@RequestParam("member_id") String member_id) {
+    	MemberDTO member = new MemberDTO();
+    	member.setMember_id(member_id);
+    	
+    	managerService.deleteMembers(member);
+    	managerService.deleteMember_Infos(member);
+    	managerService.deleteOrders(member);
+    	
+    	return "redirect:/";
     }
 }
