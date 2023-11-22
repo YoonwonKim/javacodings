@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
@@ -27,4 +28,8 @@ public interface CustomerService {
     //회원가입
     int memberJoin(MemberDTO mdto);
 	int idCheck(String member_id);
+	
+	//카테고리
+	
+	Map<String, Object> getcategorylist(ItemDTO item, String category);
 }

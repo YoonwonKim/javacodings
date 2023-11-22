@@ -15,6 +15,7 @@ import java.util.Map;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
@@ -99,5 +100,20 @@ public class MemberService implements CustomerService {
 	@Override
 	public int idCheck(String member_id) {
 		return memberDAO.idCheck(member_id);
+	}
+	
+	//카테고리
+	@Override
+	public Map<String, Object> getcategorylist(ItemDTO item, String category) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> catepage = new HashMap<String, Object>();
+		
+		catepage.put("category", category);
+		
+		List<ItemDTO> categorylist = itemDAO.getcategorylist(catepage);
+		
+		result.put("categorylist", categorylist);
+		
+		return result;
 	}
 }
