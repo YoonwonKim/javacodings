@@ -34,9 +34,10 @@ function appendTiles(response) {
         let item = itemList[i];
         let item_tile = template.cloneNode(true);
 
+        item_tile.href = '/product/' + item['item_id'];
         item_tile.querySelector('#item-image').src = '/resources/images/' + item.image + '.png';
         item_tile.querySelector('#item-label').innerText = item.label;
-        item_tile.querySelector('#item-price').innerHTML = item.price;
+        item_tile.querySelector('#item-price').innerHTML = item.price.toLocaleString('en-US') + ' 원';
 
         grid.append(item_tile)
     }
@@ -44,7 +45,7 @@ function appendTiles(response) {
 
 $(document).ready(function() {
     grid = document.getElementById("grid")
-    template = document.getElementById('template');
+    template = document.getElementById('item');
     template.remove()
     appendTiles(getPage());
 

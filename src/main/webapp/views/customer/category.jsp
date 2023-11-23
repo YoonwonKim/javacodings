@@ -12,6 +12,7 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/text-input.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/form-group.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
 	<%-- Fragements --%>
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
@@ -19,7 +20,7 @@
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
 
 	<title>자바코딩즈</title>
-		<link rel="stylesheet" href="/resources/css/landing.css" />
+	<link rel="stylesheet" href="/resources/css/customer/category.css" />
 	
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/common/policies/validates.js"></script>
@@ -28,19 +29,20 @@
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
 <main>
-	<div id="md-list" class="list">
-		<div class="layer">
-		<h1>${category}</h1>
-			<div id="grid">
-				<a href="/product/${item.item_id}" class="card"
-				   id="template">
-					<img id="item-image">
-					<h1 id="item-label">${item.label}</h1>
-					<p id="item-price">${item.price}원</p>
-				</a>
-			</div>
-		</div>
+	<h1>${category}</h1>
+
+	<cds-layer>
+	<div id="grid">
+		<cds-clickable-tile href="/product/" id="item">
+		<cds-stack>
+			<img id="item-image">
+			<h1 id="item-label"></h1>
+			<p id="item-price"></p>
+			<p class="fake-link">구매하기</p>
+		</cds-stack>
+		</cds-clickable-tile>
 	</div>
+	</cds-layer>
 </main>
 <%@ include file="/views/customer/fragments/footer.jsp" %>
 </body>
