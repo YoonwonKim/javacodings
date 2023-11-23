@@ -68,7 +68,7 @@
 		<cds-table-body id="updateTotalPrice">
 			<c:forEach var="cartList" items="${cartLists.cartLists}">
 				<cds-table-row>
-					<cds-table-cell><cds-checkbox value="${cartList.order_id}"></cds-checkbox></cds-table-cell>
+					<cds-table-cell><cds-checkbox></cds-checkbox></cds-table-cell>
 					<cds-table-cell>${cartList.image}</cds-table-cell>
 					<cds-table-cell>${cartList.label}</cds-table-cell>
 					<cds-table-cell>
@@ -78,11 +78,11 @@
 					</cds-table-cell>
 					<cds-table-cell name="price">${cartList.price}</cds-table-cell>
 					<cds-table-cell name="totPrice">${cartList.price * cartList.quantity}</cds-table-cell>
-					<cds-table-cell="hidden" name="order_id" value="${cartList.order_id}"></cds-table-cell>
+					<cds-table-cell style="display:none;" name="order_id" data-order_id="${cartList.order_id}"></cds-table-cell>
 				</cds-table-row>
 			</c:forEach>
 			<cds id="total"></cds> <br>
-			<cds id="checkedTotal">선택 상품 가격 : </cds>
+			<cds id="checkedTotal"></cds>
 		</cds-table-body>
 		<cds-button class="updateCart">저장</cds-button>
 		<cds-button onclick="delete_item()">삭제</cds-button>
