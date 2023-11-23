@@ -1,5 +1,7 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.PageConstructor;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
@@ -7,8 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/actions")
 public class ActionController {
+
+    PageConstructor pageConstructor = new PageConstructor();
+
     @Autowired
     CustomerService memberService;
 
@@ -113,4 +117,24 @@ public class ActionController {
         if (r > 0) return "duplicated";
         return "not-duplicated";
     }
+
+
+    // Region Products
+    @PostMapping("/product/list/{category}")
+    public Object getProducts(HttpServletRequest request, HttpServletResponse response,
+                              @PathVariable("category") String category) {
+        Map<String, Object> resultMap = pageConstructor.getPages(
+                (PageDTO pageSet) -> Collections.singletonList(memberService.listProductsInCategory(pageSet, category.toUpperCase())),
+                request.getParameter("page"),
+                request.getParameter("row"),
+                memberService.countProductsInCategory(category.toUpperCase())
+        );
+
+        if((Integer) resultMap.get("currentPage") > (Integer) resultMap.get("totalPages")) {
+            return "outbound page";
+        }
+
+        return resultMap;
+    }
+    // End Region Products
 }

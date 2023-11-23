@@ -3,8 +3,8 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
@@ -31,5 +31,7 @@ public interface CustomerService {
 	
 	//카테고리
 	
-	Map<String, Object> getcategorylist(String category);
+    List<ItemDTO> listProductsInCategory(PageDTO page, String category);
+
+    int countProductsInCategory(String category);
 }

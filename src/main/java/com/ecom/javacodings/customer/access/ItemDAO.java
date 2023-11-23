@@ -3,6 +3,7 @@ package com.ecom.javacodings.customer.access;
 import java.util.List;
 import java.util.Map;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,5 +16,7 @@ public interface ItemDAO {
 	List<ItemDTO> listItemsByTagId(String tagId);
 	
 	//카테고리
-	List<ItemDTO> getcategorylist(String category);
+	List<ItemDTO> listProductsInCategory(Map<String, Object> properties);
+
+	int countProductsInCategory(String category);
 }

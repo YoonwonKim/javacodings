@@ -79,11 +79,7 @@ public class PageController {
 	@RequestMapping("/product/c/{category}")
 	public String getcategorylist(HttpServletRequest request, HttpServletResponse response,
 			                      Model model, @PathVariable("category") String category) {
-		Map<String, Object> result =  null;
-		result = memberService.getcategorylist(category.toUpperCase());
-
 		model.addAttribute("category", category.toUpperCase());
-		model.addAttribute("categorylist", result.get("categorylist"));
 		return "customer/category";
 	}
 	

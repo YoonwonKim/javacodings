@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.service;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
 import com.ecom.javacodings.customer.access.ItemDAO;
@@ -15,7 +16,6 @@ import java.util.Map;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
@@ -103,17 +103,17 @@ public class MemberService implements CustomerService {
 	}
 	
 	//카테고리
-	@Override
-	public Map<String, Object> getcategorylist(String category) {
-		Map<String, Object> result = new HashMap<String, Object>();
-		Map<String, Object> catepage = new HashMap<String, Object>();
-		
-		catepage.put("category", category);
-		
-		List<ItemDTO> categorylist = itemDAO.getcategorylist(category);
-		
-		result.put("categorylist", categorylist);
-		
-		return result;
-	}
+    @Override
+    public List<ItemDTO> listProductsInCategory(PageDTO page, String category) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("category", category);
+
+        return itemDAO.listProductsInCategory(params);
+    }
+
+    @Override
+    public int countProductsInCategory(String category) {
+        return itemDAO.countProductsInCategory(category);
+    }
 }

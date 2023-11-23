@@ -36,11 +36,19 @@
               ORDER BY I.REG_DATE)
         WHERE RN BETWEEN 1 AND 8
     </select>
-    <select id="getcategorylist" parameterType="string">
-    SELECT *
-        FROM (SELECT ITEM_ID, LABEL, CATEGORY,"DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-              FROM ITEMS
-              WHERE CATEGORY = #{category})
-    WHERE RN BETWEEN 1 AND 20
+    <select id="listProductsInCategory" parameterType="pageDTO">
+        SELECT *
+        FROM (
+            SELECT ITEM_ID, LABEL, CATEGORY, "DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+            FROM ITEMS
+            WHERE CATEGORY = #{category}
+        )
+        WHERE RN BETWEEN #{page.start} AND #{page.end}
+    </select>
+    <select id="countProductsInCategory" parameterType="string">
+        SELECT COUNT(ITEM_ID)
+        FROM ITEMS
+        WHERE CATEGORY = #{value}
+        GROUP BY CATEGORY
     </select>
 </mapper>

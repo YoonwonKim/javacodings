@@ -23,7 +23,7 @@
 	
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/common/policies/validates.js"></script>
-	<script src="/resources/scripts/customer/account.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/scripts/customer/category.js"></script>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
@@ -31,14 +31,13 @@
 	<div id="md-list" class="list">
 		<div class="layer">
 		<h1>${category}</h1>
-			<div class="grid">
-			<c:forEach var="item" items="${categorylist}">
-				<a href="/product/${item.item_id}" class="card">
-					<img src="/resources/images/${item.image}.png">
-					<h1>${item.label}</h1>
-					<p>${item.price}원</p>
+			<div id="grid">
+				<a href="/product/${item.item_id}" class="card"
+				   id="template">
+					<img id="item-image">
+					<h1 id="item-label">${item.label}</h1>
+					<p id="item-price">${item.price}원</p>
 				</a>
-			</c:forEach>
 			</div>
 		</div>
 	</div>
