@@ -3,12 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <meta charset="UTF-8">
 <head>
-	<title>자바 코딩즈 회원가입</title>
+	<title>자바 코딩즈 계정 관리</title>
 	<%-- Framework --%>
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
-	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"/>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<%-- Web Component --%>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/date-picker.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/breadcrumb.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
+	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
 	<%-- Fragement CSS --%>
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
@@ -17,119 +23,77 @@
 	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
+	<%-- Page Style --%>
+	<link rel="stylesheet" href="/resources/css/customer/account.css" />
 </head>
 <body>
 <c:import url="../fragments/header.jsp" />
-<form name="info" method="post">
-	<table>
-		<thead>
-		<tr>
-			<th colspan="3">마이페이지</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-			<td >아이디</td>
-			<td><input type="text" id="idchk" name="member_id"
-			           title="아이디" value="${member_info.member_id }" readonly="readonly">
-			</td>
-		</tr>
-		<tr>
-			<td >이름</td>
-			<td><input type="text" name="name" title="이름" value="${member_info.name}"></td>
-			<td>한글, 20자 이하</td>
-		</tr>
-		<tr>
-			<td >비밀번호</td>
-			<td><input type="password" name="password" id="check1" class="chk" title="패스워드"
-			           placeholder="비밀번호를 입력하시오.">
-				<font id="check" size="2" color="blue"></font>
-			</td>
-			<td>&nbsp;&nbsp;영문 대소문자 / 숫자 / 특수문자 중 2가지 이상 조합, 8자 ~ 16자</td>
-		</tr>
-		<tr>
-			<td >비밀번호 확인</td>
-			<td><input type="password" name="repassword" id="check2" class="chk" title="패스워드확인"
-			           placeholder="비밀번호를 입력하시오.">
-			</td>
-			<td>&nbsp;&nbsp;비밀번호를 확인하시오.</td>
-		</tr>
-		<tr>
-			<td >이메일</td>
-			<td>
-				<input type="text" name="email">@
-				<input type="email" id="email_address" list="user_email_address" name="email2" value="${member_info.email}">
-				<datalist id="user_email_address" >
-					<option value="naver.com"></option>
-					<option value="daum.net"></option>
-					<option value="email.com"></option>
-				</datalist>
+<main>
+<cds-layer>
 
-				<input type="hidden" id="totalemail" name="email" value="">
-		</tr>
-		<tr>
-			<td >생년월일</td>
-			<td>
-				<cds-date-picker>
-					<cds-date-picker-input
-						kind="from"
-						label-text="Date Picker label"
-						value="${member_infos.phone}"
-						size="lg">
-				</cds-date-picker-input>
-			</td>
-		</tr>
+	<cds-breadcrumb no-trailing-slash>
+		<cds-breadcrumb-item>
+			<cds-breadcrumb-link href="/">홈</cds-breadcrumb-link>
+		</cds-breadcrumb-item>
+		<cds-breadcrumb-item>계정 정보</cds-breadcrumb-item>
+	</cds-breadcrumb>
 
-		<tr>
-			<td class="col1">우편번호</td>
-			<td class="col2">
-				<input type="text" name="zipcode" id="sample6_postcode"
-				       readonly="readonly"
-				       class="chk"  title="우편번호"
-				       value="${address.zipcode}">
-				<button type="button" onclick="zipCheck()">우편번호찾기</button>
-			</td>
-			<td class="col3">우편번호를 검색하시오</td>
-		</tr>
-		<tr>
-			<td >주소</td>
-			<td><input type="text" name="address" class="chk" readonly="readonly"
-			           id="sample6_address" placeholder="주소" title="주소" value="${address.address}"><br>
-				<input type="text" name="address2" class="chk" id="sample6_detailAddress"
-				       placeholder="상세주소" title="상세주소" value="${address.address2}">
-				<input type="hidden" id="sample_extraAddress" placeholder="참고항목">
-			</td>
-			<td>주소를 입력하시오.</td>
-		</tr>
-		<tr>
-			<td >휴대전화</td>
-			<td>
-				<select name="telecom">
-					<option>LG</option>
-					<option>SKT</option>
-					<option>KT</option>
-					<option>알뜰폰</option>
-				</select>
+	<h1>계정 정보</h1>
 
-				<input type="text" class="chk" value="010" readonly="readonly">-
-				<input type="text" name="phone" class="chk" value="${member_infos.phone}">
-			</td>
-			<td>010을 제외한 나머지 번호를 입력해주십시오.</td>
-		</tr>
+	<cds-layer leve="1">
+	<div id="main-div">
+		<div id="navigation">
+			<a href="/account" current>계정 관리</a>
+			<a href="/account/profile" >프로필 관리</a>
+			<a href="/account/orders">주문 관리</a>
+			<a href="/account/location">배송지 관리</a>
+		</div>
 
+		<div id="content">
 
-		</tbody>
-		<tfoot>
-		<tr>
-			<td colspan="3">
-				<button type="button" onclick="updateMemberInfo">회원 정보 수정</button>
-			</td>
-			<td colspan="3">
-				<button type="button" onclick="deleteMember">회원 탈퇴</button>
-			</td>
-		</tr>
-		</tfoot>
-	</table>
-</form>
+			<cds-stack orientation="horizontal" gap="16px" use-custom-gap-value level="1">
+				<cds-clickable-tile id="summary" href="/account/profile">
+					<cds-stack gap="0" use-custom-gap-value>
+						<h1>${ssKey.name} 님</h1>
+						<p>회원 아이디: ${ssKey.member_id}</p>
+						<p>이메일 : ${ssKey.email}</p>
+						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,8)}</p>
+						<p class="link">프로필 수정</p>
+					</cds-stack>
+				</cds-clickable-tile>
+
+				<cds-clickable-tile href="/account/location">
+					<cds-stack gap="0" use-custom-gap-value>
+						<h1>배송지 관리</h1>
+						<p>${address.zipcode}</p>
+						<p>${address.address} ${address.address2}</p>
+						<p class="link">배송지 변경</p>
+					</cds-stack>
+				</cds-clickable-tile>
+			</cds-stack>
+
+			<cds-tile href="/account/orders" id="orders">
+			<cds-stack gap="0" use-custom-gap-value orientation="vertical">
+				<h1>주문 관리</h1>
+				<div id="order-summary">
+					<cds-clickable-tile inline href="/account/orders?paid">
+						<c:import url="/resources/css/icons/price.svg" />
+						<cds-stack>
+							<p>결제 완료</p>
+						</cds-stack>
+					</cds-clickable-tile>
+				</div>
+			</cds-stack>
+			</cds-tile>
+
+			<div class="right">
+				<cds-button kind="ghost">회원 탈퇴</cds-button>
+			</div>
+		</div>
+	</div>
+	</cds-layer>
+
+</cds-layer>
+</main>
 <c:import url="../fragments/footer.jsp" />
 </body>

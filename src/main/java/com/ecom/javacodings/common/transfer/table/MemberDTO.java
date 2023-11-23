@@ -18,11 +18,11 @@ public class MemberDTO {
     String role;
 
     // Region Metadata
-    Date reg_date;
+    String reg_date;
     String name;
     String email;
-    int phone;
-    Date birth;
+    String phone;
+    String birth;
     String zipcode;
     String address, address2;
     // End Region Metadata
