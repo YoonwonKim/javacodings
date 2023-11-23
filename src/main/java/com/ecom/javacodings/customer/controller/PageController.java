@@ -76,13 +76,6 @@ public class PageController {
     @GetMapping("/product/{item_id}")
     public String viewProduct(HttpServletRequest request, HttpServletResponse response, Model model,
 					   ItemDTO item) {
-		HttpSession session = request.getSession();
-		MemberDTO member = new MemberDTO();
-		member.setMember_id("asdf");
-		member.setPassword("LhGDDTI81");
-		session.setAttribute("ssKey", memberService.login(member));
-
-
     	item = memberService.listItemDt(item);
     	model.addAttribute("item", item);
 
