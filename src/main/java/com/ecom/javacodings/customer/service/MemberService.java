@@ -1,20 +1,16 @@
 package com.ecom.javacodings.customer.service;
 
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.customer.access.BannerDAO;
-import com.ecom.javacodings.customer.access.ItemDAO;
-import com.ecom.javacodings.customer.access.MemberDAO;
-import com.ecom.javacodings.customer.access.TagDAO;
-import com.ecom.javacodings.common.transfer.table.BannerDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.common.transfer.table.*;
+import com.ecom.javacodings.customer.access.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ecom.javacodings.common.transfer.PageDTO;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
@@ -100,4 +96,53 @@ public class MemberService implements CustomerService {
 	public int idCheck(String member_id) {
 		return memberDAO.idCheck(member_id);
 	}
+    
+    //아이템 리스트 받아오기
+    @Override
+    public Map<String, Object> getListItem(PageDTO pageDTO){
+    	
+    	int cnt = itemDAO.getItemCnt();
+    	Map<String, Object> reSet = new HashMap<String, Object>();
+    	List<ItemDTO> iList = itemDAO.getListItem();
+    	reSet.put("cnt", cnt);
+    	reSet.put("iList", iList);
+    	return reSet;
+    }
+    
+    @Override
+    public ItemDTO listItemDt(ItemDTO itemDTO){
+    	return itemDAO.listItemDt(itemDTO);
+    	
+    	
+    }
+
+    @Autowired
+    OrderDAO orderDAO;
+
+    @Override
+    public int setOrder(OrderDTO order) {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 30;
+        Random random = new Random();
+        String randomOrderID = "";
+        OrderDTO checkDuplicate = new OrderDTO();
+
+        do {
+            randomOrderID = random.ints(leftLimit,rightLimit + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(targetStringLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+            order.setOrder_id(randomOrderID);
+            checkDuplicate = getOrder(order);
+        } while ( checkDuplicate != null );
+
+        return orderDAO.setOrder(order);
+    }
+
+    @Override
+    public OrderDTO getOrder(OrderDTO order) {
+        return orderDAO.getOrder(order);
+    }
 }
