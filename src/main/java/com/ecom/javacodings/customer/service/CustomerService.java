@@ -3,6 +3,7 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
@@ -25,4 +26,6 @@ public interface CustomerService {
     Map<String, Object> getListItem(PageDTO pageDTO);
     ItemDTO listItemDt(ItemDTO item_id);
 
+    int setOrder(OrderDTO order);
+    OrderDTO getOrder(OrderDTO order);
 }

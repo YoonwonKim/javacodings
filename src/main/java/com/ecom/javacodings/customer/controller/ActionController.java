@@ -1,6 +1,7 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,5 +65,18 @@ public class ActionController {
         }
 
         return result;
+    }
+
+    @PostMapping("/order")
+    public String order(HttpServletRequest request, OrderDTO order) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+
+        if (ssKey == null) return "auth error";
+
+        order.setMember_id(ssKey.getMember_id());
+        memberService.setOrder(order);
+
+        return "success";
     }
 }
