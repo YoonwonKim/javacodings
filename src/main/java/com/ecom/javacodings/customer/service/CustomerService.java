@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
@@ -34,4 +35,10 @@ public interface CustomerService {
 
     int setOrder(OrderDTO order);
     OrderDTO getOrder(OrderDTO order);
+	
+	//카테고리
+	
+    List<ItemDTO> listProductsInCategory(PageDTO page, String category);
+
+    int countProductsInCategory(String category);
 }

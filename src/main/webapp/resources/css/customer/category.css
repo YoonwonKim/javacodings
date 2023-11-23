@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'Giants-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Giants-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+main h1 {
+    font-family: Giants-Bold, sans-serif;
+    font-size:   36px;
+    line-height: 40px;
+    font-weight:  700;
+    text-align: center;
+
+    padding: 32px 32px 64px;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 32px;
+    max-width: 1584px;
+    margin: 16px auto;
+}
+
+#item {
+    border-radius: 4px;
+
+    animation-name: appear;
+    animation-duration: 1s;
+}
+#item-label {
+    font-family: IBMPlexSansKR, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+    padding: 16px 0 0;
+}
+#item-image {
+    width:  320px;
+    height: 320px;
+}
+#item-price {
+    font-size: 14px;
+    line-height: 24px;
+}
+.fake-link {
+    padding-top: 16px;
+    font-size: 16px;
+    line-height: 24px;
+    color: #0f62fe;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

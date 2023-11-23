@@ -1,5 +1,14 @@
 package com.ecom.javacodings.customer.service;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.customer.access.BannerDAO;
+import com.ecom.javacodings.customer.access.ItemDAO;
+import com.ecom.javacodings.customer.access.MemberDAO;
+import com.ecom.javacodings.customer.access.TagDAO;
+import com.ecom.javacodings.common.transfer.table.BannerDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +105,21 @@ public class MemberService implements CustomerService {
 	public int idCheck(String member_id) {
 		return memberDAO.idCheck(member_id);
 	}
+	
+	//카테고리
+    @Override
+    public List<ItemDTO> listProductsInCategory(PageDTO page, String category) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("category", category);
+
+        return itemDAO.listProductsInCategory(params);
+    }
+
+    @Override
+    public int countProductsInCategory(String category) {
+        return itemDAO.countProductsInCategory(category);
+    }
     
     //아이템 리스트 받아오기
     @Override
