@@ -104,13 +104,13 @@ public class MemberService implements CustomerService {
 	
 	//카테고리
 	@Override
-	public Map<String, Object> getcategorylist(ItemDTO item, String category) {
+	public Map<String, Object> getcategorylist(String category) {
 		Map<String, Object> result = new HashMap<String, Object>();
 		Map<String, Object> catepage = new HashMap<String, Object>();
 		
 		catepage.put("category", category);
 		
-		List<ItemDTO> categorylist = itemDAO.getcategorylist(catepage);
+		List<ItemDTO> categorylist = itemDAO.getcategorylist(category);
 		
 		result.put("categorylist", categorylist);
 		

@@ -24,13 +24,13 @@
 </span>
 <div id="global-menu">
 	<ul>
-		<li><a href="/category?category=memory">기념상품</a></li>
-		<li><a href="/category?category=plan">기획전</a></li>
-		<li><a href="/category?category=uniform">유니폼</a></li>
-		<li><a href="/category?category=hats">모자</a></li>
-		<li><a href="/category?category=clothes">의류</a></li>
-		<li><a href="/category?category=cheer">응원용품</a></li>
-		<li><a href="/category?category=baseball">야구용품</a></li>
+		<li><a href="/product/c/memory">기념상품</a></li>
+		<li><a href="/product/c/plan">기획전</a></li>
+		<li><a href="/product/c/uniform">유니폼</a></li>
+		<li><a href="/product/c/hats">모자</a></li>
+		<li><a href="/product/c/clothes">의류</a></li>
+		<li><a href="/product/c/cheer">응원용품</a></li>
+		<li><a href="/product/c/baseball">야구용품</a></li>
 	</ul>
 </div>
 </header>

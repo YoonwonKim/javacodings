@@ -32,11 +32,11 @@
 		<div class="layer">
 		<h1>${category}</h1>
 			<div class="grid">
-			<c:forEach var="categorylist" items="${categorylist}">
-				<a href="#" class="card">
-					<img src="/resources/images/${categorylist.image}">
-					<h1>${categorylist.label}</h1>
-					<p>${categorylist.price}원</p>
+			<c:forEach var="item" items="${categorylist}">
+				<a href="/product/${item.item_id}" class="card">
+					<img src="/resources/images/${item.image}.png">
+					<h1>${item.label}</h1>
+					<p>${item.price}원</p>
 				</a>
 			</c:forEach>
 			</div>

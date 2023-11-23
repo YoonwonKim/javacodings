@@ -15,5 +15,5 @@ public interface ItemDAO {
 	List<ItemDTO> listItemsByTagId(String tagId);
 	
 	//카테고리
-	List<ItemDTO> getcategorylist(Map<String, Object> catepage);
+	List<ItemDTO> getcategorylist(String category);
 }

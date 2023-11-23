@@ -31,5 +31,5 @@ public interface CustomerService {
 	
 	//카테고리
 	
-	Map<String, Object> getcategorylist(ItemDTO item, String category);
+	Map<String, Object> getcategorylist(String category);
 }
