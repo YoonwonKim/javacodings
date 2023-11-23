@@ -3,11 +3,11 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
 @Service
 public interface CustomerService {
@@ -34,4 +34,10 @@ public interface CustomerService {
 	int deleteMembers(MemberDTO member);
 	int deleteMemberInfos(MemberDTO member);
 	int deleteAddress(MemberDTO member);
+
+    MemberDTO getMemberById(MemberDTO member);
+
+    MemberDTO getCurrentAddress(MemberDTO member);
+
+    List<OrderDTO> countMemberOrders(MemberDTO member);
 }

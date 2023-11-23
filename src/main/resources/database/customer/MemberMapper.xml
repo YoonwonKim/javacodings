@@ -12,6 +12,14 @@
 		FROM MEMBER_INFOS
 		WHERE NAME = #{name} AND EMAIL = #{email}
 	</select>
+
+	<select id="getMemberById" parameterType="memberDTO" resultType="memberDTO">
+		SELECT M.*, I.*
+		FROM MEMBERS M
+		JOIN MEMBER_INFOS I
+		ON M.MEMBER_ID = I.MEMBER_ID
+		WHERE M.MEMBER_ID = #{member_id}
+	</select>
 	
 	<update id="temporaryPassword" parameterType="memberDTO">
 	    UPDATE MEMBERS
@@ -76,4 +84,23 @@
 		DELETE FROM ADDRESS 
 		WHERE MEMBER_ID = #{member_id}		
 	</delete>
+
+	<select id="getCurrentAddress" parameterType="memberDTO">
+		SELECT ZIPCODE, ADDRESS, ADDRESS2
+		FROM ADDRESS
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
+	<select id="countMemberOrders" resultType="orderDTO" parameterType="memberDTO">
+		SELECT COUNT(STATE) AS QUANTITY, STATE
+		FROM (
+			SELECT MAX(S.STATE) AS STATE
+			FROM ORDERS O
+			JOIN ORDER_STATE S
+			ON O.ORDER_ID = S.ORDER_ID
+			WHERE O.MEMBER_ID = #{member_id}
+			GROUP BY O.ORDER_ID
+		)
+		GROUP BY STATE
+	</select>
 </mapper>
