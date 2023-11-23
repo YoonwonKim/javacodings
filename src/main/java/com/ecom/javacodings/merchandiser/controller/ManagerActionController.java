@@ -106,7 +106,7 @@ public class ManagerActionController {
     	
     	managerService.deleteMembers(member);
     	managerService.deleteMember_Infos(member);
-    	managerService.deleteOrders(member);
+    	managerService.deleteAddress(member);
     	
     	return "redirect:/";
     }

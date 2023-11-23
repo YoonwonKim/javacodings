@@ -21,8 +21,8 @@
 		DELETE FROM MEMBER_INFOS
 		WHERE MEMBER_ID = #{member_id}
 	</delete>
-	<delete id="deleteOrders" parameterType="orderDTO">
-		DELETE FROM ORDERS 
+	<delete id="deleteAddress" parameterType="memberDTO">
+		DELETE FROM ADDRESS 
 		WHERE MEMBER_ID = #{member_id}
-	</delete>
+	</delete>			
 </mapper>

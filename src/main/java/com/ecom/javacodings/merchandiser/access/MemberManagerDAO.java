@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 
 @Mapper
 public interface MemberManagerDAO {
@@ -17,5 +18,6 @@ public interface MemberManagerDAO {
 	
 	int deleteMember_Infos(MemberDTO member);
 	
-	int deleteOrders(MemberDTO member);
+	int deleteAddress(MemberDTO member);
+
 }

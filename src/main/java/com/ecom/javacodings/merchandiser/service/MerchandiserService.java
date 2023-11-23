@@ -169,8 +169,8 @@ public class MerchandiserService implements ManagerService {
 		return memberDAO.deleteMember_Infos(member);
 	}
 	@Override
-	public int deleteOrders(MemberDTO member) {
-		return memberDAO.deleteOrders(member);
+	public int deleteAddress(MemberDTO member) {
+		return memberDAO.deleteAddress(member);
 	}
     
 }

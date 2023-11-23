@@ -46,7 +46,7 @@ public interface ManagerService {
     int countMembers();
     int deleteMembers(MemberDTO member);	
 	int deleteMember_Infos(MemberDTO member);	
-	int deleteOrders(MemberDTO member);
+	int deleteAddress(MemberDTO member);
     // End MemberList
 
     
