@@ -127,6 +127,13 @@ public class MerchandiserService implements ManagerService {
     @Override
     public List<OrderDTO> listOrder(PageDTO page) {
         return orderDAO.listOrder(page);
+    public OrderDTO orderUpdate(OrderDTO order) {
+        return orderDAO.orderUpdate(order); // 주문 상태 변경
+    }
+    
+    @Override
+    public List<OrderDTO> orderList(PageDTO page) {
+    	return orderDAO.orderList(page);
     }
     @Override
     public int countOrders() { return orderDAO.countOrders(); }
@@ -139,6 +146,8 @@ public class MerchandiserService implements ManagerService {
             order.setOrder_id(states[order.getState()]);
         }
         return result;
+    public int orderStateCnt(OrderDTO order) {
+    	return orderDAO.orderStateCnt(order);
     }
 
     // EDIT ===============================

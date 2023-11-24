@@ -40,4 +40,8 @@ public interface ManagerService {
     List<OrderDTO> countOrderState();
 
     // End Region Orders
+
+    OrderDTO orderUpdate(OrderDTO order);
+    List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
+    // End Region Item
 }

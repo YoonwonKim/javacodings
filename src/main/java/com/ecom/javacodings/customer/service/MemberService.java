@@ -1,6 +1,7 @@
 package com.ecom.javacodings.customer.service;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.*;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
@@ -138,6 +139,53 @@ public class MemberService implements CustomerService {
 	}
 	
 	//카테고리
+
+	@Override
+	public int updateMembers(MemberDTO member) {
+		return memberDAO.updateMembers(member);
+	}
+
+	@Override
+	public int updateMemberInfos(MemberDTO member) {
+		return memberDAO.updateMemberInfos(member);
+	}
+
+	@Override
+	public int updateAddress(MemberDTO member) {
+		return memberDAO.updateAddress(member);
+	}
+
+	@Override
+	public int deleteMembers(MemberDTO member) {
+		return memberDAO.deleteMembers(member);
+	}
+	
+	@Override
+	public int deleteMemberInfos(MemberDTO member) {
+		return memberDAO.deleteMemberInfos(member);
+	}
+	
+	@Override
+	public int deleteAddress(MemberDTO member) {
+		return memberDAO.deleteAddress(member);
+	}
+
+    @Override
+    public MemberDTO getMemberById(MemberDTO member) {
+        return memberDAO.getMemberById(member);
+    }
+
+    @Override
+    public MemberDTO getCurrentAddress(MemberDTO member) {
+        return memberDAO.getCurrentAddress(member);
+    }
+
+    @Override
+    public List<OrderDTO> countMemberOrders(MemberDTO member) {
+        List<OrderDTO> result = memberDAO.countMemberOrders(member);
+        return result;
+    }
+    //장바구니 시작
     @Override
     public List<ItemDTO> listProductsInCategory(PageDTO page, String category) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -200,4 +248,14 @@ public class MemberService implements CustomerService {
     public OrderDTO getOrder(OrderDTO order) {
         return orderDAO.getOrder(order);
     }
+	@Override
+	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrdersByCart(orderList);
+	}
+	
+	@Override
+	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrderStateByCart(orderList);
+	}
+	//장바구니 끝
 }

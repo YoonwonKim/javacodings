@@ -12,6 +12,14 @@
 		FROM MEMBER_INFOS
 		WHERE NAME = #{name} AND EMAIL = #{email}
 	</select>
+
+	<select id="getMemberById" parameterType="memberDTO" resultType="memberDTO">
+		SELECT M.*, I.*
+		FROM MEMBERS M
+		JOIN MEMBER_INFOS I
+		ON M.MEMBER_ID = I.MEMBER_ID
+		WHERE M.MEMBER_ID = #{member_id}
+	</select>
 	
 	<update id="temporaryPassword" parameterType="memberDTO">
 	    UPDATE MEMBERS
@@ -26,15 +34,73 @@
       
     
     <insert id="memberJoin" parameterType="memberDTO" useGeneratedKeys="false">
-    INSERT ALL
-        INTO MEMBERS (MEMBER_ID, PASSWORD)
-        VALUES (#{member_id}, #{password})
-        
-        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
-        VALUES (#{member_id}, #{name}, #{email}, #{phone}, TO_DATE(#{birth}, 'YYYY-MM-DD'))
-        
-        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
-        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
-    SELECT 1 FROM DUAL
+    	INSERT ALL
+	        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
+	        VALUES (#{member_id}, #{password}, 'custom')
+	        
+	        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
+	        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
+	        
+	        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
+	        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
+	     	SELECT 1 FROM DUAL
     </insert>
+    
+	<update id="updateMember" parameterType="memberDTO">
+		UPDATE MEMBER 
+		SET PASSWORD = #{password}, 
+		    ROLE = 'custom' 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+
+	<update id="updateMemberInfos" parameterType="memberDTO">
+		UPDATE MEMBER_INFOS 
+		SET NAME = #{name}, 
+			EMAIL = #{email}, 
+			PHONE = #{phone}, 
+			BIRTH = #{birth} 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+
+	<update id="updateAddress" parameterType="memberDTO">
+		UPDATE ADDRESS 
+		SET ZIPCODE = #{zipcode}, 
+			ADDRESS = #{address}, 
+			ADDRESS2 = #{address2} 
+		WHERE MEMBER_ID = #{member_id};
+	</update>
+	
+	<delete id="deleteMembers" parameterType="memberDTO">
+		DELETE FROM MEMBERS
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
+
+	<delete id="deleteMember_Infos" parameterType="memberDTO">
+		DELETE FROM MEMBER_INFOS
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
+	
+	<delete id="deleteAddress" parameterType="memberDTO">
+		DELETE FROM ADDRESS 
+		WHERE MEMBER_ID = #{member_id}		
+	</delete>
+
+	<select id="getCurrentAddress" parameterType="memberDTO">
+		SELECT ZIPCODE, ADDRESS, ADDRESS2
+		FROM ADDRESS
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
+	<select id="countMemberOrders" resultType="orderDTO" parameterType="memberDTO">
+		SELECT COUNT(STATE) AS QUANTITY, STATE
+		FROM (
+			SELECT MAX(S.STATE) AS STATE
+			FROM ORDERS O
+			JOIN ORDER_STATE S
+			ON O.ORDER_ID = S.ORDER_ID
+			WHERE O.MEMBER_ID = #{member_id}
+			GROUP BY O.ORDER_ID
+		)
+		GROUP BY STATE
+	</select>
 </mapper>

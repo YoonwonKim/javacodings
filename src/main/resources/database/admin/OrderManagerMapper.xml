@@ -2,13 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.OrderManagerDAO">
-	
-<!-- 	<insert id="orderUpdate" parameterType="OrderDTO">
-		<foreach collection="orders" item="order" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
-			INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE) 
-			VALUES (#{order_id}, #{item_id}, #{member_id}, #{quantity}, #{state}+1, sysdate) 
-		</foreach>
-	</insert> -->
+   <insert id="orderUpdate" parameterType="OrderDTO">
 
 	<select id="listOrder" parameterType="pageDTO" resultType="OrderDTO">
 		SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE
@@ -26,6 +20,18 @@
 					  ON O.ORDER_ID = S.ORDER_ID
 			 )
 		WHERE RN BETWEEN #{start} AND #{end}
+	INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE)
+	SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity}, #{state}+1,
+			sysdate
+	FROM ORDERS
+	ORDER BY REG_DATE DESC
+# 	WHERE ORDER_ID = {order_id}
+   </insert>
+   <select id="orderList" parameterType="pageDTO">
+	 SELECT * 
+	 FROM (SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+      FROM ORDERS)
+        WHERE RN BETWEEN #{start} AND #{end} 
 	</select>
 	
 	
@@ -62,4 +68,11 @@
 		SELECT COUNT(ORDER_ID)
 		FROM ORDERS
 	</select>
+<!--	<select id="orderStateCnt" resultType="int">-->
+<!--      SELECT COUNT(state)-->
+<!--        FROM ORDERS-->
+<!--        ORDER BY REG_DATE DESC -->
+<!--        GROUP BY order_id-->
+<!--        WHERE state = #{value}-->
+<!--    </select>-->
 </mapper>

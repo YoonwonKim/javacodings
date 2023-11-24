@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
 <html>
 <head>
 	<!-- Javascript API and Frameworks -->
@@ -17,9 +19,11 @@
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/resources/css/account.css" />
 
 	<title>자바코딩즈</title>
-	<link rel="stylesheet" href="/resources/css/account.css" />
+	<link rel="stylesheet" href="/resources/css/landing.css" />
+	<script src="/resources/scripts/landing.js"></script>
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/common/policies/validates.js"></script>
 	<script src="/resources/scripts/customer/account.js"></script>

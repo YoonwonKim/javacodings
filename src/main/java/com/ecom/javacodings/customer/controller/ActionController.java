@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -44,21 +49,18 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        String result = "failed";
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        MemberDTO loginInfo) {
+        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO ssKey = new MemberDTO();
+        MemberDTO loginAttempt = memberService.login(loginInfo);
 
-        ssKey.setMember_id(request.getParameter("member_id"));
-        ssKey.setPassword(request.getParameter("password"));
-        ssKey = memberService.login(ssKey);
-        if (ssKey == null) {
+        if (loginAttempt == null) {
             result = "failed";
         } else {
             result = "success";
-            session.setAttribute("ssKey", ssKey);
+            session.setAttribute("ssKey", loginAttempt);
         }
-
         return result;
     }
 
@@ -156,7 +158,46 @@ public class ActionController {
         return randomPassword;
     }
     
-
+    @PostMapping("/account/updateMember")
+    @ResponseBody
+    public String updateMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.updateMembers(member);
+    		memberService.updateMemberInfos(member);
+    		memberService.updateAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
+    @PostMapping("/accoint/deleteMember")
+    @ResponseBody
+    public String deleteMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.deleteMembers(member);
+    		memberService.deleteMemberInfos(member);
+    		memberService.deleteAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
                                  MemberDTO member) {

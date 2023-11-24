@@ -4,6 +4,7 @@ import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import javax.swing.plaf.multi.MultiPanelUI;
 
@@ -22,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,9 +63,6 @@ public class PageController {
     	return "index";
     }
 
-
-
-	// Region Account
 	@RequestMapping("/account/login")
 	public String login(HttpServletRequest request, HttpServletResponse response,
 						Model model) {
@@ -71,13 +73,34 @@ public class PageController {
 	}
 
 	@RequestMapping("/account/register")
-    public String join() {
+    public String join(HttpServletRequest request, HttpServletResponse response,
+    					MemberDTO mdto, Model model) {
     	return "customer/account/register";
     }
 	
 	@RequestMapping("account/search")
 	public String searchMember() {
 		return "customer/account/search";
+
+	@RequestMapping("/account")
+	public String information(HttpServletRequest request, HttpServletResponse response, 
+						MemberDTO member, Model model) {
+		HttpSession session = request.getSession();
+		member = (MemberDTO) session.getAttribute("ssKey");
+
+		if (member == null) return "redirect:/account/login";
+		else {
+			member = memberService.getMemberById(member);
+			model.addAttribute("ssKey", member);
+
+			MemberDTO address = memberService.getCurrentAddress(member);
+			model.addAttribute("address", address);
+
+			List<OrderDTO> countMemberOrders = memberService.countMemberOrders(member);
+			model.addAttribute("countMemberOrders", countMemberOrders);
+		}
+
+		return "customer/account/information";
 	}
 
 	@RequestMapping("/product/c/{category}")
@@ -88,6 +111,19 @@ public class PageController {
 	}
 	
 	// End Region Account
+
+	@GetMapping("/account/profile")
+	public String profile() {
+		return "customer/account/profile";
+	}
+	@GetMapping("/account/location")
+	public String location() {
+		return "customer/account/location";
+	}
+	@GetMapping("/account/orders")
+	public String orders() {
+		return "customer/account/orders";
+	}
     
     @GetMapping("/product/{item_id}")
     public String viewProduct(HttpServletRequest request, HttpServletResponse response, Model model,

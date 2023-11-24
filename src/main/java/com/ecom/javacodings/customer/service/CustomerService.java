@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
@@ -48,4 +49,23 @@ public interface CustomerService {
     List<ItemDTO> listProductsInCategory(PageDTO page, String category);
 
     int countProductsInCategory(String category);
+	//회원정보(수정, 탈퇴)
+	int updateMembers(MemberDTO member);
+	int updateMemberInfos(MemberDTO member);
+	int updateAddress(MemberDTO member);
+	int deleteMembers(MemberDTO member);
+	int deleteMemberInfos(MemberDTO member);
+	int deleteAddress(MemberDTO member);
+
+    MemberDTO getMemberById(MemberDTO member);
+
+    MemberDTO getCurrentAddress(MemberDTO member);
+
+    List<OrderDTO> countMemberOrders(MemberDTO member);
+    //장바구니 시작
+    Map<String, Object> cartLists(PageDTO page);
+    List<OrderDTO> updateCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
+    //장바구니 끝
 }

@@ -18,7 +18,7 @@
         FROM ITEMS_TAGS
         WHERE ITEM_ID LIKE #{value}
     </delete>
-    <insert id="insertTags" parameterType="map" useGeneratedKeys="false">
+    <insert id="insertTags" parameterType="map">
         <foreach collection="tags" item="tag" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
             INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES (#{item_id}, #{tag})
         </foreach>
