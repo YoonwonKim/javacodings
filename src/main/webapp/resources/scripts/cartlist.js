@@ -3,10 +3,8 @@ $(document).ready(function(){
 		var cartData = [];
 		$("cds-table-row").each(function(){
 			var row = $(this);
-			var quantity = row.find('cds-text-input[name="quantity"]').val();
-			var order_id = row.find('cds-table-cell[name="order_id"]').data('order_id');
-			console.log(quantity);
-			console.log(order_id);
+			var order_id = row.find('input[name=order_id]').val();
+			var quantity = row.find('input[name=quantity]').val();
 			let data = { "order_id": order_id, "quantity": quantity };
 			cartData.push(data);
 		});
@@ -19,6 +17,7 @@ $(document).ready(function(){
 				console.log(response);
 				alert('장바구니가 성공적으로 업데이트되었습니다.');
 			}
+		
 		});
 	});
     updateTotalPrice();
