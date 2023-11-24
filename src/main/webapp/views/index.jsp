@@ -45,7 +45,7 @@
 			<div class="grid">
 			<c:forEach var="item" items="${list.itemList}">
 				<a href="#" class="card">
-					<img src="/resources/images/${item.image}">
+					<img src="/resources/images/${item.image}.png">
 					<h1>${item.label}</h1>
 					<p>${item.price}원</p>
 				</a>

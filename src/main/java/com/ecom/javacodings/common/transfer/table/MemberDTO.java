@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Scope( value= WebApplicationContext.SCOPE_SESSION,
@@ -18,11 +18,11 @@ public class MemberDTO {
     String role;
 
     // Region Metadata
-    Date reg_date;
+    String reg_date;
     String name;
     String email;
-    int phone;
-    Date birth;
+    String phone;
+    String birth;
     String zipcode;
     String address, address2;
     // End Region Metadata

@@ -12,6 +12,11 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/actions")
@@ -31,23 +38,20 @@ public class ActionController {
      * 비동기 통신 후 문자열 형태로 결과를 반환한다.
      * 성공 시 세션에 값을 저장한다.
      */
-    @PostMapping("/login")
+    @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        String result = "failed";
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        MemberDTO loginInfo) {
+        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO ssKey = new MemberDTO();
+        MemberDTO loginAttempt = memberService.login(loginInfo);
 
-        ssKey.setMember_id(request.getParameter("member_id"));
-        ssKey.setPassword(request.getParameter("password"));
-        ssKey = memberService.login(ssKey);
-        if (ssKey == null) {
-            result = "failed, ssKey value is null;";
+        if (loginAttempt == null) {
+            result = "failed";
         } else {
             result = "success";
-            session.setAttribute("ssKey", ssKey);
+            session.setAttribute("ssKey", loginAttempt);
         }
-
         return result;
     }
 
@@ -55,14 +59,14 @@ public class ActionController {
      * RQ-002 로그아웃 기능 구현
      * 비동기 통신 후 결과를 반환하고 세션을 초기화한다.
      */
-    @PostMapping("/logout")
+    @PostMapping("/account/logout")
     @ResponseBody
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         String result = "failed";
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 
-        if (ssKey != null) {
+        if (ssKey == null) {
             result = "success, but already logged out";
         } else {
             session.removeAttribute("ssKey");
@@ -108,4 +112,89 @@ public class ActionController {
 	}
 	//장바구니 끝
 
+
+    @PutMapping("/account/register")
+    public String register(HttpServletRequest request, HttpServletResponse response,
+                           MemberDTO member) {
+        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
+        memberService.memberJoin(member);
+
+        response.setContentType("application/json");
+        return "success";
+    }
+
+    
+    @GetMapping("/account/search/id")
+    public String searchMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member) {
+    	String member_id = memberService.searchId(member);
+        if (member_id == null) return "error";
+    	return member_id;
+    }
+
+    @PostMapping("/account/search/password")
+    public String updatePasswd(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+        Random random = new Random();
+        int leftLimit  = 48;  // numeral '0'
+        int rightLimit = 122; // letter  'z'
+        int targetStringLength = 9;
+        String randomPassword = random.ints(leftLimit, rightLimit+1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        member.setPassword(randomPassword);
+        memberService.temporaryPassword(member);
+        return randomPassword;
+    }
+    
+    @PostMapping("/account/updateMember")
+    @ResponseBody
+    public String updateMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.updateMembers(member);
+    		memberService.updateMemberInfos(member);
+    		memberService.updateAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
+    @PostMapping("/accoint/deleteMember")
+    @ResponseBody
+    public String deleteMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.deleteMembers(member);
+    		memberService.deleteMemberInfos(member);
+    		memberService.deleteAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
+    @PostMapping("/account/duplicate")
+    public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
+                                 MemberDTO member) {
+        System.out.println(member.getMember_id());
+        int r = memberService.idCheck(member.getMember_id());
+        if (r > 0) return "duplicated";
+        return "not-duplicated";
+    }
 }

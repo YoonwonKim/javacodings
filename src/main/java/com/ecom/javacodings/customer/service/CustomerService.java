@@ -3,6 +3,7 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
@@ -22,6 +23,25 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
+    String searchId(MemberDTO member);
+    int temporaryPassword(MemberDTO member);
+
+    //회원가입
+    int memberJoin(MemberDTO mdto);
+	int idCheck(String member_id);
+	//회원정보(수정, 탈퇴)
+	int updateMembers(MemberDTO member);
+	int updateMemberInfos(MemberDTO member);
+	int updateAddress(MemberDTO member);
+	int deleteMembers(MemberDTO member);
+	int deleteMemberInfos(MemberDTO member);
+	int deleteAddress(MemberDTO member);
+
+    MemberDTO getMemberById(MemberDTO member);
+
+    MemberDTO getCurrentAddress(MemberDTO member);
+
+    List<OrderDTO> countMemberOrders(MemberDTO member);
     //장바구니 시작
     Map<String, Object> cartLists(PageDTO page);
     List<OrderDTO> updateCart(List<OrderDTO> orderList);

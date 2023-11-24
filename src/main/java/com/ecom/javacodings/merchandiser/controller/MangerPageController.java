@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin/")
+@RequestMapping("/admin")
 public class MangerPageController {
     // Region Services
     @Autowired ManagerService managerService;
