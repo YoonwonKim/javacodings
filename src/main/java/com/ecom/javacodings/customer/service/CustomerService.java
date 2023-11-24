@@ -8,9 +8,10 @@ import com.ecom.javacodings.common.transfer.PageDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
 @Service
 public interface CustomerService {
@@ -24,6 +25,12 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
+    //장바구니 시작
+    Map<String, Object> cartLists(PageDTO page);
+    List<OrderDTO> updateCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
+    List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
+    //장바구니 끝
     String searchId(MemberDTO member);
     int temporaryPassword(MemberDTO member);
 

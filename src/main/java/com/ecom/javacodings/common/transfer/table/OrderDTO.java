@@ -14,5 +14,7 @@ public class OrderDTO {
 	private int quantity;
 	private int state;
 	private Date reg_date;
-	
+	private String image;
+	private String label;
+	private int price;
 }

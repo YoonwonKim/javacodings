@@ -2,10 +2,13 @@ package com.ecom.javacodings.customer.service;
 
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
 import com.ecom.javacodings.customer.access.ItemDAO;
 import com.ecom.javacodings.customer.access.MemberDAO;
+import com.ecom.javacodings.customer.access.OrderDAO;
 import com.ecom.javacodings.customer.access.TagDAO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.BannerDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 
@@ -52,6 +55,9 @@ public class MemberService implements CustomerService {
 
     @Autowired
     TagDAO tagDAO;
+    
+    @Autowired
+    OrderDAO orderDAO;
 
     @Override
     public Map<String, Object> listNew(int number) {
@@ -83,6 +89,31 @@ public class MemberService implements CustomerService {
         return result;
     }
     // End Region ItemService
+    //장바구니 시작
+    @Override
+    public Map<String, Object> cartLists(PageDTO page) {    	
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	List<OrderDTO> cartList = orderDAO.cartLists(page);
+    	
+    	params.put("cartLists", cartList);
+    	return params;    	
+    }
+
+	@Override
+	public List<OrderDTO> updateCart(List<OrderDTO> orderList) {
+		return orderDAO.updateCart(orderList);
+	}
+
+	@Override
+	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrdersByCart(orderList);
+	}
+	
+	@Override
+	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
+		return orderDAO.deleteOrderStateByCart(orderList);
+	}
+	//장바구니 끝
 
 	@Override
 	public String searchId(MemberDTO member) {

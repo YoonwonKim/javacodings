@@ -4,6 +4,7 @@ import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -95,6 +96,27 @@ public class PageController {
     	model.addAttribute("item", item);
 
     	return "customer/product-view";
+    }
+    
+    @RequestMapping("/cartLists")
+    public String orderItems(HttpServletRequest request, HttpServletResponse response,
+    					Model model, PageDTO page) {
+        page.setStart(0);
+        page.setRow(15);
+        page.setEnd(page.getRow() + page.getStart());
+        
+        
+        model.addAttribute("cartLists", memberService.cartLists(page));
+    	
+    	return "customer/cartlist";
+    }
+    
+    @RequestMapping("/order")
+    public String order(HttpServletRequest request, HttpServletResponse response,
+    		Model model, PageDTO page) {
+    	
+    	
+    	return "index";
     }
 }
 

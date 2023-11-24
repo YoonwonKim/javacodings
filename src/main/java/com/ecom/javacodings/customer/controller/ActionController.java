@@ -1,5 +1,6 @@
 package com.ecom.javacodings.customer.controller;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.PageConstructor;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.MemberDTO;
@@ -10,11 +11,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +82,43 @@ public class ActionController {
 
         return result;
     }
+    //장바구니 시작
+	@PostMapping("/updateCart")
+	@ResponseBody
+	public String updateCart(HttpServletRequest request, HttpServletResponse response,
+								@RequestBody List<OrderDTO> orderList) {
+		
+		HttpSession session = request.getSession();		
+		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
+		
+		System.out.println("---------"+orderList);
+		
+		if(order != null) {
+			memberService.updateCart(orderList);
+		}
+		
+		
+		return "redirect:/";
+	}
+	
+	@PostMapping("/deleteCart")
+	public String deleteCart(HttpServletRequest request, HttpServletResponse response,
+								@RequestBody List<OrderDTO> orderList) {
+		HttpSession session = request.getSession();
+		OrderDTO order = (OrderDTO) session.getAttribute("cartLists");
+		
+		System.out.println("---------"+orderList);
+		
+		if(order != null) {
+			memberService.deleteOrderStateByCart(orderList);
+			memberService.deleteOrdersByCart(orderList);
+			return "success";
+		}
+		
+		return "failed";
+	}
+	//장바구니 끝
+
 
     @PutMapping("/account/register")
     public String register(HttpServletRequest request, HttpServletResponse response,
