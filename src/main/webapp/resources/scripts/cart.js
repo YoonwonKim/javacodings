@@ -44,6 +44,7 @@ function deleteOne(item_id) {
 		data: {item_id, quantity},
 		success: function(){
 			alert('삭제완료');
+			location.reload();
 		}
 	});
 }
@@ -67,6 +68,7 @@ function deleteSelected() {
 		data: orderList,
 		success: function() {
 			console.log('Delete Selected');
+			location.reload();
 		}
 	});
 }
@@ -80,6 +82,7 @@ function orderOne(item_id) {
 		method: 'POST',
 		success: function() {
 			console.log('Order');
+			location.reload();
 		}
 	});
 }
@@ -102,6 +105,7 @@ function orderSelected() {
 		data: orderList,
 		success: function() {
 			console.log('Order Selected');
+			location.reload();
 		}
 	});
 }
@@ -168,6 +172,7 @@ $(".updateCart").on('click', function(){
 		success: function(response){
 			console.log(response);
 			alert('장바구니가 성공적으로 업데이트되었습니다.');
+			location.reload();
 		}
 
 	});
