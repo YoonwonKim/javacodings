@@ -1,0 +1,116 @@
+main {
+    margin: 0 auto;
+    /*padding-top: 16px;*/
+
+    display: grid;
+    grid-template-columns: repeat(16, 80px);
+    grid-gap: 16px;
+    justify-content: center;
+}
+
+#table {
+    grid-column: 1 / 13;
+}
+
+/* Region Item **********************************************/
+
+#item img {
+    width: 176px;
+}
+#item h1 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight:  300;
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+#item p {
+    font-size: 16px;
+    line-height: 24px;
+    flex: 1;
+}
+
+#item-div {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
+
+#item-desc {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+#item #cart-price {
+    font-size: 20px;
+    line-height: 24px;
+    text-align: right;
+    font-weight:  300;
+
+    padding-bottom: 16px;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 8px;
+    padding-left: 16px;
+}
+
+/* End Region Item **********************************************/
+/* Region Order    **********************************************/
+
+#order {
+    grid-column: 13 / 17;
+    margin-top: 20px;
+    font-family: "IBM Plex Sans KR", sans-serif;
+}
+#order h1 {
+    font-size:   20px;
+    line-height: 24px;
+    padding-left: 8px;
+}
+
+#order-summary {
+    padding: 16px 8px;
+    border: 1px solid #e0e0e0;
+    border-left:  none;
+    border-right: none;
+
+    font-size: 16px;
+    line-height: 24px;
+}
+#order-summary table {
+    width: 100%;
+}
+#order-summary tr {
+    height: 24px;
+}
+
+#order-summary .value {
+    font-size: 20px;
+    line-height: 24px;
+    text-align: right;
+    font-weight:  300;
+}
+
+#order-summary-total {
+    padding: 0 8px;
+
+    font-size: 16px;
+    line-height: 24px;
+}
+#order-summary-total .value {
+    font-size:   28px;
+    line-height: 32px;
+    font-weight:  300;
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+#order-summary-discount .value {
+    color: #198038;
+}
+
+/* End Region Order */

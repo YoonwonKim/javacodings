@@ -3,6 +3,8 @@
 @font-face {
     font-family: 'IBMPlexSansKR';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,
@@ -18,7 +20,7 @@ table{border-collapse:collapse;border-spacing:0}
 
 html {
     background-color: #f4f4f4;
-    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-family: 'IBMPlexSansKR', sans-serif;
 }
 
 body {
@@ -32,17 +34,3 @@ main {
 }
 
 a, a:visited, a:hover, a:focus { text-decoration: none; color: #525252; }
-
-
-/** Region Typography **/
-.sans  { font-family: 'IBM Plex Sans KR', 'Helvetica Neue', Arial, sans-serif; }
-.serif { font-family: 'IBM Plex Serif', 'Georgia', Times, serif; }
-.mono  { font-family: 'IBM Plex Mono', 'Menlo', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', Courier, monospace; }
-h1 { font-size: 54px; line-height: 64px; font-weight: 300; }
-h2 { font-size: 42px; line-height: 50px; font-weight: 300; }
-h3 { font-size: 32px; line-height: 40px; font-weight: 400; }
-h4 { font-size: 28px; line-height: 36px; font-weight: 400; }
-h5 { font-size: 20px; line-height: 28px; font-weight: 400; }
-h6 { font-size: 16px; line-height: 22px; font-weight: 600; }
-h7 { font-size: 14px; line-height: 18px; font-weight: 600; }
-/** End Region Typography **/

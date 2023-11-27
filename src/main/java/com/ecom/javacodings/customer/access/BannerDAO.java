@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ecom.javacodings.common.transfer.table.BannerDTO;
+import com.ecom.javacodings.common.transfer.BannerDTO;
 
 @Mapper
 public interface BannerDAO {

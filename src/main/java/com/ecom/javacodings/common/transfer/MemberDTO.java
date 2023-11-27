@@ -1,4 +1,4 @@
-package com.ecom.javacodings.common.transfer.table;
+package com.ecom.javacodings.common.transfer;
 
 import lombok.Data;
 import lombok.ToString;
@@ -18,7 +18,7 @@ public class MemberDTO {
     String role;
 
     // Region Metadata
-    Date reg_date;
+    String reg_date;
     String name;
     String email;
     String phone;

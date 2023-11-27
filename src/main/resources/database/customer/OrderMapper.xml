@@ -58,11 +58,6 @@
 	</delete>	
 	<!-- 장바구니 끝 -->
 	
-</mapper>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.OrderDAO">
-
     <insert id="setOrder" parameterType="orderDTO" useGeneratedKeys="false">
         INSERT ALL
             INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY)
@@ -78,6 +73,13 @@
         FROM ORDERS
         WHERE ORDER_ID = #{order_id}
     </select>
+
+	<insert id="insertOrder" parameterType="orderDTO" useGeneratedKeys="false">
+		INSERT ALL
+			INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY) VALUES (#{order_id}, #{item_id}, #{member_id}, #{quantity})
+			INTO ORDER_STATE(ORDER_ID, STATE) VALUES (#{order_id}, 1)
+		SELECT 1 FROM DUAL
+	</insert>
 
 </mapper>
  

@@ -1,138 +1,50 @@
-let modal;
 let id;
 $().ready(() => {
-    modal = document.getElementById('item-modal');
-
-    let tags = $('cds-table-cell.item-tags');
-    for(let item of tags) {
-        let id = item.parentNode.getAttribute('item-id');
-        let result;
-        $.ajax({
-            url: "/admin/actions/item/tags?item_id=" + id,
-            async: false,
-            type: 'GET',
-            success: function(data) { result = JSON.parse(data); }
-        });
-        item.innerHTML = result;
+    let buttons = $('cds-table-cell.button-cell');
+    for(let item of buttons) {
+        let button = item
+            .querySelector('#item-modal-button')
+            .shadowRoot
+            .querySelector('button');
+        button.onclick = () => {
+            id = item.getAttribute('item-id');
+            // setModal(id, 'data');
+            setItemInfo(id);
+        }
     }
 
-    document.getElementById('file').addEventListener('change', function() {
-        let file = $("input#file").val();
-        file = file.split('\\');
-        document.getElementById('uploaded-file').innerHTML = file[file.length - 1];
+    $('cds-modal-footer-button#update').on('click', () => {
+        updateItem();
     });
 })
 
-function modify(item) {
-    id = item.closest('.row').getAttribute('item-id');
-    let result;
-    $.ajax({
-        url: "/admin/actions/item/read?item_id=" + id,
-        async: false,
-        type: 'GET',
-        success: function(data) { result = JSON.parse(data); }
-    });
-    $.ajax({
-        url: "/admin/actions/item/tags?item_id=" + id,
-        async: false,
-        type: 'GET',
-        success: function(data) { result.tags = JSON.parse(data); }
-    });
-
-    setModal(result, 'update');
-    document.getElementById('item-modal').open = true;
-}
-
-function create() {
-    let result;
-    result = {
-        item_id: '',
-        label: '이름을 입력해주세요',
-        desc:  '상품 설명을 입력해주세요',
-        image: 'z7aJr1675ceCG44iioek',
-        price: '10000',
-        stock: '100',
-        category: '',
-        tags: []
-    };
-
-    setModal(result, 'create');
-    document.getElementById('item-modal').open = true;
-}
-
-// Region Modal constructor
-function setModal(data, mode) {
-    let inputs = modal.querySelectorAll('.input');
-    for(let i = 0; i < inputs.length; i++) {
-        let input = inputs[i];
-        let value = input.getAttribute('name') ?? 'image';
-
-        if (value === 'image')
-            input.setAttribute('src', '/resources/images/'+data[value]+'.png');
-            input.setAttribute('onerror', 'this.onerror=null;' +
-                'this.src=\'/resources/images/z7aJr1675ceCG44iioek.png\'');
-        input.setAttribute('value', data[value]);
-    }
-
-    let value;
-    if (mode == 'create') value = 'createItem()';
-    else value = 'updateItem()';
-    modal.querySelector('#submit')
-        .setAttribute('onclick', value);
-}
-// End Region Modal constructor
 // Region Modal executor
-function createItem() {
-    let inputs = modal.querySelectorAll('.input');
-    let file = document.getElementById('file');
-    let form = new FormData();
-
-    try {
-        form.append('file', file.files[0]);
-        for(let i = 0; i < inputs.length; i++) {
-            let input = inputs[i];
-            let value = input.getAttribute('name') ?? 'image';
-            form.append(value, input.getAttribute('value'));
-        }
-    }
-    catch (e) {}
-
-    console.log("Attempting to create");
-    //! Send data to Database.
-    $.ajax({
-        url: "/admin/actions/item/create",
-        type: 'POST',
-        data: form,
-        async: false,
-        processData: false,
-        contentType: false,
-        success: function() {
-            document.getElementById('item-modal').open = false;
-            location.reload();
-        },
-    });
-}
 function updateItem() {
-    let inputs = modal.querySelectorAll('.input');
-    let result = {};
-    result.item_id = id;
-    for(let i = 0; i < inputs.length; i++) {
-        let input = inputs[i];
-        let value = input.getAttribute('name') ?? 'image';
-        result[value] = input.getAttribute('value');
-    }
+    let modal = document.getElementById('item-modal');
+
+    //? Get Item metadata
+    let item = {};
+    item.label = modal.querySelector('[name="label"]').getAttribute('value');
+    item.desc  = modal.querySelector('[name="desc" ]').getAttribute('value');
+    item.price = modal.querySelector('[name="price"]').getAttribute('value');
+    item.stock = modal.querySelector('[name="stock"]').getAttribute('value');
+
+    //? Get Tags
+    let tags = {};
+    tags.tags = modal
+        .querySelector('cds-multi-select')
+        .getAttribute('value');
 
     //! Send data to Database.
     $.ajax({
-        url: "/admin/actions/item/update",
-        type: 'PUT',
-        data: result,
-        async: false,
-        success: function() {
+        url: "/admin/actions/set_item?item_id=" + id,
+        type: 'POST',
+        dataType: 'json',
+        data: Object.assign(item, tags),
+        success: function(data) {
             // Modal close
             document.getElementById('item-modal').open = false;
-            location.reload();
-        },
+        }
     });
 
     try {
@@ -154,3 +66,80 @@ function updateItem() {
     catch (e) {};
 }
 // End Region Modal executor
+// Region Modal constructor
+function setModal(id, data) {
+    let modal = document.getElementById('item-modal');
+
+    let inputs = modal.querySelectorAll('.input');
+    for(let input of inputs) {
+        let category = input.getAttribute('category');
+        let name = input.getAttribute('name');
+        console.log(category, name);
+        input.setAttribute('value', data[category][name]);
+    }
+    // let image = modal.querySelector('img');
+    // let url = '/resources/images/';
+    // let category = image.getAttribute('category');
+    // image.setAttribute('src', url+data[category]['image']);
+
+    // modal.querySelector('cds-number-input[name="price"]')
+    //     .setAttribute('value', item.price);
+    // modal.querySelector('cds-number-input[name="stock"]')
+    //     .setAttribute('value', item.stock);
+    // modal.querySelector('cds-text-input[name="label"]')
+    //     .setAttribute('value', item.label);
+    // modal.querySelector('cds-text-input[name="desc"]')
+    //     .setAttribute('value', item.desc);
+    //
+    // modal.querySelector('cds-select-item[value="'+item.category+'"]')
+    //     .setAttribute('selected', true);
+
+    // modal.querySelector('cds-multi-select')
+    //     .setAttribute('value', tags);
+
+    // Open Modal
+    document.getElementById('item-modal').open = true;
+}
+
+
+function setItemInfo(id) {
+    //? Get Item metadata from Database.
+    let item;
+    $.ajax({
+        url: "/admin/actions/get_item?item_id=" + id,
+        async: false,
+        type: 'POST',
+        success: function(data) { item = JSON.parse(data); }
+    });
+
+    let tags;
+    $.ajax({
+        url: "/admin/actions/get_tags?item_id=" + id,
+        async: false,
+        type: 'POST',
+        success: function(data) { tags = JSON.parse(data); }
+    });
+
+    setModal(id, {item, tags});
+}
+function setMosdal() {
+    let modal = document.getElementById('item-modal');
+
+    modal.querySelector('cds-modal-heading').innerHTML = 'THIS';
+    modal.querySelector('cds-modal-body-content').innerHTML = item.desc;
+
+    modal.querySelector('cds-number-input[name="price"]')
+        .setAttribute('value', item.price);
+    modal.querySelector('cds-number-input[name="stock"]')
+        .setAttribute('value', item.stock);
+    modal.querySelector('cds-text-input[name="label"]')
+        .setAttribute('value', item.label);
+    modal.querySelector('cds-text-input[name="desc"]')
+        .setAttribute('value', item.desc);
+    let image = modal.querySelector('img')
+    let url = '/resources/images/';
+    image.setAttribute('src', url+item.image);
+
+    document.getElementById('item-modal').open = true;
+}
+// End Region Modal constructor

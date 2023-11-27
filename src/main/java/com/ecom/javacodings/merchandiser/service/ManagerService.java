@@ -1,9 +1,9 @@
 package com.ecom.javacodings.merchandiser.service;
 
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.TagDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -40,4 +40,8 @@ public interface ManagerService {
     List<OrderDTO> countOrderState();
 
     // End Region Orders
+
+    OrderDTO orderUpdate(OrderDTO order);
+    List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
+    // End Region Item
 }

@@ -1,6 +1,6 @@
 package com.ecom.javacodings.merchandiser.access;
 
-import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.common.transfer.TagDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

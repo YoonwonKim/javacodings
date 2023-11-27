@@ -18,7 +18,7 @@
 				<li><a href="/account">마이페이지</a></li>
 			</c:otherwise>
 		</c:choose>
-		<li><a href="#">장바구니</a></li>
+		<li><a href="/cart">장바구니</a></li>
 		<li><a href="#">고객센터</a></li>
 	</ul>
 </span>

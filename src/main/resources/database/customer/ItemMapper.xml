@@ -11,19 +11,10 @@
     </select>
 
     <select id="listBest" parameterType="int">
-        SELECT O.ITEM_ID, I.LABEL, I."DESC", I.PRICE, I.IMAGE
-        FROM (
-                 SELECT O.ITEM_ID, ROW_NUMBER() OVER (ORDER BY SUM(QUANTITY)) AS RN
-                 FROM (
-                          SELECT S.ORDER_ID, MAX(S.STATE) AS STATE
-                          FROM ORDER_STATE S
-                          WHERE S.STATE &gt; 1 AND S.STATE &lt; 6
-                          GROUP BY S.ORDER_ID
-                      ) S
-                      JOIN ORDERS O ON S.ORDER_ID = O.ORDER_ID
-                 GROUP BY O.ITEM_ID
-             ) O
-        JOIN ITEMS I ON O.ITEM_ID = I.ITEM_ID
+        SELECT *
+        FROM (SELECT LABEL, "DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY ORDERS DESC) AS RN
+              FROM ITEMS
+              ORDER BY ORDERS DESC)
         WHERE RN BETWEEN 1 AND #{value}
     </select>
 

@@ -1,0 +1,91 @@
+main {
+    width: 1280px;
+    padding:  16px;
+    margin: 0 auto;
+}
+main h1 {
+    font-size:   42px;
+    line-height: 50px;
+    font-weight:  300;
+
+    padding-top:     8px;
+    padding-bottom: 40px;
+}
+#main-div {
+    display: flex;
+    gap: 16px;
+}
+
+#navigation {
+    display: flex;
+    flex-direction: column;
+}
+#navigation a {
+    width: 240px;
+    line-height:  24px;
+    padding-left:  8px;
+    margin-top:    8px;
+    margin-bottom: 8px;
+    color: #161616;
+}
+#navigation a[current] {
+    font-weight: bold;
+    border-left: 3px solid #0f62fe;
+}
+
+#content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#content h1 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+
+    padding-left: 16px;
+    padding-bottom: 16px;
+}
+#content p {
+    padding-left: 16px;
+    line-height:  24px;
+}
+#summary {
+    background-color: #fff;
+}
+#summary p {
+    padding-left: 16px;
+    line-height:  24px;
+}
+p.link {
+    padding: 16px;
+    line-height:  24px;
+    color: #0f62fe;
+}
+
+div.right {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#order-summary {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: space-between;
+}
+svg {
+    width:  56px;
+    height: 56px;
+    margin-right: 16px;
+}
+#orders .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#orders p {
+    padding: 8px 0 0;
+}

@@ -1,20 +1,20 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.PageConstructor;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Collections;
+
 import java.util.Map;
 import java.util.Random;
 
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.Model;
@@ -44,21 +43,18 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response) {
-        String result = "failed";
+    public String login(HttpServletRequest request, HttpServletResponse response,
+                        MemberDTO loginInfo) {
+        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO ssKey = new MemberDTO();
+        MemberDTO loginAttempt = memberService.login(loginInfo);
 
-        ssKey.setMember_id(request.getParameter("member_id"));
-        ssKey.setPassword(request.getParameter("password"));
-        ssKey = memberService.login(ssKey);
-        if (ssKey == null) {
+        if (loginAttempt == null) {
             result = "failed";
         } else {
             result = "success";
-            session.setAttribute("ssKey", ssKey);
+            session.setAttribute("ssKey", loginAttempt);
         }
-
         return result;
     }
 
@@ -156,7 +152,46 @@ public class ActionController {
         return randomPassword;
     }
     
-
+    @PostMapping("/account/updateMember")
+    @ResponseBody
+    public String updateMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.updateMembers(member);
+    		memberService.updateMemberInfos(member);
+    		memberService.updateAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
+    @PostMapping("/accoint/deleteMember")
+    @ResponseBody
+    public String deleteMember(HttpServletRequest request, HttpServletResponse response,
+    							MemberDTO member, Model model) {
+    	String result = "";
+    	HttpSession session = request.getSession();
+    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	if(memebrInfo == null) {
+    		result = "failed";
+    	} else {
+    		memberService.deleteMembers(member);
+    		memberService.deleteMemberInfos(member);
+    		memberService.deleteAddress(member);
+    		result = "success";
+    	}
+    	session.setAttribute("ssKey", memebrInfo);
+    	return result;
+    }
+    
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
                                  MemberDTO member) {
@@ -185,17 +220,58 @@ public class ActionController {
         return resultMap;
     }
     // End Region Products
+    // Region Cart
 
-    @PostMapping("/order")
-    public String order(HttpServletRequest request, OrderDTO order) {
+    @PostMapping("/cart/order/{item_id}")
+    public String orderCart(HttpServletRequest request, CartDTO item) {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-
         if (ssKey == null) return "auth error";
 
-        order.setMember_id(ssKey.getMember_id());
-        memberService.setOrder(order);
-
+        item.setMember_id(ssKey.getMember_id());
+        memberService.order(item);
         return "success";
     }
+    @PostMapping("/cart/order")
+    public String orderSelectedCart(HttpServletRequest request,
+                                @RequestParam("orderList") List<CartDTO> cartList) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        int result = 1;
+        for(CartDTO cart : cartList) {
+            cart.setMember_id(ssKey.getMember_id());
+            result *= memberService.order(cart);
+        }
+        return "success";
+    }
+
+
+    @PostMapping("/cart/delete/{item_id}")
+    public String deleteCart(HttpServletRequest request, CartDTO item) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        item.setMember_id(ssKey.getMember_id());
+        memberService.deleteCart(item);
+        return "success";
+    }
+    @PostMapping("/cart/delete")
+    public String deleteSelectedCart(HttpServletRequest request,
+                        @RequestParam("orderList") List<CartDTO> cartList) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        int result = 1;
+        for(CartDTO cart : cartList) {
+            cart.setMember_id(ssKey.getMember_id());
+            result *= memberService.deleteCart(cart);
+        }
+        return "success";
+    }
+
+        // End Region Cart
 }
