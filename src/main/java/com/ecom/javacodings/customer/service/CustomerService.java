@@ -63,5 +63,7 @@ public interface CustomerService {
     int order(CartDTO item);
     int deleteCart(CartDTO item);
 
+    int cart(CartDTO cart);
+
     // End Region Cart
 }
