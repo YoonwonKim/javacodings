@@ -1,6 +1,4 @@
-package com.ecom.javacodings.common;
-
-import com.ecom.javacodings.common.transfer.PageDTO;
+package com.ecom.javacodings.common.page;
 
 import java.util.List;
 

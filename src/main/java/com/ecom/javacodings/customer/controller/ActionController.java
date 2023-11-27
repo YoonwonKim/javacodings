@@ -1,25 +1,20 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.PageConstructor;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Collections;
-import java.util.ArrayList;
-import java.util.List;
 
-import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -27,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.ui.Model;
@@ -226,17 +220,58 @@ public class ActionController {
         return resultMap;
     }
     // End Region Products
+    // Region Cart
 
-    @PostMapping("/order")
-    public String order(HttpServletRequest request, OrderDTO order) {
+    @PostMapping("/cart/order/{item_id}")
+    public String orderCart(HttpServletRequest request, CartDTO item) {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-
         if (ssKey == null) return "auth error";
 
-        order.setMember_id(ssKey.getMember_id());
-        memberService.setOrder(order);
-
+        item.setMember_id(ssKey.getMember_id());
+        memberService.order(item);
         return "success";
     }
+    @PostMapping("/cart/order")
+    public String orderSelectedCart(HttpServletRequest request,
+                                @RequestParam("orderList") List<CartDTO> cartList) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        int result = 1;
+        for(CartDTO cart : cartList) {
+            cart.setMember_id(ssKey.getMember_id());
+            result *= memberService.order(cart);
+        }
+        return "success";
+    }
+
+
+    @PostMapping("/cart/delete/{item_id}")
+    public String deleteCart(HttpServletRequest request, CartDTO item) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        item.setMember_id(ssKey.getMember_id());
+        memberService.deleteCart(item);
+        return "success";
+    }
+    @PostMapping("/cart/delete")
+    public String deleteSelectedCart(HttpServletRequest request,
+                        @RequestParam("orderList") List<CartDTO> cartList) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        int result = 1;
+        for(CartDTO cart : cartList) {
+            cart.setMember_id(ssKey.getMember_id());
+            result *= memberService.deleteCart(cart);
+        }
+        return "success";
+    }
+
+        // End Region Cart
 }

@@ -1,8 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.PageConstructor;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,15 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class MangerPageController {
-    // Region Services
-    @Autowired ManagerService managerService;
-    // End Region Services
     // Region Pages
     @RequestMapping()
     public String landing(HttpServletRequest request, HttpServletResponse response,
@@ -28,8 +23,6 @@ public class MangerPageController {
         return "/merchandiser/index";
     }
 
-	private static final Logger logger = LoggerFactory.getLogger(ManagerPageController.class);
-	
     @Autowired
     ManagerService  managerService;
     PageConstructor pageConstructor = new PageConstructor();
@@ -50,10 +43,7 @@ public class MangerPageController {
 
         model.addAllAttributes(pageMap);
         //? Set Page
-        PageDTO page = new PageDTO();
-        page.setStart(0);
-        page.setRow(15);
-        page.setEnd(page.getRow() + page.getStart());
+        PageDTO page = new PageDTO(1, 15);
 
         //? Return data
         model.addAttribute("itemList", managerService.listItem(page));
@@ -79,7 +69,6 @@ public class MangerPageController {
 
         model.addAllAttributes(pageMap);
         model.addAttribute("stateList", managerService.countOrderState());
-
         return "/merchandiser/orders";
     }
     // End Region Pages

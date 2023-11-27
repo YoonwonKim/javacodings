@@ -3,16 +3,9 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.*;
+import com.ecom.javacodings.common.page.PageDTO;
 import org.springframework.stereotype.Service;
-
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.BannerDTO;
 
 @Service
 public interface CustomerService {
@@ -26,11 +19,6 @@ public interface CustomerService {
     Map<String, Object> listBest(int number);
     Map<String, Object> listItemsByTagId(String tagId);
     // End Region 제품 및  이벤트 정보 관리 메소드
-    //장바구니 시작
-    Map<String, Object> cartLists(PageDTO page);
-    List<OrderDTO> updateCart(List<OrderDTO> orderList);
-    List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
-    List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
     //장바구니 끝
     String searchId(MemberDTO member);
     int temporaryPassword(MemberDTO member);
@@ -45,7 +33,8 @@ public interface CustomerService {
     OrderDTO getOrder(OrderDTO order);
 	
 	//카테고리
-	
+
+
     List<ItemDTO> listProductsInCategory(PageDTO page, String category);
 
     int countProductsInCategory(String category);
@@ -62,10 +51,17 @@ public interface CustomerService {
     MemberDTO getCurrentAddress(MemberDTO member);
 
     List<OrderDTO> countMemberOrders(MemberDTO member);
-    //장바구니 시작
-    Map<String, Object> cartLists(PageDTO page);
+    // Region Cart
+
+    List<CartDTO> listCart(PageDTO pageSet, String member_id);
+    int countCart(String member_id);
+
     List<OrderDTO> updateCart(List<OrderDTO> orderList);
     List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
     List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
-    //장바구니 끝
+
+    int order(CartDTO item);
+    int deleteCart(CartDTO item);
+
+    // End Region Cart
 }

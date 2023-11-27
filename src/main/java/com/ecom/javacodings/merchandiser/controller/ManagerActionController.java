@@ -1,7 +1,8 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.table.TagDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.transfer.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequestMapping("/admin/actions")

@@ -1,10 +1,10 @@
 package com.ecom.javacodings.merchandiser.service;
 
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.page.PageDTO;
 import org.springframework.beans.factory.annotation.Value;
-import com.ecom.javacodings.common.transfer.table.TagDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
@@ -126,7 +126,8 @@ public class MerchandiserService implements ManagerService {
     // READ ===============================
     @Override
     public List<OrderDTO> listOrder(PageDTO page) {
-        return orderDAO.listOrder(page);
+        return orderDAO.orderList(page);
+    }
     public OrderDTO orderUpdate(OrderDTO order) {
         return orderDAO.orderUpdate(order); // 주문 상태 변경
     }
@@ -146,6 +147,7 @@ public class MerchandiserService implements ManagerService {
             order.setOrder_id(states[order.getState()]);
         }
         return result;
+    }
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
     }

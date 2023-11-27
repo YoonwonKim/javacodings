@@ -1,11 +1,10 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,13 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
-import javax.swing.plaf.multi.MultiPanelUI;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +21,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/")
 public class PageController {
+	// Region Variables
 	
     @Autowired
     CustomerService memberService;
+
+	PageConstructor pageConstructor = new PageConstructor();
+
+	// End Region Variables
 
     @RequestMapping()
     public String main(HttpServletRequest request, HttpServletResponse response,
@@ -81,6 +76,7 @@ public class PageController {
 	@RequestMapping("account/search")
 	public String searchMember() {
 		return "customer/account/search";
+	}
 
 	@RequestMapping("/account")
 	public String information(HttpServletRequest request, HttpServletResponse response, 
@@ -110,21 +106,17 @@ public class PageController {
 		return "customer/category";
 	}
 	
-	// End Region Account
+	// Region Account
 
-	@GetMapping("/account/profile")
-	public String profile() {
-		return "customer/account/profile";
+	@GetMapping("/account/{tab}")
+	public String accountTab(@PathVariable("tab") String tab) {
+		String result = "customer/account/" + tab;
+		return result;
 	}
-	@GetMapping("/account/location")
-	public String location() {
-		return "customer/account/location";
-	}
-	@GetMapping("/account/orders")
-	public String orders() {
-		return "customer/account/orders";
-	}
-    
+
+	// End Region Account
+	// Region Product
+
     @GetMapping("/product/{item_id}")
     public String viewProduct(HttpServletRequest request, HttpServletResponse response, Model model,
 					   ItemDTO item) {
@@ -133,26 +125,45 @@ public class PageController {
 
     	return "customer/product-view";
     }
-    
-    @RequestMapping("/cartLists")
-    public String orderItems(HttpServletRequest request, HttpServletResponse response,
-    					Model model, PageDTO page) {
-        page.setStart(0);
-        page.setRow(15);
-        page.setEnd(page.getRow() + page.getStart());
-        
-        
-        model.addAttribute("cartLists", memberService.cartLists(page));
-    	
-    	return "customer/cartlist";
-    }
-    
+
+	// End Region Product
+	// Region Cart
+
+	@RequestMapping("/cart")
+	public String orderItems(HttpServletRequest request, HttpServletResponse response,
+							 Model model) {
+		// 로그인 정보 확인
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey == null) return "redirect:/account/login";
+		String member = ssKey.getMember_id();
+
+		// 페이지 구성
+		Map<String, Object> pageMap = pageConstructor.getPages(
+				(PageDTO pageSet) -> Collections.singletonList(memberService.listCart(pageSet, member)),
+				request.getParameter("page"),
+				request.getParameter("row"),
+				memberService.countCart(member)
+		);
+
+		if((Integer) pageMap.get("currentPage") > (Integer) pageMap.get("totalPages")) {
+			return "redirect:/cart?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
+		}
+
+		// 페이지 반환
+		model.addAllAttributes(pageMap);
+		return "customer/cart";
+	}
+
+	// End Region Cart
+	// Region Order
+
     @RequestMapping("/order")
     public String order(HttpServletRequest request, HttpServletResponse response,
     		Model model, PageDTO page) {
-    	
-    	
     	return "index";
     }
+
+	// End Region Order
 }
 

@@ -1,29 +1,16 @@
 package com.ecom.javacodings.customer.service;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.*;
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.customer.access.BannerDAO;
-import com.ecom.javacodings.customer.access.ItemDAO;
-import com.ecom.javacodings.customer.access.MemberDAO;
-import com.ecom.javacodings.customer.access.OrderDAO;
-import com.ecom.javacodings.customer.access.TagDAO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.BannerDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.*;
+import com.ecom.javacodings.customer.access.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.ecom.javacodings.common.transfer.table.*;
-import com.ecom.javacodings.customer.access.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ecom.javacodings.common.transfer.PageDTO;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
@@ -91,15 +78,6 @@ public class MemberService implements CustomerService {
     }
     // End Region ItemService
     //장바구니 시작
-    @Override
-    public Map<String, Object> cartLists(PageDTO page) {    	
-    	Map<String, Object> params = new HashMap<String, Object>();
-    	List<OrderDTO> cartList = orderDAO.cartLists(page);
-    	
-    	params.put("cartLists", cartList);
-    	return params;    	
-    }
-
 	@Override
 	public List<OrderDTO> updateCart(List<OrderDTO> orderList) {
 		return orderDAO.updateCart(orderList);
@@ -114,7 +92,8 @@ public class MemberService implements CustomerService {
 	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
 		return orderDAO.deleteOrderStateByCart(orderList);
 	}
-	//장바구니 끝
+
+    //장바구니 끝
 
 	@Override
 	public String searchId(MemberDTO member) {
@@ -185,6 +164,27 @@ public class MemberService implements CustomerService {
         List<OrderDTO> result = memberDAO.countMemberOrders(member);
         return result;
     }
+
+    // Region Cart
+
+    @Autowired CartDAO cartDAO;
+
+    @Override
+    public List<CartDTO> listCart(PageDTO pageSet, String member_id) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", pageSet);
+        params.put("member_id", member_id);
+
+        return cartDAO.listCart(params);
+    }
+
+    @Override
+    public int countCart(String member_id) {
+        return cartDAO.countCart(member_id);
+    }
+
+
+
     //장바구니 시작
     @Override
     public List<ItemDTO> listProductsInCategory(PageDTO page, String category) {
@@ -219,9 +219,6 @@ public class MemberService implements CustomerService {
     	
     }
 
-    @Autowired
-    OrderDAO orderDAO;
-
     @Override
     public int setOrder(OrderDTO order) {
         int leftLimit = 48; // numeral '0'
@@ -248,14 +245,45 @@ public class MemberService implements CustomerService {
     public OrderDTO getOrder(OrderDTO order) {
         return orderDAO.getOrder(order);
     }
-	@Override
-	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
-		return orderDAO.deleteOrdersByCart(orderList);
-	}
+//	@Override
+//	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
+//		return orderDAO.deleteOrdersByCart(orderList);
+//	}
 	
-	@Override
-	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
-		return orderDAO.deleteOrderStateByCart(orderList);
-	}
+//	@Override
+//	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
+//		return orderDAO.deleteOrderStateByCart(orderList);
+//	}
 	//장바구니 끝
+    @Override
+    public int order(CartDTO item) {
+        int result = 0;
+
+        // SET ORDER
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 30;
+        Random random = new Random();
+        String randomOrderID = "";
+        OrderDTO checkDuplicate = new OrderDTO();
+        do {
+            randomOrderID = random.ints(leftLimit,rightLimit + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(targetStringLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+            item.setOrder_id(randomOrderID);
+            checkDuplicate = getOrder(item);
+        } while ( checkDuplicate != null );
+
+        result += orderDAO.insertOrder(item);
+        result *= cartDAO.deleteCart(item);
+
+        return result;
+    }
+
+    @Override
+    public int deleteCart(CartDTO item) {
+        return cartDAO.deleteCart(item);
+    }
 }
