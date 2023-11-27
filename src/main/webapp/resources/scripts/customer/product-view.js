@@ -46,6 +46,26 @@ function order(state) {
 	});
 }
 
+function cart(state) {
+	let url = location.href.split('/');
+	let item_id  = url[url.length - 1];
+	let quantity = document.getElementById("order-quantity").value;
+
+	$.ajax({
+		method: 'POST',
+		url: '/actions/cart/' + item_id + '?quantity='+quantity,
+		success: function(response) {
+			if (response == 'auth error') {
+				alert('로그인이 필요한 항목입니다');
+				location.href = '/account/login';
+			} else {
+				if (confirm('장바구니에 담았습니다.\n장바구니로 이동하시겠습니까?'))
+					location.href = '/cart';
+			}
+		}
+	});
+}
+
 
 // $().ready(function(){
 // 	 var q = $('input[name=quantity]').val();

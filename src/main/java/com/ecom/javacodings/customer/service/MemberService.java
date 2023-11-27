@@ -283,7 +283,17 @@ public class MemberService implements CustomerService {
     }
 
     @Override
-    public int deleteCart(CartDTO item) {
-        return cartDAO.deleteCart(item);
+    public int deleteCart(CartDTO cart) {
+        return cartDAO.deleteCart(cart);
+    }
+
+    @Override
+    public int cart(CartDTO cart) {
+        Integer quantity = cartDAO.getCart(cart);
+        if (quantity == null)
+            return cartDAO.insertCart(cart);
+
+        cart.setQuantity(quantity + cart.getQuantity());
+        return cartDAO.updateCart(cart);
     }
 }

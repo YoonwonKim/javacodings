@@ -12,7 +12,11 @@ import java.util.Map;
 @Mapper
 public interface CartDAO {
 	List<CartDTO> listCart(Map<String, Object> params);
+
+	int insertCart(CartDTO cart);
 	int countCart(String member_id);
 
     int deleteCart(CartDTO item);
+	Integer getCart(CartDTO cart);
+	int updateCart(CartDTO item);
 }

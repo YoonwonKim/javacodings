@@ -8,10 +8,10 @@ import lombok.ToString;
 @Data
 @ToString
 public class OrderDTO {
-	String order_id;
-	String item_id;
-	String member_id;
-	int quantity;
-	int state;
-	Date reg_date;
+	protected String order_id;
+	protected String item_id;
+	protected String member_id;
+	protected int quantity;
+	protected int state;
+	protected Date reg_date;
 }

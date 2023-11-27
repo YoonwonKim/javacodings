@@ -62,7 +62,7 @@
 			</div>
 			<cds-stack orientation="horizontal" gap="8px" use-custom-gap-value>
 				<cds-button onclick="order(1)" kind="primary">구매하기</cds-button>
-				<cds-button onclick="order(0)" kind="secondary">장바구니</cds-button>
+				<cds-button onclick="cart()" kind="secondary">장바구니</cds-button>
 			</cds-stack>
 		</div>
 	</article>

@@ -25,5 +25,22 @@
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</delete>
 
+	<insert id="insertCart" parameterType="cartDTO">
+		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
+		VALUES (#{member_id}, #{item_id}, #{quantity})
+	</insert>
+
+	<update id="updateCart" parameterType="cartDTO">
+		UPDATE CARTS
+		SET QUANTITY = #{quantity}
+		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
+	</update>
+
+	<select id="getCart" parameterType="cartDTO" resultType="Integer">
+		SELECT QUANTITY
+		FROM CARTS
+		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
+	</select>
+
 </mapper>
  

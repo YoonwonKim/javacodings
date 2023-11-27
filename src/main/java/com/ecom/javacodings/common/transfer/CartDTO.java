@@ -6,9 +6,11 @@ import lombok.ToString;
 @Data
 @ToString
 public class CartDTO extends OrderDTO {
-    private String image;
-    private String label;
+    private String category    ;
+    private String label       ;
     private String desc;
-    private int stock;
-    private int price;
+    private String image       ;
+    private int price       ;
+    private int stock       ;
+    private int orders;
 }

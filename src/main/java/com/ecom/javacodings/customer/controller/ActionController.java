@@ -222,8 +222,19 @@ public class ActionController {
     // End Region Products
     // Region Cart
 
+    @PostMapping("/cart/{item_id}")
+    public String cart(HttpServletRequest request, CartDTO cart) {
+        HttpSession session = request.getSession();
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+
+        cart.setMember_id(ssKey.getMember_id());
+        memberService.cart(cart);
+        return "success";
+    }
+
     @PostMapping("/cart/order/{item_id}")
-    public String orderCart(HttpServletRequest request, CartDTO item) {
+    public String order(HttpServletRequest request, CartDTO item) {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
@@ -232,6 +243,7 @@ public class ActionController {
         memberService.order(item);
         return "success";
     }
+
     @PostMapping("/cart/order")
     public String orderSelectedCart(HttpServletRequest request,
                                 @RequestParam("orderList") List<CartDTO> cartList) {
