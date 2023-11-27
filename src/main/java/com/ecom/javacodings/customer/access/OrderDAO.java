@@ -2,10 +2,11 @@ package com.ecom.javacodings.customer.access;
 
 import java.util.List;
 
+import com.ecom.javacodings.common.transfer.ItemDTO;
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 
 @Mapper
 public interface OrderDAO {
@@ -18,4 +19,6 @@ public interface OrderDAO {
 
 	int setOrder(OrderDTO order);
 	OrderDTO getOrder(OrderDTO order);
+
+    int insertOrder(OrderDTO item);
 }

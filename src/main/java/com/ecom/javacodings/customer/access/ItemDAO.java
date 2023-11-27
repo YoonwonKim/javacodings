@@ -3,11 +3,9 @@ package com.ecom.javacodings.customer.access;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 
 @Mapper
 public interface ItemDAO {

@@ -1,11 +1,10 @@
 package com.ecom.javacodings.customer.access;
 
-import com.ecom.javacodings.common.transfer.table.MemberDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface MemberDAO {

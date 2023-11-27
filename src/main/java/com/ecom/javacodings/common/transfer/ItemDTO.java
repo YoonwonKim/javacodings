@@ -1,4 +1,4 @@
-package com.ecom.javacodings.common.transfer.table;
+package com.ecom.javacodings.common.transfer;
 
 import lombok.Data;
 import lombok.ToString;
@@ -6,7 +6,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class ItemDTO {
-                               
 	private String item_id     ;
 	private String category    ;
 	private String reg_date    ;

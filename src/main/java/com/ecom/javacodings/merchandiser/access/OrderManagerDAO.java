@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.page.PageDTO;
 
 @Mapper
 public interface OrderManagerDAO {
@@ -19,4 +19,7 @@ public interface OrderManagerDAO {
 	List<OrderDTO> countState();
 
     int countOrders();
+
+
+	int insertOrder(OrderDTO order);
 }
