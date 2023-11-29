@@ -9,13 +9,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.ecom.javacodings.external.purchase.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("memberService")
 public class MemberService implements CustomerService {
+
     @Autowired
     MemberDAO memberDAO;
+
+    @Autowired
+    PurchaseService payUpService;
+
 
     // Region Pages
     @Override
@@ -153,6 +159,12 @@ public class MemberService implements CustomerService {
     public MemberDTO getMemberById(MemberDTO member) {
         return memberDAO.getMemberById(member);
     }
+    @Override
+    public MemberDTO getMemberById(String member_id) {
+        MemberDTO member = new MemberDTO();
+        member.setMember_id(member_id);
+        return memberDAO.getMemberById(member);
+    }
 
     @Override
     public MemberDTO getCurrentAddress(MemberDTO member) {
@@ -184,6 +196,10 @@ public class MemberService implements CustomerService {
     }
 
 
+    @Override
+    public Integer getQuantity(CartDTO cart) {
+        return cartDAO.getCart(cart);
+    }
 
     //장바구니 시작
     @Override
@@ -256,7 +272,7 @@ public class MemberService implements CustomerService {
 //	}
 	//장바구니 끝
     @Override
-    public int order(CartDTO item) {
+    public CartDTO order(CartDTO item) {
         int result = 0;
 
         // SET ORDER
@@ -276,10 +292,19 @@ public class MemberService implements CustomerService {
             checkDuplicate = getOrder(item);
         } while ( checkDuplicate != null );
 
-        result += orderDAO.insertOrder(item);
-        result *= cartDAO.deleteCart(item);
+        //? Transaction
+        MemberDTO member = getMemberById(item.getMember_id());
+        ItemDTO item_info = new ItemDTO();
+        item_info.setItem_id(item.getItem_id());
+        item_info = listItemDt(item_info);
+        try {
+            String transactionID = payUpService.requestPurchase(item, item_info, member);
+            item.setTransaction_id(transactionID);
 
-        return result;
+            orderDAO.insertOrder(item);
+            cartDAO.deleteCart(item);
+        } catch (Exception e) {}
+        return item;
     }
 
     @Override

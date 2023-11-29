@@ -3,10 +3,12 @@ package com.ecom.javacodings.customer.controller;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.CustomerService;
 
+import com.ecom.javacodings.external.purchase.PurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -35,6 +37,7 @@ public class ActionController {
 
     @Autowired
     CustomerService memberService;
+
 
     /**
      * RQ-001 로그인 기능 구현<br>
@@ -235,12 +238,15 @@ public class ActionController {
 
     @PostMapping("/cart/order/{item_id}")
     public String order(HttpServletRequest request, CartDTO item) {
+
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
 
         item.setMember_id(ssKey.getMember_id());
+        item.setQuantity(memberService.getQuantity(item));
         memberService.order(item);
+
         return "success";
     }
 
@@ -254,7 +260,8 @@ public class ActionController {
         int result = 1;
         for(CartDTO cart : cartList) {
             cart.setMember_id(ssKey.getMember_id());
-            result *= memberService.order(cart);
+            //memberService.order(cart);
+            order(request, cart);
         }
         return "success";
     }

@@ -14,7 +14,7 @@
 	</select>
 
 	<select id="getMemberById" parameterType="memberDTO" resultType="memberDTO">
-		SELECT M.*, I.*
+		SELECT M.*, I.NAME, I.EMAIL, TO_CHAR(I.BIRTH, 'YYMMDD') AS BIRTH, I.PHONE
 		FROM MEMBERS M
 		JOIN MEMBER_INFOS I
 		ON M.MEMBER_ID = I.MEMBER_ID
