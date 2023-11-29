@@ -18,12 +18,27 @@ public class MemberDTO {
     String role;
 
     // Region Metadata
+
     String reg_date;
     String name;
     String email;
     String phone;
     String birth;
-    String zipcode;
-    String address, address2;
+
     // End Region Metadata
+    // Region Address
+
+    String zipcode;
+    String address;
+    String address2;
+
+    // End Region Address
+    // Region Payment
+
+    String card_no;
+    String card_pw;
+    String expire_year;
+    String expire_month;
+
+    // End Region Payment
 }

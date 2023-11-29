@@ -35,6 +35,8 @@ public interface CustomerService {
 	//카테고리
 
 
+    Integer getQuantity(CartDTO cart);
+
     List<ItemDTO> listProductsInCategory(PageDTO page, String category);
 
     int countProductsInCategory(String category);
@@ -48,6 +50,8 @@ public interface CustomerService {
 
     MemberDTO getMemberById(MemberDTO member);
 
+    MemberDTO getMemberById(String member_id);
+
     MemberDTO getCurrentAddress(MemberDTO member);
 
     List<OrderDTO> countMemberOrders(MemberDTO member);
@@ -60,7 +64,7 @@ public interface CustomerService {
     List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList);
     List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList);
 
-    int order(CartDTO item);
+    CartDTO order(CartDTO item);
     int deleteCart(CartDTO item);
 
     int cart(CartDTO cart);
