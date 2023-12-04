@@ -169,6 +169,7 @@ public class ActionController {
     		memberService.updateMembers(member);
     		memberService.updateMemberInfos(member);
     		memberService.updateAddress(member);
+    		memberService.updateAddressPriority(member);
     		result = "success";
     	}
     	session.setAttribute("ssKey", memebrInfo);

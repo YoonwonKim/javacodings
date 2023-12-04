@@ -35,6 +35,8 @@ public class MerchandiserService implements ManagerService {
     @Override public ItemDTO readItemById(String id) { return itemDAO.getItemById(id); }
     @Override public int updateItem(ItemDTO item) { return itemDAO.updateItem(item); }
     @Override public int deleteItem(ItemDTO item) { return itemDAO.deleteItem(item); }
+    @Override public int deleteItemImages(ItemDTO item) { return itemDAO.deleteItem(item); }
+    @Override public int deleteItemTegs(ItemDTO item) { return itemDAO.deleteItem(item); }
 
     @Override
     public int createItem(ItemDTO item) {

@@ -4,11 +4,11 @@
 <mapper namespace="com.ecom.javacodings.merchandiser.access.TagManagerDAO">
 
     <select id="listTags" resultType="String">
-        SELECT TAG_ID
-        FROM TAGS
+        SELECT TAG
+        FROM ITEM_TAGS
     </select>
     <select id="listTagsById" resultType="String">
-        SELECT TAG_ID
+        SELECT TAG
         FROM ITEMS_TAGS
         WHERE ITEM_ID LIKE #{value}
     </select>
@@ -20,7 +20,7 @@
     </delete>
     <insert id="insertTags" parameterType="map">
         <foreach collection="tags" item="tag" separator="" open="INSERT ALL " close="SELECT 1 FROM DUAL">
-            INTO ITEMS_TAGS(ITEM_ID, TAG_ID) VALUES (#{item_id}, #{tag})
+            INTO ITEM_TAGS(ITEM_ID, TAG) VALUES (#{item_id}, #{tag})
         </foreach>
     </insert>
 </mapper>

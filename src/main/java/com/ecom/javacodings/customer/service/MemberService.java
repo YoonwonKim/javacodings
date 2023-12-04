@@ -79,6 +79,11 @@ public class MemberService implements CustomerService {
     public int updateAddress(MemberDTO member) {
         return memberDAO.updateAddress(member);
     }
+    
+    @Override
+    public int updateAddressPriority(MemberDTO member) {
+    	return memberDAO.updateAddressPriority(member);
+    }
 
     @Override
     public int deleteAddressByPriorityAndMemberID(String memberID, String priority) {

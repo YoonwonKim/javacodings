@@ -32,31 +32,34 @@
     </select>
 
     <select id="findAllItemsByTagID" parameterType="map" resultType="itemDTO">
-        SELECT *
-        FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, I.IMAGE, ROW_NUMBER() over (ORDER BY I.REG_DATE) AS RN
-              FROM ITEMS I
-                       JOIN ITEMS_TAGS T ON T.TAG_ID = #{criteria}
-              WHERE I.ITEM_ID = T.ITEM_ID
-              ORDER BY I.REG_DATE)
-        WHERE RN BETWEEN #{start} AND #{end}
+		SELECT *
+		FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, II.PATH, ROW_NUMBER() over (ORDER BY I.REG_DATE) AS RN
+			FROM ITEMS I
+				JOIN ITEM_TAGS IT ON I.ITEM_ID = IT.ITEM_ID
+				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
+				WHERE IT.TAG = #{criteria}
+			ORDER BY I.REG_DATE)
+		WHERE RN BETWEEN #{start} AND #{end}
     </select>
 
     <select id="findAllItemsOrderByOrderCount" parameterType="map" resultType="itemDTO">
-        SELECT LABEL, "DESC", IMAGE, CATEGORY, STOCK, PRICE
-        FROM (
-            SELECT I.LABEL, I."DESC", I.IMAGE, I.CATEGORY, I.STOCK, I.PRICE, ROW_NUMBER() OVER (ORDER BY ORDER_COUNT DESC) AS RN
-            FROM ITEMS I
-            JOIN (SELECT ITEM_ID, SUM(QUANTITY) AS ORDER_COUNT
-            FROM ORDERS
-            GROUP BY ITEM_ID) M ON I.ITEM_ID = M.ITEM_ID
-        ) WHERE RN BETWEEN #{start} AND #{start};
+		SELECT I.LABEL, I."DESC", II.PATH, I.CATEGORY, I.STOCK, I.PRICE 
+		FROM (
+			SELECT I.LABEL, I."DESC", II.PATH, I.CATEGORY, I.STOCK, I.PRICE, ROW_NUMBER() OVER (ORDER BY ORDER_COUNT DESC) AS RN
+			FROM ITEMS I
+				JOIN (SELECT ITEM_ID, SUM(QUANTITY) AS ORDER_COUNT
+					FROM ORDERS
+					GROUP BY ITEM_ID) M ON I.ITEM_ID = M.ITEM_ID 
+				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
+		) WHERE RN BETWEEN #{start} AND #{start}
     </select>
 
     <select id="findAllItemsOrderByRegDate" parameterType="map" resultType="itemDTO">
         SELECT *
-        FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, I.IMAGE,
+        FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, II.PATH,
                      ROW_NUMBER() over (ORDER BY I.REG_DATE DESC) AS RN
-              FROM ITEMS I)
+              FROM ITEMS I
+              JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID)
         WHERE RN BETWEEN #{start} AND #{end}
     </select>
 

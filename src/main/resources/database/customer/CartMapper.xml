@@ -16,10 +16,11 @@
 	<select id="findAllCartByMemberID" parameterType="map" resultType="Integer">
 		SELECT *
 		FROM (
-				 SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
-				 FROM CARTS C
-				 JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
-				 WHERE MEMBER_ID = #{criteria}
+				SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
+				FROM CARTS C
+					JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
+					JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID 
+				WHERE MEMBER_ID = #{criteria}
 			 )
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>

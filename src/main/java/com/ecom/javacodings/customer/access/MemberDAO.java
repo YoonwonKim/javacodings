@@ -31,6 +31,7 @@ public interface MemberDAO {
 	MemberDTO getAddressByMemberID(String memberID);
 
 	int updateAddress(MemberDTO member);
+	int updateAddressPriority(MemberDTO member);
 	int updateMemberInfo(MemberDTO member);
 
 	int deleteAddressByPriorityAndMemberID(Map<String, Object> params);

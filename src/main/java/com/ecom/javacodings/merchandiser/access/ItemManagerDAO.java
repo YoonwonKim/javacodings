@@ -23,5 +23,7 @@ public interface ItemManagerDAO {
 	// End Region Create or Update
 	// Region Delete
 	int deleteItem(ItemDTO item);
+	int deleteItemImages(ItemDTO item);
+	int deleteItemTegs(ItemDTO item);
     // End Region Delete
 }

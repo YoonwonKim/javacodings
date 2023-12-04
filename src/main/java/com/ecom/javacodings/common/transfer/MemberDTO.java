@@ -15,15 +15,16 @@ import java.util.Date;
 public class MemberDTO {
     String member_id;
     String password;
+    String reg_date;
     String role;
+    String level;
 
     // Region Metadata
 
-    String reg_date;
     String name;
     String email;
-    String phone;
     String birth;
+    String phone;
 
     // End Region Metadata
     // Region Address
@@ -31,6 +32,7 @@ public class MemberDTO {
     String zipcode;
     String address;
     String address2;
+    String priority;
 
     // End Region Address
     // Region Payment

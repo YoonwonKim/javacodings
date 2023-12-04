@@ -13,7 +13,7 @@
 
 	<select id="findMemberByIDAndPassword"
 			parameterType="memberDTO" resultType="memberDTO">
-		SELECT MEMBER_ID, PASSWORD, ROLE
+		SELECT MEMBER_ID, PASSWORD, ROLE, LEVEL 
 		FROM MEMBERS
 		WHERE MEMBER_ID=#{member_id} AND PASSWORD=#{password}
 	</select>
@@ -26,13 +26,15 @@
 	</select>
 
 	<update id="setPassword" parameterType="memberDTO">
-		UPDATE MEMBERS
+		UPDATE MEMBERS 
 		SET PASSWORD = #{password}
+	</update>
+	
 	<select id="getMemberById" parameterType="memberDTO" resultType="memberDTO">
-		SELECT M.*, I.NAME, I.EMAIL, TO_CHAR(I.BIRTH, 'YYMMDD') AS BIRTH, I.PHONE
+		SELECT M.*, MI.NAME, MI.EMAIL, TO_CHAR(MI.BIRTH, 'YYMMDD') AS BIRTH, MI.PHONE
 		FROM MEMBERS M
-		JOIN MEMBER_INFOS I
-		ON M.MEMBER_ID = I.MEMBER_ID
+		JOIN MEMBER_INFOS MI
+		ON M.MEMBER_ID = MI.MEMBER_ID
 		WHERE M.MEMBER_ID = #{member_id}
 	</select>
 	
@@ -50,14 +52,14 @@
     
     <insert id="memberJoin" parameterType="memberDTO" useGeneratedKeys="false">
     	INSERT ALL
-	        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
-	        VALUES (#{member_id}, #{password}, 'custom')
+	        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE, LEVEL) 
+	        VALUES (#{member_id}, #{password}, 'custom', '1')
 	        
 	        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
 	        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
 	        
-	        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
-	        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
+	        INTO ADDRESSES (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2, PRIORITY) 
+	        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2}, '1')
 	     	SELECT 1 FROM DUAL
     </insert>
     
@@ -70,14 +72,14 @@
 
 	<insert id="addMember" parameterType="memberDTO" useGeneratedKeys="false">
 		INSERT ALL
-			INTO MEMBER (MEMBER_ID, PASSWORD, ROLE)
-			VALUES (#{member_id}, #{password}, 'custom')
+			INTO MEMBER (MEMBER_ID, PASSWORD, ROLE, LEVEL)
+			VALUES (#{member_id}, #{password}, 'custom', '1')
 
 			INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH)
 			VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
 
-			INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2)
-			VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
+			INTO ADDRESSES (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2, PRIORITY)
+			VALUES (#{member_id}, #{zipcode}, #{address}, #{address2}, '1')
 		SELECT 1 FROM DUAL
 	</insert>
 
@@ -92,7 +94,7 @@
 
 	<select id="getAddressByMemberID" parameterType="String">
 		SELECT ZIPCODE, ADDRESS, ADDRESS2
-		FROM ADDRESS
+		FROM ADDRESSES
 		WHERE MEMBER_ID = #{value}
 	</select>
 
@@ -102,6 +104,14 @@
 			ADDRESS  = #{address},
 			ADDRESS2 = #{address2}
 		WHERE MEMBER_ID = #{member_id}
+	</update>
+	
+	<update id="updateAddressPriority" parameterType="memberDTO">
+		UPDATE MEMBER_ADDRESSES 
+		SET PRIORITY = (SELECT MAX(PRIORITY) + 1 
+			FROM MEMBER_ADDRESSES 
+			WHERE MEMBER_ID = #{member_id} AND ZIPCODE = #{zipcode})
+		WHERE MEMBER_ID = #{member_id} AND ZIPCODE = #{zipcode};
 	</update>
 
 	<update id="updateMemberInfo" parameterType="memberDTO">
@@ -114,7 +124,7 @@
 	</update>
 
 	<delete id="deleteAddressByPriorityAndMemberID" parameterType="map">
-		DELETE FROM ADDRESS
+		DELETE FROM ADDRESSES
 		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{priority}
 	</delete>
 

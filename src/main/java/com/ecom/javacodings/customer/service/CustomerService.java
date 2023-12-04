@@ -44,6 +44,7 @@ public interface CustomerService {
 	int updateMembers(MemberDTO member);
 	int updateMemberInfos(MemberDTO member);
 	int updateAddress(MemberDTO member);
+	int updateAddressPriority(MemberDTO member);
 	int deleteMembers(MemberDTO member);
 	int deleteMemberInfos(MemberDTO member);
 	int deleteAddress(MemberDTO member);

@@ -13,17 +13,19 @@
 		SELECT *
 		FROM
 		(
-			SELECT ITEM_ID, LABEL, "DESC", CATEGORY, IMAGE, PRICE, STOCK, ORDERS,
-			       ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-			FROM ITEMS
+			SELECT I.ITEM_ID, I.LABEL, I."DESC", I.CATEGORY, II.PATH, I.PRICE, I.STOCK, 
+			ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+			FROM ITEMS I
+				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
 	  	)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 
 	<select id="getItemById" parameterType="String" resultType="itemDTO">
-		SELECT ITEM_ID, LABEL, "DESC", IMAGE, PRICE, STOCK, CATEGORY
-		FROM ITEMS
-		WHERE ITEM_ID = #{value}
+		SELECT I.ITEM_ID, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, I.CATEGORY
+		FROM ITEMS I 
+			JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID 
+		WHERE I.ITEM_ID = #{value}
 	</select>
 
 	<select id="listCategory" resultType="String">
@@ -38,24 +40,33 @@
 	<update id="updateItem" parameterType="ItemDTO">
 		UPDATE ITEMS
 		SET
-		<if test="category!=null">CATEGORY=#{category}, </if>
-		<if test="label!=null">LABEL=#{label}, </if>
-		<if test="desc!=null">"DESC"=#{desc}, </if>
-		<if test="image!=null">IMAGE=#{image}, </if>
-		<if test="price!=null">PRICE=#{price}, </if>
-		<if test="stock!=null">STOCK=#{stock} </if>
+		<if test="category!=null">CATEGORY = #{category}, </if>
+		<if test="label!=null">LABEL = #{label}, </if>
+		<if test="desc!=null">"DESC" = #{desc}, </if>
+		<if test="price!=null">PRICE = #{price}, </if>
+		<if test="stock!=null">STOCK = #{stock} </if>
 		WHERE ITEM_ID=#{item_id}
 	</update>
 	<update id="updateImageById">
-		UPDATE ITEMS
-		SET IMAGE=#{image}
-		WHERE ITEM_ID=#{item_id}
+		UPDATE ITEM_IMAGES
+		SET PATH = #{image}
+		WHERE ITEM_ID = #{item_id}
 	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->
 	<delete id="deleteItem" parameterType="string">
 		DELETE
-		FROM ITEMS
+		FROM ITEMS 
+		WHERE ITEM_ID = #{value}
+	</delete>
+	<delete id="deleteItemImages" parameterType="string">
+		DELETE
+		FROM ITEM_IMAGES 
+		WHERE ITEM_ID = #{value}
+	</delete>
+	<delete id="deleteItemTegs" parameterType="string">
+		DELETE
+		FROM ITEM_TAGS 
 		WHERE ITEM_ID = #{value}
 	</delete>
 <!-- End Region Delete -->

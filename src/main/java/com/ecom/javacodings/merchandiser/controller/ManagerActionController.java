@@ -57,7 +57,7 @@ public class ManagerActionController {
     @PutMapping("/item/image")
     public String setImage(HttpServletRequest request, HttpServletResponse response,
                            ItemDTO item, @RequestParam("file") MultipartFile file) {
-        int result = managerService.updateImage(item, file);
+        int result = managerService.updateImageById(item, file);
 
         if (result > 0) return "success";
         return "error";
@@ -68,7 +68,7 @@ public class ManagerActionController {
                           @RequestParam(required=false, name="tags") List<String> tags,
                           @RequestParam("file") MultipartFile file) {
         int result = 0;
-        result += managerService.updateImage(item, file);
+        result += managerService.updateImageById(item, file);
         result *= managerService.createItem(item);
         result *= managerService.updateTags(item.getItem_id(), tags);
 
@@ -77,7 +77,6 @@ public class ManagerActionController {
     }
     // End Region Set Data
     
-    //orderUpdate 구동되지 않음
     @PutMapping("/update_order")
     public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
                               OrderDTO order) {

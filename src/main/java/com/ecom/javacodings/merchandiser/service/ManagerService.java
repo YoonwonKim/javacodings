@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ManagerService {
-    int updateImage(ItemDTO item, MultipartFile file);
+    //int updateImage(ItemDTO item, MultipartFile file);
 
     // End Region Data access objects
     // Region Item
@@ -18,12 +18,15 @@ public interface ManagerService {
     ItemDTO readItemById(String id);
     // Create and Update
     int updateItem(ItemDTO item);
+    int updateImageById(ItemDTO item, MultipartFile file);
 
     int createItem(ItemDTO item);
 
     int updateTags(String item_id, List<String> tags);
     // Delete
     int deleteItem(ItemDTO item);
+    int deleteItemImages(ItemDTO item);
+	int deleteItemTegs(ItemDTO item);
 
     //? Get Metadata
     List<String> listCategory();
