@@ -1,9 +1,6 @@
 package com.ecom.javacodings.customer.access;
 
-import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,12 +8,21 @@ import java.util.Map;
 
 @Mapper
 public interface CartDAO {
-	List<CartDTO> listCart(Map<String, Object> params);
+	// Region Metadata
 
-	int insertCart(CartDTO cart);
-	int countCart(String member_id);
+	int countCartByMemberID(String memberID);
 
-    int deleteCart(CartDTO item);
-	Integer getCart(CartDTO cart);
-	int updateCart(CartDTO item);
+	// End Region Metadata
+	// Region Basic CRUD
+
+	List<CartDTO> findAllCartByMemberID(Map<String, Object> params);
+	Integer getQuantityByItemIDAndMemberID(CartDTO cart);
+
+	int addCart(CartDTO cart);
+
+	int updateCart(CartDTO cart);
+
+	int deleteCartByMemberIDAndItemID(CartDTO cart);
+
+	// End Region Basic CRUD
 }

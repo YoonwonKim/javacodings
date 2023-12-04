@@ -5,26 +5,35 @@ import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MemberDAO {
-	// Region READ
-	MemberDTO login(MemberDTO member);
-	MemberDTO getMemberById(MemberDTO member);
-	String searchId(MemberDTO member);
-	// End Region READ
+	// Region Metadata
 
-	int memberJoin(MemberDTO mdto);
-	int idCheck(String member_id);
-	int updateMembers(MemberDTO member);
-	int updateMemberInfos(MemberDTO member);
+	int isExistMemberID(String member_id);
+
+	// End Region Metadata
+	// Region Basic CRUD
+
+	MemberDTO findMemberByIDAndPassword(MemberDTO member);
+	String getMemberIDByNameAndPhone(MemberDTO member);
+
+	int addMember(MemberDTO member);
+
+	int setPassword(String temporaryPassword);
+
+	int archiveMemberByMemberID(String memberID);
+
+	// End Region Basic CRUD
+	// Region Sub-Tables
+
+	MemberDTO getAddressByMemberID(String memberID);
+
 	int updateAddress(MemberDTO member);
-	int deleteMemberInfos(MemberDTO member);
-	int deleteMembers(MemberDTO member);
-	int deleteAddress(MemberDTO member);
-	int temporaryPassword(MemberDTO member);
+	int updateMemberInfo(MemberDTO member);
 
-    MemberDTO getCurrentAddress(MemberDTO member);
+	int deleteAddressByPriorityAndMemberID(Map<String, Object> params);
 
-    List<OrderDTO> countMemberOrders(MemberDTO member);
+	// End Region Sub-Tables
 }
