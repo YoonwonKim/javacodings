@@ -1,13 +1,12 @@
 package com.ecom.javacodings.customer.service;
 
-import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.identity.SequenceGenerator;
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.policies.OrderPolicies;
 import com.ecom.javacodings.common.transfer.*;
 import com.ecom.javacodings.customer.access.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import com.ecom.javacodings.external.purchase.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,148 +15,101 @@ import org.springframework.stereotype.Service;
 @Service("memberService")
 public class MemberService implements CustomerService {
 
-    @Autowired
-    MemberDAO memberDAO;
+    // ? Services
+    @Autowired PurchaseService payUpService;
+    @Autowired MemberDAO memberDAO;
 
-    @Autowired
-    PurchaseService payUpService;
+    // ? Constructors
+    SequenceGenerator sequenceGenerator = new SequenceGenerator();
+    PageConstructor   pageConstructor   = new PageConstructor();
 
+    // Region Member
 
-    // Region Pages
-    @Override
-    public MemberDTO login(MemberDTO member) {
-        return memberDAO.login(member);
-    }
-    // End Region Pages
-    // Region BannerService
-    @Autowired
-    BannerDAO bannerDAO;
+    // ? metadata ----------------------------------------------------------------
 
     @Override
-    public List<BannerDTO> listMain(int number) {
-        return bannerDAO.listMain(number);
+    public int isExistMemberID(String memberID) {
+        return memberDAO.isExistMemberID(memberID);
     }
 
-    @Override
-    public List<BannerDTO> listEvent() {
-        return bannerDAO.listEvent();
-    }
-    // End Region BannerService
-    // Region ItemService
-    @Autowired
-    ItemDAO itemDAO;
-
-    @Autowired
-    TagDAO tagDAO;
-    
-    @Autowired
-    OrderDAO orderDAO;
+    // ? Basic CRUD --------------------------------------------------------------
+    // * Create Row
 
     @Override
-    public Map<String, Object> listNew(int number) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("itemList", itemDAO.listNew(number));
-        result.put("label", "NEWS");
-        result.put("desc",  "지금 핫한 신상품");
-        return result;
+    public int addMember(MemberDTO member) {
+        return memberDAO.addMember(member);
     }
-    @Override
-    public Map<String, Object> listBest(int number) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("itemList", itemDAO.listBest(number));
-        result.put("label", "BEST");
-        result.put("desc",  "이유있는 인기 아이템");
-        return result;
-    }
-    @Override
-    public Map<String, Object> listItemsByTagId(String tagId) {
-        Map<String, Object> result = new HashMap<String, Object>();
 
+    // * Read Table
+
+    @Override
+    public String getMemberIDByNameAndPhone(MemberDTO member) {
+        return memberDAO.getMemberIDByNameAndPhone(member);
+    }
+
+    @Override
+    public String getAndSetTemporaryPasswordByMemberID(MemberDTO member) {
+        String temporaryPassword = sequenceGenerator.generate(16);
+        if (memberDAO.setPassword(temporaryPassword) > 0)
+            return temporaryPassword;
+        else return "failed";
+    }
+
+    @Override
+    public MemberDTO findMemberByIDAndPassword(MemberDTO member) {
+        return memberDAO.findMemberByIDAndPassword(member);
+    }
+
+    // * Update Row
+
+    @Override
+    public int archiveMemberByMemberID(String memberID) {
+        return memberDAO.archiveMemberByMemberID(memberID);
+    }
+
+    //? Query Sub-Tables ---------------------------------------------------------
+    // Member Address
+
+    @Override
+    public MemberDTO getAddressByMemberID(String memberID) {
+        return memberDAO.getAddressByMemberID(memberID);
+    }
+
+    @Override
+    public int updateAddress(MemberDTO member) {
+        return memberDAO.updateAddress(member);
+    }
+
+    @Override
+    public int deleteAddressByPriorityAndMemberID(String memberID, String priority) {
         Map<String, Object> params = new HashMap<>();
-        List<ItemDTO> listMd = itemDAO.listItemsByTagId(tagId);
-        TagDTO tag = tagDAO.getTag(tagId);
-
-        result.put("itemList" , listMd);
-        result.put("label", tag.getLabel());
-        result.put("desc", tag.getDesc());
-        return result;
-    }
-    // End Region ItemService
-    //장바구니 시작
-	@Override
-	public List<OrderDTO> updateCart(List<OrderDTO> orderList) {
-		return orderDAO.updateCart(orderList);
-	}
-
-	@Override
-	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
-		return orderDAO.deleteOrdersByCart(orderList);
-	}
-	
-	@Override
-	public List<OrderDTO> deleteOrderStateByCart(List<OrderDTO> orderList) {
-		return orderDAO.deleteOrderStateByCart(orderList);
-	}
-
-    //장바구니 끝
-
-	@Override
-	public String searchId(MemberDTO member) {
-		return memberDAO.searchId(member);
-	}
-
-    @Override
-    public int temporaryPassword(MemberDTO member) {
-        return memberDAO.temporaryPassword(member);
+        params.put("member_id", memberID);
+        params.put("priority", priority);
+        return memberDAO.deleteAddressByPriorityAndMemberID(params);
     }
 
-    //회원가입
+    // Member Information
+
     @Override
-    public int memberJoin(MemberDTO mdto) {
-    	System.out.println(mdto);
-    	return memberDAO.memberJoin(mdto);
+    public int updateMemberInfo(MemberDTO member) {
+        return memberDAO.updateMemberInfo(member);
     }
 
-	@Override
-	public int idCheck(String member_id) {
-		return memberDAO.idCheck(member_id);
-	}
-	
-	//카테고리
+    // End Region Member
+    // Region Item
 
-	@Override
-	public int updateMembers(MemberDTO member) {
-		return memberDAO.updateMembers(member);
-	}
+    @Autowired ItemDAO itemDAO;
 
-	@Override
-	public int updateMemberInfos(MemberDTO member) {
-		return memberDAO.updateMemberInfos(member);
-	}
-
-	@Override
-	public int updateAddress(MemberDTO member) {
-		return memberDAO.updateAddress(member);
-	}
-
-	@Override
-	public int deleteMembers(MemberDTO member) {
-		return memberDAO.deleteMembers(member);
-	}
-	
-	@Override
-	public int deleteMemberInfos(MemberDTO member) {
-		return memberDAO.deleteMemberInfos(member);
-	}
-	
-	@Override
-	public int deleteAddress(MemberDTO member) {
-		return memberDAO.deleteAddress(member);
-	}
+    //? Basic CRUD --------------------------------------------------------------
 
     @Override
-    public MemberDTO getMemberById(MemberDTO member) {
-        return memberDAO.getMemberById(member);
+    public Map<String, Object> findAllItemsByTagID(String tagID, String page, String row) {
+        return pageConstructor.getPages(
+                (Map<String, Object> pageMap) -> Collections.singletonList(itemDAO.findAllItemsByTagID(pageMap)),
+                tagID,
+                page, row,
+                itemDAO.countItemsByTagID(tagID)
+        );
     }
     @Override
     public MemberDTO getMemberById(String member_id) {
@@ -167,99 +119,94 @@ public class MemberService implements CustomerService {
     }
 
     @Override
-    public MemberDTO getCurrentAddress(MemberDTO member) {
-        return memberDAO.getCurrentAddress(member);
+    public Map<String, Object> findAllItemsByCategory(String category, String page, String row) {
+        return pageConstructor.getPages(
+                (Map<String, Object> pageMap) -> Collections.singletonList(itemDAO.findAllItemsByCategory(pageMap)),
+                category,
+                page, row,
+                itemDAO.countItemsByCategory(category)
+        );
     }
 
     @Override
-    public List<OrderDTO> countMemberOrders(MemberDTO member) {
-        List<OrderDTO> result = memberDAO.countMemberOrders(member);
-        return result;
-    }
-
-    // Region Cart
-
-    @Autowired CartDAO cartDAO;
-
-    @Override
-    public List<CartDTO> listCart(PageDTO pageSet, String member_id) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("page", pageSet);
-        params.put("member_id", member_id);
-
-        return cartDAO.listCart(params);
+    public Map<String, Object> findAllItemsOrderByRegDate(String page, String row) {
+        return pageConstructor.getPages(
+                (Map<String, Object> pageMap) -> Collections.singletonList(itemDAO.findAllItemsOrderByRegDate(pageMap)),
+                page, row,
+                itemDAO.countItems()
+        );
     }
 
     @Override
-    public int countCart(String member_id) {
-        return cartDAO.countCart(member_id);
+    public Map<String, Object> findAllItemsOrderByOrderCount(String page, String row) {
+        return pageConstructor.getPages(
+                (Map<String, Object> pageMap) -> Collections.singletonList(itemDAO.findAllItemsOrderByOrderCount(pageMap)),
+                page, row,
+                itemDAO.countItems()
+        );
     }
 
+    @Override
+    public ItemDTO findItemByItemID(String itemID){
+        return itemDAO.findItemByItemID(itemID);
+    }
+
+    // End Region Item
+    // Region Banner
 
     @Override
     public Integer getQuantity(CartDTO cart) {
         return cartDAO.getCart(cart);
     }
+    @Autowired BannerDAO bannerDAO;
 
-    //장바구니 시작
+    //? Basic CRUD --------------------------------------------------------------
+
     @Override
-    public List<ItemDTO> listProductsInCategory(PageDTO page, String category) {
+    public List<BannerDTO> findAllBannersByCategory(String category, int limit) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("page", page);
+        params.put("limit", limit);
         params.put("category", category);
+        return bannerDAO.getBannerByCategory(params);
+    }
 
-        return itemDAO.listProductsInCategory(params);
+    // End Region Banner
+    // Region Cart
+
+    @Autowired CartDAO cartDAO;
+
+    //? metadata ----------------------------------------------------------------
+
+    @Override
+    public int countCartByMemberID(String memberID) {
+        return cartDAO.countCartByMemberID(memberID);
+    }
+
+    //? Basic CRUD --------------------------------------------------------------
+
+    @Override
+    public Map<String, Object> findAllCartByMemberID(String memberID, String page, String row) {
+        return pageConstructor.getPages(
+                (Map<String, Object> pageMap) -> Collections.singletonList(cartDAO.findAllCartByMemberID(pageMap)),
+                memberID,
+                page, row,
+                cartDAO.countCartByMemberID(memberID)
+        );
     }
 
     @Override
-    public int countProductsInCategory(String category) {
-        return itemDAO.countProductsInCategory(category);
-    }
-    
-    //아이템 리스트 받아오기
-    @Override
-    public Map<String, Object> getListItem(PageDTO pageDTO){
-    	
-    	int cnt = itemDAO.getItemCnt();
-    	Map<String, Object> reSet = new HashMap<String, Object>();
-    	List<ItemDTO> iList = itemDAO.getListItem();
-    	reSet.put("cnt", cnt);
-    	reSet.put("iList", iList);
-    	return reSet;
-    }
-    
-    @Override
-    public ItemDTO listItemDt(ItemDTO itemDTO){
-    	return itemDAO.listItemDt(itemDTO);
-    	
-    	
+    public int addCart(CartDTO cart) {
+        Integer quantity = cartDAO.getQuantityByItemIDAndMemberID(cart);
+        if (quantity == null)
+            return cartDAO.addCart(cart);
+
+        cart.setQuantity(quantity + cart.getQuantity());
+        return cartDAO.updateCart(cart);
     }
 
     @Override
-    public int setOrder(OrderDTO order) {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 30;
-        Random random = new Random();
-        String randomOrderID = "";
-        OrderDTO checkDuplicate = new OrderDTO();
-
-        do {
-            randomOrderID = random.ints(leftLimit,rightLimit + 1)
-                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                    .limit(targetStringLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
-            order.setOrder_id(randomOrderID);
-            checkDuplicate = getOrder(order);
-        } while ( checkDuplicate != null );
-
-        return orderDAO.setOrder(order);
-    }
-
-    @Override
-    public OrderDTO getOrder(OrderDTO order) {
-        return orderDAO.getOrder(order);
+    public int deleteCartByMemberAndItemID(CartDTO cart) {
+        return cartDAO.deleteCartByMemberIDAndItemID(cart);
     }
 //	@Override
 //	public List<OrderDTO> deleteOrdersByCart(List<OrderDTO> orderList) {
@@ -275,22 +222,8 @@ public class MemberService implements CustomerService {
     public CartDTO order(CartDTO item) {
         int result = 0;
 
-        // SET ORDER
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 30;
-        Random random = new Random();
-        String randomOrderID = "";
-        OrderDTO checkDuplicate = new OrderDTO();
-        do {
-            randomOrderID = random.ints(leftLimit,rightLimit + 1)
-                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                    .limit(targetStringLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
-            item.setOrder_id(randomOrderID);
-            checkDuplicate = getOrder(item);
-        } while ( checkDuplicate != null );
+    // End Region Cart
+    // Region Order
 
         //? Transaction
         MemberDTO member = getMemberById(item.getMember_id());
@@ -300,25 +233,33 @@ public class MemberService implements CustomerService {
         try {
             String transactionID = payUpService.requestPurchase(item, item_info, member);
             item.setTransaction_id(transactionID);
+    @Autowired OrderDAO orderDAO;
 
             orderDAO.insertOrder(item);
             cartDAO.deleteCart(item);
         } catch (Exception e) {}
         return item;
     }
+    //? Metadata ----------------------------------------------------------------
 
     @Override
-    public int deleteCart(CartDTO cart) {
-        return cartDAO.deleteCart(cart);
+    public List<OrderDTO> countOrdersByMemberID(String MemberID) {
+        return orderDAO.countOrdersByMemberID(MemberID);
     }
+
+    //? Basic CRUD --------------------------------------------------------------
 
     @Override
-    public int cart(CartDTO cart) {
-        Integer quantity = cartDAO.getCart(cart);
-        if (quantity == null)
-            return cartDAO.insertCart(cart);
-
-        cart.setQuantity(quantity + cart.getQuantity());
-        return cartDAO.updateCart(cart);
+    public int addOrder(CartDTO item) {
+        String order_id = sequenceGenerator.generateUnique(
+                (String generatedId) -> orderDAO.isDuplicatedID(generatedId),
+                OrderPolicies.ID_LENGTH.getOrderPolicies()
+        );
+        item.setOrder_id(order_id);
+        int result = orderDAO.addOrder(item);
+        result *= cartDAO.deleteCartByMemberIDAndItemID(item);
+        return result;
     }
+
+    // End Region Order
 }
