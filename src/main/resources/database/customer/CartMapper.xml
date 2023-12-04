@@ -2,30 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.CartDAO">
+	<!-- Region Metadata -->
 
-	<select id="listCart" parameterType="map" resultType="cartDTO">
-		SELECT *
-		FROM (
-			SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
-			FROM CARTS C
-			JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
-			WHERE MEMBER_ID = #{member_id}
-		)
-		WHERE RN BETWEEN #{page.start} AND #{page.end}
-	</select>
-
-	<select id="countCart" parameterType="string" resultType="int">
+	<select id="countCartByMemberID" parameterType="String" resultType="int">
 		SELECT COUNT(ITEM_ID)
 		FROM CARTS
 		WHERE MEMBER_ID = #{value}
 	</select>
 
-	<delete id="deleteCart" parameterType="cartDTO">
-		DELETE FROM CARTS
-		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
-	</delete>
+	<!-- End Region Metadata -->
+	<!-- Region Basic CRUD -->
 
-	<insert id="insertCart" parameterType="cartDTO">
+	<select id="findAllCartByMemberID" parameterType="map" resultType="Integer">
+		SELECT *
+		FROM (
+				 SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
+				 FROM CARTS C
+				 JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
+				 WHERE MEMBER_ID = #{criteria}
+			 )
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+
+	<select id="getQuantityByItemIDAndMemberID" parameterType="cartDTO" resultType="Integer">
+		SELECT QUANTITY
+		FROM CARTS
+		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
+	</select>
+
+	<insert id="addCart" parameterType="cartDTO">
 		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
 		VALUES (#{member_id}, #{item_id}, #{quantity})
 	</insert>
@@ -36,11 +41,11 @@
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</update>
 
-	<select id="getCart" parameterType="cartDTO" resultType="Integer">
-		SELECT QUANTITY
-		FROM CARTS
+	<delete id="deleteCartByMemberIDAndItemID" parameterType="cartDTO">
+		DELETE FROM CARTS
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
-	</select>
+	</delete>
 
+	<!-- End Region Basic CRUD -->
 </mapper>
  
