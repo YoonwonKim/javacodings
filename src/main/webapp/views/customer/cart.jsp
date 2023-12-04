@@ -46,7 +46,7 @@
 										  inline ></cds-number-input>
 						<p id="cart-price" price="${item.price}">${item.price * item.quantity} 원</p>
 						<div class="button-group">
-							<cds-button kind="secondary" onclick="orderOne('${item.item_id}')">구매하기</cds-button>
+							<cds-button kind="secondary" onclick="location.href='/order/${item.item_id}'">구매하기</cds-button>
 							<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
 						</div>
 					</div>
