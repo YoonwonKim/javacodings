@@ -21,10 +21,10 @@ public interface ItemDAO {
 
 	ItemDTO findItemByItemId(@Param("item_id") String itemId);
 
-	List<ItemDTO> findAllItemsByTag(@Param("tag") String tag, @Param("limit") int limit);
-	List<ItemDTO> findAllItemsOrderByOrderCount(@Param("limit") int limit);
-	List<ItemDTO> findAllItemsOrderByRegDate(@Param("limit") int limit);
 	List<ItemDTO> findAllItemsByCategory(@Param("category") String category, @Param("page") PageDTO pageData);
+	List<ItemDTO> findFewItemsOrderByOrderCount(@Param("limit") int limit);
+	List<ItemDTO> findFewItemsOrderByRegDate(@Param("limit") int limit);
+	List<ItemDTO> findFewItemsByTag(@Param("tag") String tag, @Param("limit") int limit);
 
 	// End Region Basic CRUD
 }

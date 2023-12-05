@@ -21,7 +21,7 @@ public interface CartDAO {
 
 	int addCart(@Param("cart") CartDTO cart);
 
-	int setQuantityOfCartByItemIdAndMemberId(@Param("quantity") int quantity, @Param("member_id") String memberId, @Param("item_id") String itemId);
+	int editCartByItemIdAndMemberId(CartDTO cart);
 
 	int deleteCartByMemberIdAndItemId(@Param("member_id") String memberId, @Param("item_id") String itemId);
 

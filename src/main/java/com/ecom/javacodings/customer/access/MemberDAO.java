@@ -26,11 +26,16 @@ public interface MemberDAO {
 
 	MemberDTO getAddressByMemberId(@Param("member_id") String memberId);
 
-	int editMemberInfo(@Param("member") MemberDTO memberData);
-	int editAddress(@Param("address") MemberDTO addressData);
-	int editPriorityOfAddressByPriority(@Param("priority") int newPriority, @Param("criteria") int oldPriority);
+	int editMemberInfoByMemberId(@Param("member") MemberDTO memberData,
+								 @Param("member_id") String memberId);
+	int editAddressByPriorityAndMemberId(@Param("address") MemberDTO addressData,
+										 @Param("priority") int priority,
+										 @Param("member_id") String memberId);
+	int editPriorityOfAddressByPriorityAndMemberId(@Param("priority") int newPriority,
+												   @Param("criteria") int oldPriority,
+												   @Param("member_id") String memberId);
 
-	int deleteAddressByPriorityAndMemberID((@Param("member_id") String memberId, @Param("priority") int priority);
+	int deleteAddressByPriorityAndMemberID(@Param("priority") int priority, @Param("member_id") String memberId);
 
 	// End Region Sub-Tables
 }
