@@ -1,40 +1,36 @@
 package com.ecom.javacodings.customer.access;
 
 import com.ecom.javacodings.common.transfer.MemberDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
-import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MemberDAO {
 	// Region Metadata
 
-	int isExistMemberID(String member_id);
+	int isExistMemberId(@Param("member_id") String memberId);
 
 	// End Region Metadata
 	// Region Basic CRUD
 
-	MemberDTO findMemberByIDAndPassword(MemberDTO member);
-	String getMemberIDByNameAndPhone(MemberDTO member);
+	MemberDTO findMemberByIdAndPassword(@Param("member_id") String memberId, @Param("password") String password);
+	String getMemberIdByNameAndPhone(@Param("name") String name, @Param("phone") String phone);
 
-	int addMember(MemberDTO member);
+	int addMember(@Param("member") MemberDTO memberData);
+	int setPasswordByMemberId(@Param("password") String password, @Param("member_id") String memberId);
 
-	int setPassword(String temporaryPassword);
-
-	int archiveMemberByMemberID(String memberID);
+	int archiveMemberByMemberId(@Param("member_id") String memberId);
 
 	// End Region Basic CRUD
 	// Region Sub-Tables
 
-	MemberDTO getAddressByMemberID(String memberID);
+	MemberDTO getAddressByMemberId(@Param("member_id") String memberId);
 
-	int updateAddress(MemberDTO member);
-	int updateAddressPriority(MemberDTO member);
-	int updateMemberInfo(MemberDTO member);
+	int editMemberInfo(@Param("member") MemberDTO memberData);
+	int editAddress(@Param("address") MemberDTO addressData);
+	int editPriorityOfAddressByPriority(@Param("priority") int newPriority, @Param("criteria") int oldPriority);
 
-	int deleteAddressByPriorityAndMemberID(Map<String, Object> params);
+	int deleteAddressByPriorityAndMemberID((@Param("member_id") String memberId, @Param("priority") int priority);
 
 	// End Region Sub-Tables
 }

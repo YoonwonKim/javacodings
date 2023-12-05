@@ -1,31 +1,30 @@
 package com.ecom.javacodings.customer.access;
 
 import java.util.List;
-import java.util.Map;
 
 import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ecom.javacodings.common.transfer.ItemDTO;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ItemDAO {
 	// Region Metadata
 
-	Integer countItems();
-	Integer countItemsByTagID(String tagID);
-	Integer countItemsByCategory(String category);
+	int countItems();
+	int countItemsByTag(@Param("tag") String tag);
+	int countItemsByCategory(@Param("category") String category);
 
 	// End Region Metadata
 	// Region Basic CRUD
 
-	ItemDTO findItemByItemID(String itemID);
+	ItemDTO findItemByItemId(@Param("item_id") String itemId);
 
-	List<ItemDTO> findAllItemsByTagID(Map<String, Object> params);
-	List<ItemDTO> findAllItemsByCategory(Map<String, Object> params);
-	List<ItemDTO> findAllItemsOrderByOrderCount(Map<String, Object> params);
-	List<ItemDTO> findAllItemsOrderByRegDate(Map<String, Object> params);
+	List<ItemDTO> findAllItemsByTag(@Param("tag") String tag, @Param("limit") int limit);
+	List<ItemDTO> findAllItemsOrderByOrderCount(@Param("limit") int limit);
+	List<ItemDTO> findAllItemsOrderByRegDate(@Param("limit") int limit);
+	List<ItemDTO> findAllItemsByCategory(@Param("category") String category, @Param("page") PageDTO pageData);
 
 	// End Region Basic CRUD
 }
