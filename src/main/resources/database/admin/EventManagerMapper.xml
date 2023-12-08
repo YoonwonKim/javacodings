@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ecom.javacodings.merchandiser.access.EventManagerDAO">
+ 
+ 	
+ 	<!-- 이벤트 리스트 -->
+	<select id="listEvent" parameterType="pageDTO">
+	        
+	        <!-- SELECT EVENT_ID, CATEGORY, MAX(ITEM_ID) AS, MAX(CONTENT) AS CONTENT
+			FROM EVENTS
+			GROUP BY EVENT_ID, CATEGORY -->
+			
+			
+			
+			SELECT EVENT_ID, CATEGORY, CONTENT
+			FROM EVENTS
+			
+			
+			<!-- SELECT * 
+				FROM 
+				(
+					SELECT E.EVENT_ID, E.CATEGORY, E.CONTENT, E.START_DATE, E.END_DATE, EI.ITEM_ID, II.PATH,
+					       ROW_NUMBER() over (ORDER BY E.EVENT_ID ASC) AS RN
+					FROM EVENTS E
+					
+		            JOIN EVENT_ITEMS EI 
+					ON E.EVENT_ID = EI.EVENT_ID
+					
+		            JOIN ITEMS I
+		            ON I.ITEM_ID = EI.ITEM_ID
+		            
+					JOIN ITEM_IMAGES II
+		            ON I.ITEM_ID = II.ITEM_ID
+		            
+			  	)
+				WHERE RN BETWEEN #{start} AND #{end} -->
+				
+				
+			
+	</select>
+ 	
+  <!-- 상품리스트 등록일을 최신순으로 내림차순 -->
+  <select id="listEventItem" parameterType="pageDTO">
+		SELECT *
+		FROM
+		(
+			SELECT I.ITEM_ID, I.LABEL, I."DESC", E.CATEGORY,II.PATH,E.EVENT_ID,
+			       ROW_NUMBER() over (ORDER BY I.ITEM_ID DESC) AS RN
+			FROM ITEMS I
+			
+			JOIN EVENT_ITEMS EI
+			ON I.ITEM_ID = EI.ITEM_ID
+			
+			JOIN EVENTS E
+			ON E.EVENT_ID = EI.EVENT_ID
+			
+			JOIN ITEM_IMAGES II
+			ON II.ITEM_ID = I.ITEM_ID
+	  	)
+		WHERE RN BETWEEN #{start} AND #{end}
+		
+		
+	
+	
+	
+	<!-- 이벤트 추가 -->
+	<!-- <insert id="eventAdd" parameterType="pageDTO">
+		INSERT INTO EVENTS (EVENT_ID, CATEGORY, CONTENT)
+		VALUES (1, #{category}, #{content})
+	</insert> -->
+  </select>
+  
+  <update id="stateUpdate" parameterType="eventDTO">
+  		UPDATE EVENTS SET
+  		CATEGORY = #{category},
+  		CONTENT = #{content}
+  		WHERE event_id = #{event_id}
+  </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+	
+    <select id="event1" resultType="eventDTO">
+    	SELECT E.EVENT_ID, E.CATEGORY, E.ITEM_ID, I.ITEM_ID, I.LABEL, (I.PRICE*0.9) AS CONTENT 
+    	FROM EVENTS E 
+    	INNER JOIN ITEMS I
+        ON E.ITEM_ID = I.ITEM_ID
+    	WHERE 
+        EVENT_ID = #{event_id}
+    	
+    </select>
+    
+    <select id="event2" resultType="int">
+    	SELECT E.EVENT_ID, E.CATEGORY, E.ITEM_ID, I.ITEM_ID, I.LABEL, (I.STOCK-2) AS CONTENT 
+    	FROM EVENTS E 
+    	INNER JOIN ITEMS I
+        ON E.ITEM_ID = I.ITEM_ID
+    	WHERE 
+        EVENT_ID = #{event_id}
+    </select>
+  
+  
+  
+ </mapper>       

@@ -9,7 +9,7 @@
 		SELECT *
 		FROM
 		(
-			SELECT ITEM_ID, LABEL, "DESC", CATEGORY, IMAGE, PRICE, STOCK, ORDERS,
+			SELECT ITEM_ID, LABEL, "DESC", CATEGORY, PRICE, STOCK,
 			       ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
 			FROM ITEMS
 	  	)
@@ -17,7 +17,7 @@
 	</select>
 
 	<select id="getItemById" parameterType="String" resultType="itemDTO">
-		SELECT ITEM_ID, LABEL, "DESC", IMAGE, PRICE, STOCK, CATEGORY
+		SELECT ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY
 		FROM ITEMS
 		WHERE ITEM_ID = #{value}
 	</select>
@@ -33,7 +33,6 @@
 		<if test="category!=null">CATEGORY=#{category}, </if>
 		<if test="label!=null">LABEL=#{label}, </if>
 		<if test="desc!=null">"DESC"=#{desc}, </if>
-		<if test="image!=null">IMAGE=#{image}, </if>
 		<if test="price!=null">PRICE=#{price}, </if>
 		<if test="stock!=null">STOCK=#{stock} </if>
 		WHERE ITEM_ID=#{item_id}
