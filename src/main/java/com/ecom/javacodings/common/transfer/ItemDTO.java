@@ -11,8 +11,7 @@ public class ItemDTO {
 	private String reg_date    ;
 	private String label       ;
 	private String desc;
-	private String image       ;
 	private int price       ;
 	private int stock       ;
-	private int orders;
+	private String path ; 
 }

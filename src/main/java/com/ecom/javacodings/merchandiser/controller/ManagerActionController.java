@@ -1,8 +1,10 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Console;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -83,5 +88,32 @@ public class ManagerActionController {
                               OrderDTO order) {
         int result = managerService.updateOrderStates(order);
     	return "success";
+    }
+    
+    @PostMapping("/eventAdd")
+    public String eventAdd(HttpServletRequest request,
+							HttpServletResponse response,
+							Model model,
+							EventDTO eventDTO) {
+    	
+    	System.out.println("asdf");
+    	managerService.eventAdd(eventDTO);
+    	
+    	
+    	return "redirect:/admin/eventsPg";
+    }
+    
+    @PostMapping("/eventMgt")
+    @ResponseBody
+    public String eventMgt(HttpServletRequest request,
+                           HttpServletResponse response,
+                           EventDTO eventDTO) {
+        
+        // eventDTO를 활용하여 필요한 처리 로직을 구현합니다.
+        managerService.stateUpdate(eventDTO);
+        
+        System.out.println(eventDTO);
+        
+        return "redirect:/admin/eventsPg";
     }
 }
