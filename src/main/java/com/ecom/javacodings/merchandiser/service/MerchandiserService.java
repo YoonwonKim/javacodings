@@ -1,15 +1,18 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.merchandiser.access.EventManagerDAO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,7 @@ public class MerchandiserService implements ManagerService {
     @Autowired ItemManagerDAO itemDAO;
     @Autowired TagManagerDAO  tagDAO;
     @Autowired OrderManagerDAO  orderDAO;
+    @Autowired EventManagerDAO eventDAO;
     // End Region Data access objects
     // Region 상품 관리
 
@@ -95,4 +99,69 @@ public class MerchandiserService implements ManagerService {
         }
         return result;
     }
+    
+    @Override
+    public List<EventDTO> listEvent(PageDTO pageDTO){
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	
+    	params.put("page", pageDTO);
+    	
+    	return eventDAO.listEvent(pageDTO);
+    }
+    
+    @Override
+    public List<ItemDTO> listEventItem(PageDTO page){
+    	List<ItemDTO> result = eventDAO.listEventItem(page);
+    	return result;
+    	
+    	
+	}
+    
+//    @Override
+//	public void stateUpdate(ArrayList<String> tdArr) {
+//		List<EventDTO> list
+//		= new ArrayList<EventDTO>();
+//		for(int i = 0; i<tdArr.size(); i+=4) {
+//			EventDTO eventDTO = new EventDTO();
+//			int n=0; 
+//			String no=null;
+//			String mid=null;
+//			n = tdArr.get(i).indexOf(":");
+//			no = (tdArr.get(i).substring(n+1));
+//			eventDTO.setEvent_id(no);
+//			
+//			n = tdArr.get(i+1).indexOf(":");
+//			no = (tdArr.get(i+1).substring(n+1));
+//			eventDTO.setCategory(no);
+//			
+//			eventDTO.setCategory(no);
+//			eventDTO.setContent(no);
+//			eventDTO.setStart_date(no);
+//			eventDTO.setEnd_date(no);
+//			list.add(eventDTO);
+//		}
+//		eventDAO.stateUpdate(list);
+//	}
+    
+    @Override
+    public void stateUpdate(EventDTO eventDTO) {
+    	eventDAO.stateUpdate(eventDTO);
+    }
+    
+    
+    @Override
+    public int event1(EventDTO eventDTO) {
+    	return eventDAO.event1(eventDTO);
+    	
+    }
+    @Override
+    public int event2(EventDTO eventDTO) {
+    	return eventDAO.event2(eventDTO);
+    }
+    
+    @Override
+    public int eventAdd(EventDTO eventDTO) {
+    	return eventDAO.eventAdd(eventDTO);
+    }
+    
 }
