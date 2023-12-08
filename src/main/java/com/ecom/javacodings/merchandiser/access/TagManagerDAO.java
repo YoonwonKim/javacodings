@@ -14,7 +14,7 @@ public interface TagManagerDAO {
 
 	// End Region Read
 	// Region Create or Update
-	int insertTags(Map<String, Object> params);
+	int editTagsByItemId(Map<String, Object> params);	//몰루
 	// End Region Create or Update
 	// Region Delete
 	int deleteTagsByItemId(String item_id);
