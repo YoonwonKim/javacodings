@@ -58,7 +58,4 @@
     	WHERE 
         EVENT_ID = #{event_id}
     </select>
-  
-  
-  
  </mapper>       
