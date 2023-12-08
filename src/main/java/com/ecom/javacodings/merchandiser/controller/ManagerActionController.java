@@ -1,5 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
+import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.common.transfer.table.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.OrderDTO;
 import com.ecom.javacodings.common.transfer.table.TagDTO;
@@ -15,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -73,5 +77,32 @@ public class ManagerActionController {
             throws JsonProcessingException {
         int result = managerService.updateOrderStates(orders);
     	return "success";
+    }
+    
+    @PostMapping("/eventAdd")
+    public String eventAdd(HttpServletRequest request,
+							HttpServletResponse response,
+							Model model,
+							EventDTO eventDTO) {
+    	
+    	System.out.println("asdf");
+    	managerService.eventAdd(eventDTO);
+    	
+    	
+    	return "redirect:/admin/eventsPg";
+    }
+    
+    @PostMapping("/eventMgt")
+    @ResponseBody
+    public String eventMgt(HttpServletRequest request,
+                           HttpServletResponse response,
+                           EventDTO eventDTO) {
+        
+        // eventDTO를 활용하여 필요한 처리 로직을 구현합니다.
+        managerService.stateUpdate(eventDTO);
+        
+        System.out.println(eventDTO);
+        
+        return "redirect:/admin/eventsPg";
     }
 }
