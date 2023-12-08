@@ -66,13 +66,6 @@ public class ManagerPageController {
 		  page.setStart(1);
 		  page.setEnd(15);
 	        
-		  
-			/*
-			 * Map<String, Object> pageMap = pageConstructor.getPages((PageDTO page)
-			 * ->Collections.singletonList(memberService.listEvents(page)),
-			 * request.getParameter("page"), request.getParameter("row") );
-			 */
-		  
 	  model.addAttribute("event", managerService.listEvent(page));
 	  System.out.println(page);
 	  
@@ -92,9 +85,7 @@ public class ManagerPageController {
         page.setRow(15);
         page.setEnd(page.getRow() + page.getStart());
         
-       
         model.addAttribute("itemList", managerService.listEventItem(page));
-        model.addAttribute("event", managerService.listEvent(page));
         
         return "/merchandiser/eventsUp";
     }

@@ -23,11 +23,7 @@
 <%@ include file="/views/merchandiser/fragments/header.jsp" %>
 <main>
 	<div class="layer-01">
-	
-	<form action="../admin/actions/eventMgt" name="eventMgt">
-	이벤트아이디<input type="text" >
-	<input type="submit" value="전송">
-	</form>
+
 	<cds-table is-selectable is-sortable>
 		<cds-table-header-title slot="title">상품 이벤트 관리</cds-table-header-title>
 		<cds-table-header-description slot="description">
@@ -56,7 +52,9 @@
 				<cds-table-header-cell>이미지</cds-table-header-cell>
 				<cds-table-header-cell>이름</cds-table-header-cell>
 				<cds-table-header-cell>설명</cds-table-header-cell>
-				<cds-table-header-cell></cds-table-header-cell>
+				<cds-table-header-cell>
+				
+				</cds-table-header-cell>
 			</cds-table-header-row>
 		</cds-table-head>
 		<cds-table-body>
@@ -66,7 +64,6 @@
 					<cds-table-cell><image src="/resources/images/${item.path}" width="80px"></image></cds-table-cell>
 					<cds-table-cell name="label">${item.label}</cds-table-cell>
 					<cds-table-cell name="desc">${item.desc}</cds-table-cell>
-					
 				</cds-table-row>
 			</c:forEach>
 		</cds-table-body>

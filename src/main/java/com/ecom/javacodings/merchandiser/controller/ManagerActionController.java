@@ -79,6 +79,22 @@ public class ManagerActionController {
     	return "success";
     }
     
+    //카테고리, 콘텐트를 수정합니다
+    @PostMapping("/eventMgt")
+    @ResponseBody
+    public String eventMgt(HttpServletRequest request,
+    		HttpServletResponse response,
+    		EventDTO eventDTO) {
+    	
+    	// eventDTO를 활용하여 필요한 처리 로직을 구현합니다.
+    	managerService.stateUpdate(eventDTO);
+    	
+    	System.out.println(eventDTO);
+    	
+    	return "redirect:/admin/eventsPg";
+    }
+    
+    
     @PostMapping("/eventAdd")
     public String eventAdd(HttpServletRequest request,
 							HttpServletResponse response,
@@ -92,17 +108,4 @@ public class ManagerActionController {
     	return "redirect:/admin/eventsPg";
     }
     
-    @PostMapping("/eventMgt")
-    @ResponseBody
-    public String eventMgt(HttpServletRequest request,
-                           HttpServletResponse response,
-                           EventDTO eventDTO) {
-        
-        // eventDTO를 활용하여 필요한 처리 로직을 구현합니다.
-        managerService.stateUpdate(eventDTO);
-        
-        System.out.println(eventDTO);
-        
-        return "redirect:/admin/eventsPg";
-    }
 }
