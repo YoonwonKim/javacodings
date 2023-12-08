@@ -1,21 +1,15 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.CartDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
-import com.ecom.javacodings.customer.service.CustomerService;
+import com.ecom.javacodings.customer.service.IMemberService;
 
-import com.ecom.javacodings.external.purchase.PurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
-
-import java.util.Collections;
 
 import java.util.Map;
 import java.util.Random;
@@ -33,10 +27,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/actions")
 public class ActionController {
 
-    PageConstructor pageConstructor = new PageConstructor();
 
     @Autowired
-    CustomerService memberService;
+    IMemberService memberService;
 
 
     /**
@@ -48,17 +41,12 @@ public class ActionController {
     @ResponseBody
     public String login(HttpServletRequest request, HttpServletResponse response,
                         MemberDTO loginInfo) {
-        String result = "";
         HttpSession session = request.getSession();
-        MemberDTO loginAttempt = memberService.login(loginInfo);
+        MemberDTO loginAttempt = memberService.findMemberByIdAndPassword(loginInfo.getMember_id(), loginInfo.getPassword());
 
-        if (loginAttempt == null) {
-            result = "failed";
-        } else {
-            result = "success";
-            session.setAttribute("ssKey", loginAttempt);
-        }
-        return result;
+        if (loginAttempt == null) return "failed";
+        session.setAttribute("ssKey", loginAttempt);
+        return "success";
     }
 
     /**
@@ -72,14 +60,9 @@ public class ActionController {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 
-        if (ssKey == null) {
-            result = "success, but already logged out";
-        } else {
-            session.removeAttribute("ssKey");
-            result = "success";
-        }
-
-        return result;
+        if (ssKey == null) return "success, but already logged out";
+        session.removeAttribute("ssKey");
+        return "success";
     }
     //장바구니 시작
 	@PostMapping("/updateCart")
@@ -93,7 +76,7 @@ public class ActionController {
 		System.out.println("---------"+orderList);
 		
 		if(order != null) {
-			memberService.updateCart(orderList);
+//			memberService.addCart(orderList);
 		}
 		
 		
@@ -109,8 +92,8 @@ public class ActionController {
 		System.out.println("---------"+orderList);
 		
 		if(order != null) {
-			memberService.deleteOrderStateByCart(orderList);
-			memberService.deleteOrdersByCart(orderList);
+//			memberService.deleteOrderStateByCart(orderList);
+//			memberService.deleteOrdersByCart(orderList);
 			return "success";
 		}
 		
@@ -122,8 +105,8 @@ public class ActionController {
     @PutMapping("/account/register")
     public String register(HttpServletRequest request, HttpServletResponse response,
                            MemberDTO member) {
-        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
-        memberService.memberJoin(member);
+//        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
+//        memberService.memberJoin(member);
 
         response.setContentType("application/json");
         return "success";
@@ -133,9 +116,10 @@ public class ActionController {
     @GetMapping("/account/search/id")
     public String searchMember(HttpServletRequest request, HttpServletResponse response,
     							MemberDTO member) {
-    	String member_id = memberService.searchId(member);
-        if (member_id == null) return "error";
-    	return member_id;
+//    	String member_id = memberService.searchId(member);
+//        if (member_id == null) return "error";
+//    	return member_id;
+        return "";
     }
 
     @PostMapping("/account/search/password")
@@ -151,7 +135,7 @@ public class ActionController {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         member.setPassword(randomPassword);
-        memberService.temporaryPassword(member);
+//        memberService.temporaryPassword(member);
         return randomPassword;
     }
     
@@ -166,9 +150,9 @@ public class ActionController {
     	if(memebrInfo == null) {
     		result = "failed";
     	} else {
-    		memberService.updateMembers(member);
-    		memberService.updateMemberInfos(member);
-    		memberService.updateAddress(member);
+//    		memberService.updateMembers(member);
+//    		memberService.updateMemberInfos(member);
+//    		memberService.updateAddressPriority(member);
     		result = "success";
     	}
     	session.setAttribute("ssKey", memebrInfo);
@@ -186,9 +170,9 @@ public class ActionController {
     	if(memebrInfo == null) {
     		result = "failed";
     	} else {
-    		memberService.deleteMembers(member);
-    		memberService.deleteMemberInfos(member);
-    		memberService.deleteAddress(member);
+//    		memberService.deleteMembers(member);
+//    		memberService.deleteMemberInfos(member);
+//    		memberService.deleteAddress(member);
     		result = "success";
     	}
     	session.setAttribute("ssKey", memebrInfo);
@@ -199,29 +183,27 @@ public class ActionController {
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
                                  MemberDTO member) {
         System.out.println(member.getMember_id());
-        int r = memberService.idCheck(member.getMember_id());
-        if (r > 0) return "duplicated";
+//        int r = memberService.idCheck(member.getMember_id());
+//        if (r > 0) return "duplicated";
         return "not-duplicated";
     }
 
 
     // Region Products
+
+    /*
+     * JS를 이용한 무한 로딩을 구현하기 위해 REST API로 구현
+     */
     @PostMapping("/product/list/{category}")
     public Object getProducts(HttpServletRequest request, HttpServletResponse response,
-                              @PathVariable("category") String category) {
-        Map<String, Object> resultMap = pageConstructor.getPages(
-                (PageDTO pageSet) -> Collections.singletonList(memberService.listProductsInCategory(pageSet, category.toUpperCase())),
-                request.getParameter("page"),
-                request.getParameter("row"),
-                memberService.countProductsInCategory(category.toUpperCase())
-        );
+                              @PathVariable("category") String category, String page, String row) {
+        page = (page == null) ? "1" : page;
+        Map<String, Object> resultMap = memberService.getItemPageByCategoryWithRow(category, Integer.parseInt(page), 8);
 
-        if((Integer) resultMap.get("currentPage") > (Integer) resultMap.get("totalPages")) {
-            return "outbound page";
-        }
-
+        if (resultMap == null) return "outbound page";
         return resultMap;
     }
+
     // End Region Products
     // Region Cart
 
@@ -232,7 +214,7 @@ public class ActionController {
         if (ssKey == null) return "auth error";
 
         cart.setMember_id(ssKey.getMember_id());
-        memberService.cart(cart);
+        memberService.addCart(cart);
         return "success";
     }
 
@@ -244,8 +226,8 @@ public class ActionController {
         if (ssKey == null) return "auth error";
 
         item.setMember_id(ssKey.getMember_id());
-        item.setQuantity(memberService.getQuantity(item));
-        memberService.order(item);
+//        item.setQuantity(memberService.getQuantity(item));
+//        memberService.order(item);
 
         return "success";
     }
@@ -274,7 +256,7 @@ public class ActionController {
         if (ssKey == null) return "auth error";
 
         item.setMember_id(ssKey.getMember_id());
-        memberService.deleteCart(item);
+        memberService.deleteCartByMemberAndItemId(ssKey.getMember_id(), item.getItem_id());
         return "success";
     }
     @PostMapping("/cart/delete")
@@ -287,7 +269,7 @@ public class ActionController {
         int result = 1;
         for(CartDTO cart : cartList) {
             cart.setMember_id(ssKey.getMember_id());
-            result *= memberService.deleteCart(cart);
+//            result *= memberService.deleteCart(cart);
         }
         return "success";
     }

@@ -9,8 +9,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 public interface PurchaseService {
-    String requestPurchase(OrderDTO order, ItemDTO item, MemberDTO member)
-            throws NoSuchAlgorithmException, IOException, InterruptedException;
+//    String requestPurchase(OrderDTO order, ItemDTO item, MemberDTO member)
+//            throws NoSuchAlgorithmException, IOException, InterruptedException;
 
     Map<String, String> requestOrder(OrderDTO order, ItemDTO item, MemberDTO member)
             throws NoSuchAlgorithmException, IOException, InterruptedException;

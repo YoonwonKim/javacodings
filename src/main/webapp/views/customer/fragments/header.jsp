@@ -19,18 +19,18 @@
 			</c:otherwise>
 		</c:choose>
 		<li><a href="/cart">장바구니</a></li>
-		<li><a href="#">고객센터</a></li>
+		<li><a href="/support">고객센터</a></li>
 	</ul>
 </span>
 <div id="global-menu">
 	<ul>
-		<li><a href="/product/c/memory">기념상품</a></li>
-		<li><a href="/product/c/plan">기획전</a></li>
-		<li><a href="/product/c/uniform">유니폼</a></li>
-		<li><a href="/product/c/hats">모자</a></li>
-		<li><a href="/product/c/clothes">의류</a></li>
-		<li><a href="/product/c/cheer">응원용품</a></li>
-		<li><a href="/product/c/baseball">야구용품</a></li>
+		<li><a href="/item/c/memory">기념상품</a></li>
+		<li><a href="/item/c/plan">기획전</a></li>
+		<li><a href="/item/c/uniform">유니폼</a></li>
+		<li><a href="/item/c/hats">모자</a></li>
+		<li><a href="/item/c/clothes">의류</a></li>
+		<li><a href="/item/c/cheer">응원용품</a></li>
+		<li><a href="/item/c/baseball">야구용품</a></li>
 	</ul>
 </div>
 </header>

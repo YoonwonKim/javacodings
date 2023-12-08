@@ -2,9 +2,14 @@ package com.ecom.javacodings.external.purchase;
 
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.MemberPaymentDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.customer.access.items.ItemDAO;
+import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
+import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,64 +34,63 @@ public class payUpService implements PurchaseService {
 
     @Value("${purchase.payup.test-url}") String PAYUP_URL;
     @Value("${purchase.kakao.test-url}") String KAKAO_URL;
-    @Value("${purchase.naver.test-url}") String NAVER_URL;
+
+    @Autowired ItemDAO itemDAO;
+    @Autowired MemberInfoDAO memberInfoDAO;
+    @Autowired MemberPaymentDAO paymentDAO;
 
     // Region Processing
 
-    @Override
-    public String requestPurchase(OrderDTO order, ItemDTO item, MemberDTO member)
-            throws NoSuchAlgorithmException, IOException, InterruptedException {
-        String url = PAYUP_URL + MERCHANT_ID + "/keyin2";
-
-        //? create a map for body
-        Map<String, String> body = new HashMap<>();
-        String amount = String.valueOf(order.getQuantity() * item.getPrice());
-        LocalDateTime date = LocalDateTime.now();
-        String dateString  = date.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        String signature   = MERCHANT_ID + "|"
-                + order.getOrder_id() + "|"
-                + amount + "|"
-                + CERT_KEY + "|"
-                + dateString;
-
-        body.put("timestamp", dateString);
-        body.put("signature", getSignature(signature));
-        // 결제 정보
-        body.put("orderNumber", order.getOrder_id());
-        body.put("itemName", item.getLabel());
-//        body.put("cardNo", member.getCard_no());
-//        body.put("cardPw", member.getCard_pw());
-//        body.put("expireMonth", member.getExpire_month());
-//        body.put("expireYear",  member.getExpire_year());
-        body.put("cardNo", "9490191412341234");
-        body.put("cardPw", "00");
-        body.put("expireMonth", "05");
-        body.put("expireYear",  "19");
-
-        body.put("quota", "0");
-        body.put("amount", amount);
-        // 사용자 정보
-        body.put("userName", member.getName());
-        body.put("userId", member.getMember_id());
-        body.put("birthday", member.getBirth());
-        body.put("mobileNumber", "010"+member.getPhone());
-        body.put("userEmail", member.getEmail());
-        // 알림 설정
-        body.put("kakaoSend", "Y");
-
-
-        //? build and send the request
-        Map<String, String> responseBody = protocol(url, body);
-        return responseBody.get("transactionId");
-    }
+//    @Override
+//    public String requestPurchase(OrderDTO order, MemberDTO member)
+//            throws NoSuchAlgorithmException, IOException, InterruptedException {
+//        // ? create a map for body
+//        Map<String, String> requestBody = new HashMap<>();
+//        ItemDTO item = itemDAO.findItemByItemId(order.getItem_id());
+//        String amount = String.valueOf(order.getQuantity() * item.getPrice());
+//        LocalDateTime date = LocalDateTime.now();
+//        String dateString  = date.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+//        String signature   = MERCHANT_ID + "|"
+//                + order.getOrder_id() + "|"
+//                + amount + "|"
+//                + CERT_KEY + "|"
+//                + dateString;
+//
+//        body.put("timestamp", dateString);
+//        body.put("signature", getSignature(signature));
+//        // 결제 정보
+//        body.put("orderNumber", order.getOrder_id());
+//        body.put("itemName", item.getLabel());
+////        body.put("cardNo", member.getCard_no());
+////        body.put("cardPw", member.getCard_pw());
+////        body.put("expireMonth", member.getExpire_month());
+////        body.put("expireYear",  member.getExpire_year());
+//        body.put("cardNo", "9490191412341234");
+//        body.put("cardPw", "00");
+//        body.put("expireMonth", "05");
+//        body.put("expireYear",  "19");
+//
+//        body.put("quota", "0");
+//        body.put("amount", amount);
+//        // 사용자 정보
+//        body.put("userName", member.getName());
+//        body.put("userId", member.getMember_id());
+//        body.put("birthday", member.getBirth());
+//        body.put("mobileNumber", "010"+member.getPhone());
+//        body.put("userEmail", member.getEmail());
+//        // 알림 설정
+//        body.put("kakaoSend", "Y");
+//
+//
+//        String url = PAYUP_URL + MERCHANT_ID + "/keyin2";
+//        //? build and send the request
+//        Map<String, String> responseBody = protocol(url, body);
+//        return responseBody.get("transactionId");
+//    }
 
     @Override
     public Map<String, String> requestOrder(OrderDTO order, ItemDTO item, MemberDTO member)
             throws NoSuchAlgorithmException, IOException, InterruptedException {
-        String url = PAYUP_URL + MERCHANT_ID + "/order";
-
-        //? create a map for body
-        Map<String, String> body = new HashMap<>();
         String amount = String.valueOf(order.getQuantity() * item.getPrice());
         LocalDateTime date = LocalDateTime.now();
         String dateString  = date.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
@@ -96,37 +100,28 @@ public class payUpService implements PurchaseService {
                 + CERT_KEY + "|"
                 + dateString;
 
-        body.put("timestamp", dateString);
-        body.put("signature", getSignature(signature));
+        RequestDTO requestBody = new RequestDTO();
+        requestBody.setTimestamp(dateString);
+        requestBody.setSignature(getSignature(signature));
+
         // 결제 정보
-        body.put("orderNumber", order.getOrder_id());
-        body.put("itemName", item.getLabel());
-//        body.put("cardNo", member.getCard_no());
-//        body.put("cardPw", member.getCard_pw());
-//        body.put("expireMonth", member.getExpire_month());
-//        body.put("expireYear",  member.getExpire_year());
-        body.put("cardNo", "9490191412341234");
-        body.put("cardPw", "00");
-        body.put("expireMonth", "05");
-        body.put("expireYear",  "19");
+        ItemDTO itemData = itemDAO.findByItemId(order.getItem_id());
+        requestBody.setOrder(order, itemData.getPrice());
 
-        body.put("userAgent", "WP");
+        // 결제수단 정보
+        MemberPaymentDTO paymentData = paymentDAO.findByMemberId(member.getMember_id());
+        requestBody.setPayment(paymentData);
 
-        body.put("quota", "0");
-        body.put("amount", amount);
         // 사용자 정보
-        body.put("userName", member.getName());
-        body.put("userId", member.getMember_id());
-        body.put("birthday", member.getBirth());
-        body.put("mobileNumber", "010"+member.getPhone());
-        body.put("userEmail", member.getEmail());
-        // 알림 설정
-        body.put("kakaoSend", "Y");
-
-        body.put("returnUrl",  "/actions/return");
+        MemberDTO memberData = memberInfoDAO.findByMemberId(member.getMember_id());
+        requestBody.setMember(memberData);
 
         //? build and send the request
-        Map<String, String> responseBody = protocol(url, body);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> requestMap = mapper.convertValue(requestBody, Map.class);
+
+        String url = PAYUP_URL + MERCHANT_ID + "/order";
+        Map<String, String> responseBody = protocol(url, requestMap);
         return responseBody;
     }
 
@@ -167,36 +162,37 @@ public class payUpService implements PurchaseService {
     public Map<String, String> requestKakaoOrder(OrderDTO order, ItemDTO item, MemberDTO member)
             throws NoSuchAlgorithmException, IOException, InterruptedException {
         String url = KAKAO_URL + MERCHANT_ID + "/order";
+//
+//        LocalDateTime date = LocalDateTime.now();
+//        String dateString = date.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+//        int amount = order.getQuantity() * item.getPrice();
+//        String signature = MERCHANT_ID + "|"
+//                + order.getOrder_id() + "|"
+//                + amount + "|"
+//                + CERT_KEY + "|"
+//                + dateString;
+//
+//        Map<String, String> requestBody = new HashMap<>();
+//        // Order Info
+//        requestBody.put("orderNumber", order.getOrder_id());
+//        requestBody.put("amount", String.valueOf(amount));
+//        // Item Info
+//        requestBody.put("itemName", item.getLabel());
+//        // Member Info
+//        requestBody.put("userName", member.getName());
+//        requestBody.put("userMail", member.getEmail());
+//        requestBody.put("mobileNumber", member.getPhone());
+//        // Transaction Info
+//        requestBody.put("userAgent", "WP");
+//        requestBody.put("returnUrl", "dummy");
+//        requestBody.put("timestamp", dateString);
+//        requestBody.put("cashbillYn", "N");
+//        requestBody.put("signature", getSignature(signature));
 
-        LocalDateTime date = LocalDateTime.now();
-        String dateString = date.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        int amount = order.getQuantity() * item.getPrice();
-        String signature = MERCHANT_ID + "|"
-                + order.getOrder_id() + "|"
-                + amount + "|"
-                + CERT_KEY + "|"
-                + dateString;
-
-        Map<String, String> requestBody = new HashMap<>();
-        // Order Info
-        requestBody.put("orderNumber", order.getOrder_id());
-        requestBody.put("amount", String.valueOf(amount));
-        // Item Info
-        requestBody.put("itemName", item.getLabel());
-        // Member Info
-        requestBody.put("userName", member.getName());
-        requestBody.put("userMail", member.getEmail());
-        requestBody.put("mobileNumber", member.getPhone());
-        // Transaction Info
-        requestBody.put("userAgent", "WP");
-        requestBody.put("returnUrl", "dummy");
-        requestBody.put("timestamp", dateString);
-        requestBody.put("cashbillYn", "N");
-        requestBody.put("signature", getSignature(signature));
-
-        //? build and send the request
-        Map<String, String> responseBody = protocol(url, requestBody);
-        return responseBody;
+//        //? build and send the request
+//        Map<String, String> responseBody = protocol(url, requestBody);
+//        return responseBody;
+        return null;
     }
 
     @Override

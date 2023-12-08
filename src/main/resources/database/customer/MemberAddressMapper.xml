@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.customer.access.members.MemberAddressDAO">
+
+	<select id="findPrimaryByMemberId" resultType="AddressDTO">
+		SELECT ZIPCODE, ADDRESS, "ADDRESS2"
+		FROM MEMBER_ADDRESSES
+		WHERE MEMBER_ID = #{member_id} AND PRIORITY = 1
+	</select>
+
+	<select id="findAllByMemberId" resultType="AddressDTO">
+		SELECT ZIPCODE, ADDRESS, ADDRESS2, PRIORITY
+		FROM MEMBER_ADDRESSES
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
+</mapper>

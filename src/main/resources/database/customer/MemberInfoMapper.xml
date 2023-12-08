@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecom.javacodings.customer.access.members.MemberInfoDAO">
+
+	<insert id="add">
+		INSERT INTO MEMBER_INFOS(MEMBER_ID, NAME, EMAIL, BIRTH, PHONE)
+		VALUES (#{parameter.member_id}, #{parameter.name}, #{parameter.email}, #{parameter.birth}, #{parameter.phone})
+	</insert>
+
+	<update id="editByMemberId">
+		UPDATE MEMBER_INFOS SET
+		 	NAME  = #{parameter.name},
+			EMAIL = #{parameter.email},
+			PHONE = #{parameter.phone},
+			BIRTH = #{parameter.birth}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
+
+</mapper>

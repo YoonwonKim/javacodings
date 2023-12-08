@@ -1,106 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.MemberDAO">
-    <select id="login" parameterType="memberDTO" resultType="memberDTO">
-        SELECT MEMBER_ID, PASSWORD, ROLE 
-        FROM MEMBERS
-        WHERE MEMBER_ID=#{member_id} AND PASSWORD=#{password}
-    </select>
-    
-	<select id="searchId" parameterType="memberDTO" resultType="string">
-		SELECT MEMBER_ID 
+<mapper namespace="com.ecom.javacodings.customer.access.members.MemberDAO">
+	<!-- Region Metadata -->
+
+	<select id="isExistMemberID" resultType="int">
+		SELECT CASE WHEN COUNT(MEMBER_ID) > 0 THEN '1' ELSE '0' END
+		FROM MEMBERS
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
+	<!-- End Region Metadata -->
+	<!-- Region Basic CRUD -->
+
+	<select id="findByIdAndPassword" resultType="memberDTO">
+		SELECT
+			M.MEMBER_ID, M.PASSWORD, M.ROLE, M."LEVEL",
+			I.NAME, I.EMAIL, I.BIRTH, I.PHONE
+		FROM MEMBERS M, MEMBER_INFOS I
+		WHERE M.MEMBER_ID = #{member_id} AND M.PASSWORD=#{password}
+		  AND M.MEMBER_ID = I.MEMBER_ID
+	</select>
+
+	<select id="getMemberIdByNameAndPhone" resultType="string">
+		SELECT MEMBER_ID
 		FROM MEMBER_INFOS
 		WHERE NAME = #{name} AND EMAIL = #{email}
 	</select>
 
-	<select id="getMemberById" parameterType="memberDTO" resultType="memberDTO">
-		SELECT M.*, I.NAME, I.EMAIL, TO_CHAR(I.BIRTH, 'YYMMDD') AS BIRTH, I.PHONE
-		FROM MEMBERS M
-		JOIN MEMBER_INFOS I
-		ON M.MEMBER_ID = I.MEMBER_ID
-		WHERE M.MEMBER_ID = #{member_id}
-	</select>
-	
-	<update id="temporaryPassword" parameterType="memberDTO">
-	    UPDATE MEMBERS
-	    SET PASSWORD = #{password}
-	    WHERE MEMBER_ID = (SELECT MEMBER_ID FROM MEMBER_INFOS WHERE EMAIL = #{email})
-	</update>
- 
-    <select id="idCheck" resultType="int">
-      SELECT COUNT(MEMBER_ID) FROM MEMBERS
-    	WHERE MEMBER_ID = #{member_id}
-    </select>
-      
-    
-    <insert id="memberJoin" parameterType="memberDTO" useGeneratedKeys="false">
-    	INSERT ALL
-	        INTO MEMBER (MEMBER_ID, PASSWORD, ROLE) 
-	        VALUES (#{member_id}, #{password}, 'custom')
-	        
-	        INTO MEMBER_INFOS (MEMBER_ID, NAME, EMAIL, PHONE, BIRTH) 
-	        VALUES (#{member_id}, #{name}, #{email}, #{phone}, #{birth})
-	        
-	        INTO ADDRESS (MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2) 
-	        VALUES (#{member_id}, #{zipcode}, #{address}, #{address2})
-	     	SELECT 1 FROM DUAL
-    </insert>
-    
-	<update id="updateMember" parameterType="memberDTO">
-		UPDATE MEMBER 
-		SET PASSWORD = #{password}, 
-		    ROLE = 'custom' 
-		WHERE MEMBER_ID = #{member_id};
-	</update>
+	<insert id="add" useGeneratedKeys="false">
+		INSERT INTO MEMBERS(MEMBER_ID, PASSWORD)
+		VALUES (#{member_id}, #{password})
+	</insert>
 
-	<update id="updateMemberInfos" parameterType="memberDTO">
-		UPDATE MEMBER_INFOS 
-		SET NAME = #{name}, 
-			EMAIL = #{email}, 
-			PHONE = #{phone}, 
-			BIRTH = #{birth} 
-		WHERE MEMBER_ID = #{member_id};
-	</update>
-
-	<update id="updateAddress" parameterType="memberDTO">
-		UPDATE ADDRESS 
-		SET ZIPCODE = #{zipcode}, 
-			ADDRESS = #{address}, 
-			ADDRESS2 = #{address2} 
-		WHERE MEMBER_ID = #{member_id};
-	</update>
-	
-	<delete id="deleteMembers" parameterType="memberDTO">
-		DELETE FROM MEMBERS
-		WHERE MEMBER_ID = #{member_id}		
-	</delete>
-
-	<delete id="deleteMember_Infos" parameterType="memberDTO">
-		DELETE FROM MEMBER_INFOS
-		WHERE MEMBER_ID = #{member_id}		
-	</delete>
-	
-	<delete id="deleteAddress" parameterType="memberDTO">
-		DELETE FROM ADDRESS 
-		WHERE MEMBER_ID = #{member_id}		
-	</delete>
-
-	<select id="getCurrentAddress" parameterType="memberDTO">
-		SELECT ZIPCODE, ADDRESS, ADDRESS2
-		FROM ADDRESS
+	<update id="setPasswordByMemberId">
+		UPDATE MEMBERS 
+		SET PASSWORD = #{password}
 		WHERE MEMBER_ID = #{member_id}
-	</select>
+	</update>
+	
+	<delete id="archiveByMemberID" parameterType="String">
+		UPDATE MEMBERS
+		SET ROLE = 'ARCHIVED'
+		WHERE MEMBER_ID = #{value}
+	</delete>
 
-	<select id="countMemberOrders" resultType="orderDTO" parameterType="memberDTO">
-		SELECT COUNT(STATE) AS QUANTITY, STATE
-		FROM (
-			SELECT MAX(S.STATE) AS STATE
-			FROM ORDERS O
-			JOIN ORDER_STATE S
-			ON O.ORDER_ID = S.ORDER_ID
-			WHERE O.MEMBER_ID = #{member_id}
-			GROUP BY O.ORDER_ID
-		)
-		GROUP BY STATE
-	</select>
+	<!-- End Region Basic CRUD -->
+
+	<update id="editByPriorityAndMemberId">
+		UPDATE MEMBER_ADDRESSES SET
+									ZIPCODE  = #{zipcode},
+									ADDRESS  = #{address},
+									ADDRESS2 = #{address2}
+		WHERE MEMBER_ID = #{member_id}
+	</update>
+
+	<update id="setPriorityByMemberIdAndPriority">
+		UPDATE MEMBER_ADDRESSES
+		SET PRIORITY = #{priority}
+		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{criteria}
+	</update>
+
+	<delete id="deleteByPriorityAndMemberID">
+		DELETE FROM MEMBER_ADDRESSES
+		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{priority}
+	</delete>
+
 </mapper>

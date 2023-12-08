@@ -4,57 +4,73 @@
 <mapper namespace="com.ecom.javacodings.merchandiser.access.ItemManagerDAO">
 <!-- Region Create -->
 	<insert id="createItem" parameterType="itemDTO">
-		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", IMAGE, PRICE, STOCK, CATEGORY)
-		VALUES (#{item_id}, #{label}, #{desc}, #{image}, #{price}, #{stock}, #{category})
+		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY)
+		VALUES (#{item_id}, #{label}, #{desc}, #{price}, #{stock}, #{category})
 	</insert>
 <!-- End Region Create -->
 <!-- Region Read -->
-	<select id="listItem" parameterType="pageDTO">
+	<select id="findAll" parameterType="pageDTO">
 		SELECT *
 		FROM
 		(
-			SELECT ITEM_ID, LABEL, "DESC", CATEGORY, PRICE, STOCK,
-			       ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-			FROM ITEMS
+			SELECT I.ITEM_ID, I.LABEL, I."DESC", I.CATEGORY, I.PRICE, I.STOCK,
+			ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+			FROM ITEMS I
 	  	)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 
+	<select id="findImagesByItemId" resultType="ImageDTO">
+		SELECT "CATEGORY", PATH
+		FROM ITEM_IMAGES
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
 	<select id="getItemById" parameterType="String" resultType="itemDTO">
-		SELECT ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY
-		FROM ITEMS
-		WHERE ITEM_ID = #{value}
+		SELECT I.ITEM_ID, I.LABEL, I."DESC", I.PRICE, I.STOCK, I.CATEGORY
+		FROM ITEMS I 
+		WHERE I.ITEM_ID = #{value}
 	</select>
 
 	<select id="listCategory" resultType="String">
 		SELECT CATEGORY FROM ITEMS GROUP BY CATEGORY
 	</select>
 
-	<select id="countItems" resultType="int">
-		SELECT COUNT(ITEM_ID) FROM ITEMS
+	<select id="count" resultType="int">
+		SELECT COUNT(ITEM_ID)
+		FROM ITEMS
 	</select>
 <!-- End Region Read -->
 <!-- Region Update -->
 	<update id="updateItem" parameterType="ItemDTO">
 		UPDATE ITEMS
 		SET
-		<if test="category!=null">CATEGORY=#{category}, </if>
-		<if test="label!=null">LABEL=#{label}, </if>
-		<if test="desc!=null">"DESC"=#{desc}, </if>
-		<if test="price!=null">PRICE=#{price}, </if>
-		<if test="stock!=null">STOCK=#{stock} </if>
+		<if test="category!=null">CATEGORY = #{category}, </if>
+		<if test="label!=null">LABEL = #{label}, </if>
+		<if test="desc!=null">"DESC" = #{desc}, </if>
+		<if test="price!=null">PRICE = #{price}, </if>
+		<if test="stock!=null">STOCK = #{stock} </if>
 		WHERE ITEM_ID=#{item_id}
 	</update>
 	<update id="updateImageById">
-		UPDATE ITEMS
-		SET IMAGE=#{image}
-		WHERE ITEM_ID=#{item_id}
+		INSERT INTO ITEM_IMAGES(ITEM_ID, PATH, CATEGORY)
+		VALUES (#{item_id}, #{image_id}, 'detail')
 	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->
 	<delete id="deleteItem" parameterType="string">
 		DELETE
-		FROM ITEMS
+		FROM ITEMS 
+		WHERE ITEM_ID = #{value}
+	</delete>
+	<delete id="deleteItemImages" parameterType="string">
+		DELETE
+		FROM ITEM_IMAGES 
+		WHERE ITEM_ID = #{value}
+	</delete>
+	<delete id="deleteItemTegs" parameterType="string">
+		DELETE
+		FROM ITEM_TAGS 
 		WHERE ITEM_ID = #{value}
 	</delete>
 <!-- End Region Delete -->

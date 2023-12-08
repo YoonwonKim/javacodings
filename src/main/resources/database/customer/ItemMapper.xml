@@ -1,63 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.ItemDAO">
-    <select id="listNew" parameterType="int">
-        SELECT *
-        FROM (SELECT LABEL, "DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-              FROM ITEMS
-              ORDER BY REG_DATE DESC)
-        WHERE RN BETWEEN 1 AND #{value}
-    </select>
+<mapper namespace="com.ecom.javacodings.customer.access.items.ItemDAO">
+    <!-- Region Metadata -->
 
-    <select id="listBest" parameterType="int">
-        SELECT *
-        FROM (SELECT LABEL, "DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY ORDERS DESC) AS RN
-              FROM ITEMS
-              ORDER BY ORDERS DESC)
-        WHERE RN BETWEEN 1 AND #{value}
-    </select>
-
-    <select id="listItemsByTagId" parameterType="map">
-        SELECT *
-        FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, I.IMAGE, ROW_NUMBER() over (ORDER BY I.REG_DATE) AS RN
-              FROM ITEMS I
-                  JOIN ITEMS_TAGS T ON T.TAG_ID = #{value}
-              WHERE I.ITEM_ID = T.ITEM_ID
-              ORDER BY I.REG_DATE)
-        WHERE RN BETWEEN 1 AND 8
-    </select>
-    
-    <!-- 아이템 리스트 카운트 -->
-    <select id="getItemCnt" resultType="int">
-    	SELECT COUNT(ITEM_ID) FROM ITEMS
-    </select>
-    <!-- 아이템 리스트 받기 -->
-    <select id="getListItem" parameterType="itemDTO">
-    	SELECT IMAGE, LABEL, PRICE, "DESC", STOCK
-    	FROM ITEMS
-    </select>
-    
-    <!-- 상품 디테일 -->
-    <select id="listItemDt" parameterType="itemDTO" resultType="itemDTO">
-    	SELECT *
-    	FROM ITEMS
-    	WHERE ITEM_ID = #{item_id}
-    </select>
-    
-    <select id="listProductsInCategory" parameterType="pageDTO">
-        SELECT *
-        FROM (
-            SELECT ITEM_ID, LABEL, CATEGORY, "DESC", PRICE, IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-            FROM ITEMS
-            WHERE CATEGORY = #{category}
-        )
-        WHERE RN BETWEEN #{page.start} AND #{page.end}
-    </select>
-    <select id="countProductsInCategory" parameterType="string">
+    <select id="count" resultType="Integer">
         SELECT COUNT(ITEM_ID)
         FROM ITEMS
-        WHERE CATEGORY = #{value}
-        GROUP BY CATEGORY
     </select>
+
+    <select id="countByTag" resultType="Integer">
+        SELECT COUNT(ITEM_ID)
+        FROM ITEMS I
+        JOIN ITEM_TAGS T ON I.ITEM_ID = T.ITEM_ID
+        WHERE T.TAG = #{tag}
+    </select>
+
+    <select id="countByCategory" resultType="Integer">
+        SELECT COUNT(ITEM_ID)
+        FROM  ITEMS
+        WHERE CATEGORY = #{category}
+    </select>
+
+    <!-- End Region Metadata -->
+    <!-- Region Basic CRUD -->
+
+    <select id="findByItemId" resultType="itemDTO">
+        SELECT I.ITEM_ID, I.LABEL, I.PRICE, I."DESC", II.PATH
+        FROM ITEMS I
+        JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
+        WHERE I.ITEM_ID = #{item_id}
+    </select>
+
+    <select id="findAllByCategory" resultType="itemDTO">
+        SELECT *
+        FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, II.PATH,
+                     ROW_NUMBER() over (ORDER BY I.REG_DATE DESC) AS RN
+              FROM ITEMS I
+               JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
+              WHERE I.CATEGORY = #{category}
+         )
+        WHERE RN BETWEEN #{page.start} AND #{page.end}
+    </select>
+
+    <select id="findAllByTag" resultType="itemDTO">
+		SELECT *
+		FROM (SELECT I.ITEM_ID, I.LABEL, I.PRICE, II.PATH, ROW_NUMBER() over (ORDER BY I.REG_DATE) AS RN
+			FROM ITEMS I
+				JOIN ITEM_TAGS IT ON I.ITEM_ID = IT.ITEM_ID
+				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
+				WHERE IT.TAG = #{tag}
+			ORDER BY I.REG_DATE)
+		WHERE RN BETWEEN 0 AND #{limit}
+    </select>
+
+    <select id="findAllByOrderCount" resultType="itemDTO">
+		SELECT LABEL, "DESC", CATEGORY, STOCK, PRICE
+		FROM (
+			SELECT I.LABEL, I."DESC", II.PATH, I.CATEGORY, I.STOCK, I.PRICE, ROW_NUMBER() OVER (ORDER BY ORDER_COUNT DESC) AS RN
+			FROM ITEMS I
+				JOIN (SELECT ITEM_ID, SUM(QUANTITY) AS ORDER_COUNT
+					FROM ORDERS
+					GROUP BY ITEM_ID) M ON I.ITEM_ID = M.ITEM_ID
+				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
+		) WHERE RN BETWEEN 0 AND #{limit}
+    </select>
+
+    <select id="findAllByRegDate" resultType="itemDTO">
+        SELECT *
+        FROM (
+            SELECT I.ITEM_ID, I.LABEL, I.PRICE, II.PATH,
+                   ROW_NUMBER() over (ORDER BY I.REG_DATE DESC) AS RN
+            FROM ITEMS I
+            JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail')
+        WHERE RN BETWEEN 0 AND #{limit}
+    </select>
+
+    <!-- End Region Basic CRUD -->
 </mapper>

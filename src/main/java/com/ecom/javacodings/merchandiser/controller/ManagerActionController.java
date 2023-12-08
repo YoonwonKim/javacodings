@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.Console;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/actions")
@@ -25,64 +27,55 @@ public class ManagerActionController {
     // Region Services
     @Autowired ManagerService managerService;
     // End Region Services
-    // Region Get Data
-    @GetMapping("/item/read")
-    @ResponseBody
-    public String getItem(HttpServletRequest request, HttpServletResponse response)
-            throws JsonProcessingException {
-        String item_id = request.getParameter("item_id");
-        ItemDTO item = managerService.readItemById(item_id);
+    // Region Get Item
 
-        ObjectMapper mapper = new ObjectMapper();
-        String result = mapper.writeValueAsString(item);
+    @PutMapping("/item/add")
+    public String setItem(ItemDTO item,
+                          @RequestParam(required=false, name="tags[]") List<String> tags) {
+        String result;
+        result = managerService.createItem(item);
+        if (!result.equals("error")) managerService.updateTags(item.getItem_id(), tags);
         return result;
     }
-    @GetMapping("/item/tags")
-    @ResponseBody
-    public String getTags(HttpServletRequest request, HttpServletResponse response)
-            throws JsonProcessingException {
-        String item_id = request.getParameter("item_id");
-        List<TagDTO> tags = managerService.listTagsById(item_id);
-        ObjectMapper mapper = new ObjectMapper();
-        String result = mapper.writeValueAsString(tags);
-        return result;
+
+    @GetMapping("/item/get")
+    public Map<String, Object> getItem(String itemId) {
+        ItemDTO item  = managerService.readItemById(itemId);
+        String[] tags = managerService.findTagsByItemId(itemId);
+        List<ItemImageDTO> images = managerService.findImagesByItemId(itemId);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("item", item);
+        resultMap.put("tags", tags);
+        resultMap.put("images", images);
+        return resultMap;
     }
-    // End Region Get Data
-    // Region Set Data
-    @PutMapping("/item/update")
-    public String setItem(HttpServletRequest request, HttpServletResponse response,
-                          ItemDTO item, @RequestParam(required=false, name="tags") List<String> tags) {
+
+    @PutMapping("/item/edit")
+    public String editItem(ItemDTO item, @RequestParam(required=false, name="tags[]") List<String> tags) {
         int result = 0;
         result += managerService.updateItem(item);
-        result *= managerService.updateTags(item.getItem_id(), tags);
+        if (tags != null) result *= managerService.updateTags(item.getItem_id(), tags);
 
         if (result > 0) return "success";
         return "error";
     }
-    @PutMapping("/item/image")
-    public String setImage(HttpServletRequest request, HttpServletResponse response,
-                           ItemDTO item, @RequestParam("file") MultipartFile file) {
-        int result = managerService.updateImage(item, file);
+
+    @GetMapping("/item/tag/list")
+    public List<String> getTags(String item_id) {
+        return managerService.findAllTags();
+    }
+
+    @PutMapping("/item/image/add")
+    public String setImage(String itemId, @RequestParam("file") MultipartFile file) {
+        int result = managerService.updateImage(itemId, file);
 
         if (result > 0) return "success";
         return "error";
     }
-    @PostMapping("/item/create")
-    public String setItem(HttpServletRequest request, HttpServletResponse response,
-                          ItemDTO item,
-                          @RequestParam(required=false, name="tags") List<String> tags,
-                          @RequestParam("file") MultipartFile file) {
-        int result = 0;
-        result += managerService.updateImage(item, file);
-        result *= managerService.createItem(item);
-        result *= managerService.updateTags(item.getItem_id(), tags);
 
-        if (result > 0) return "success";
-        return "error";
-    }
-    // End Region Set Data
-    
-    //orderUpdate 구동되지 않음
+    // End Region Get Data
+
     @PutMapping("/update_order")
     public String orderUpdate(HttpServletRequest request, HttpServletResponse response,
                               OrderDTO order) {

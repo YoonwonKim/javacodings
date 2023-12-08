@@ -2,27 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.BannerDAO">
 
-    <select id="listMain" resultType="bannerDTO" parameterType="int">
+    <select id="getBannerByCategory" resultType="bannerDTO">
         SELECT *
-        FROM (
-                 SELECT LABEL, "DESC", IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE) AS RN
-                 FROM  BANNERS
-                 WHERE CATEGORY='MAIN'
-                 ORDER BY REG_DATE
-             )
-        WHERE RN BETWEEN 1 AND #{value}
+        FROM EVENTS
     </select>
-
-  <select id="listEvent" resultType="bannerDTO">
-    SELECT *
-    FROM (
-           SELECT LABEL, "DESC", IMAGE, ROW_NUMBER() over (ORDER BY REG_DATE) AS RN
-           FROM  BANNERS
-           WHERE CATEGORY='EVENT'
-           ORDER BY REG_DATE
-         )
-    WHERE RN BETWEEN 1 AND 3
-  </select>
 
 </mapper>
  

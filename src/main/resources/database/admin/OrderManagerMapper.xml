@@ -12,7 +12,7 @@
 						  JOIN
 					  (
 						  SELECT ORDER_ID, MAX(STATE) AS STATE, MAX(REG_DATE) AS REG_DATE
-						  FROM ORDER_STATE
+						  FROM ORDER_STATES
 						  WHERE STATE &gt; 0
 						  GROUP BY ORDER_ID
 					  ) S
@@ -20,50 +20,51 @@
 			 )
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
-	<select id="orderUpdate" parameterType="OrderDTO">
-	INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE)
-	SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity}, #{state}+1,
-			sysdate
-	FROM ORDERS
-	ORDER BY REG_DATE DESC
-# 	WHERE ORDER_ID = {order_id}
-   </select>
-   <select id="orderList" parameterType="pageDTO">
-	 SELECT * 
-	 FROM (SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
-      FROM ORDERS)
-        WHERE RN BETWEEN #{start} AND #{end} 
-	</select>
+	<insert id="orderUpdate" parameterType="OrderDTO">
+		INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY)
+		SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity} 
+		FROM ORDERS
+		ORDER BY REG_DATE DESC
+		WHERE ORDER_ID = #{order_id}
+	</insert>
 	
-	
+	<insert id="updateOrderStates" parameterType="orderDTO" useGeneratedKeys="false">
+		INSERT INTO ORDER_STATES (ORDER_ID, STATE, REG_DATE)
+		VALUES (#{order_id}, #{state}, sysdate)
+	</insert>
+   
+	<select id="orderList" parameterType="pageDTO">
+		SELECT * 
+		FROM (SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.QUANTITY, OS.STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+			FROM ORDERS O
+				JOIN ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>	
+
 	<select id="countState" resultType="orderDTO" parameterType="int">
 		select D.STATE, NVL(Q.QUANTITY, 0) AS QUANTITY
 		FROM
-		(
+			(
 			SELECT ROWNUM STATE
 			FROM DUAL
 			CONNECT BY ROWNUM &lt;= 8 AND ROWNUM &gt;= 1
-		) D
-		left JOIN
-		(
+			) D
+			left JOIN
+			(
 			SELECT STATE, COUNT(STATE) AS QUANTITY
 			FROM
-				(
-				SELECT MAX(STATE) AS STATE
-				FROM ORDER_STATE
-				GROUP BY ORDER_ID
-				)
+			(
+			SELECT MAX(STATE) AS STATE
+			FROM ORDER_STATES
+			GROUP BY ORDER_ID
+			)
 			GROUP BY STATE
 			ORDER BY STATE
-		) Q
+			) Q
 		on Q.STATE = D.STATE
 		order by D.STATE
-    </select>
+	</select>
 
-	<insert id="updateOrderStates" parameterType="orderDTO" useGeneratedKeys="false">
-		INSERT INTO ORDER_STATE (ORDER_ID, STATE)
-		VALUES (#{order_id}, #{state})
-	</insert>
 
 	<select id="countOrders" resultType="int">
 		SELECT COUNT(ORDER_ID)

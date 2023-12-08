@@ -1,46 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.CartDAO">
+<mapper namespace="com.ecom.javacodings.customer.access.members.CartDAO">
+	<!-- Region Metadata -->
 
-	<select id="listCart" parameterType="map" resultType="cartDTO">
+	<select id="countCartByMemberId" resultType="int">
+		SELECT COUNT(ITEM_ID)
+		FROM CARTS
+		WHERE MEMBER_Id = #{member_id}
+	</select>
+
+	<!-- End Region Metadata -->
+	<!-- Region Basic CRUD -->
+
+	<select id="findAllCartByMemberId" parameterType="map" resultType="cartDTO">
 		SELECT *
 		FROM (
-			SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", I.IMAGE, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
-			FROM CARTS C
-			JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
-			WHERE MEMBER_ID = #{member_id}
-		)
+				SELECT C.ITEM_Id, C.QUANTITY, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_Id) AS RN
+				FROM CARTS C
+					JOIN ITEMS I ON I.ITEM_Id = C.ITEM_Id
+					JOIN ITEM_IMAGES II ON I.ITEM_Id = II.ITEM_Id
+				WHERE MEMBER_ID = #{member_id}
+			 )
 		WHERE RN BETWEEN #{page.start} AND #{page.end}
 	</select>
 
-	<select id="countCart" parameterType="string" resultType="int">
-		SELECT COUNT(ITEM_ID)
-		FROM CARTS
-		WHERE MEMBER_ID = #{value}
-	</select>
-
-	<delete id="deleteCart" parameterType="cartDTO">
-		DELETE FROM CARTS
-		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
-	</delete>
-
-	<insert id="insertCart" parameterType="cartDTO">
-		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
-		VALUES (#{member_id}, #{item_id}, #{quantity})
-	</insert>
-
-	<update id="updateCart" parameterType="cartDTO">
-		UPDATE CARTS
-		SET QUANTITY = #{quantity}
-		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
-	</update>
-
-	<select id="getCart" parameterType="cartDTO" resultType="Integer">
+	<select id="getQuantityByItemIdAndMemberId" resultType="Integer">
 		SELECT QUANTITY
 		FROM CARTS
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</select>
 
+	<insert id="addCart">
+		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
+		VALUES (#{cart.member_id}, #{cart.item_id}, #{cart.quantity})
+	</insert>
+
+	<update id="updateCart" parameterType="cartDTO">
+		UPDATE CARTS
+		SET QUANTITY = #{quantity}
+		WHERE MEMBER_Id = #{member_id} AND ITEM_Id = #{item_id}
+	</update>
+
+	<delete id="deleteByMemberIdAndItemId" parameterType="cartDTO">
+		DELETE FROM CARTS
+		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
+	</delete>
+
+	<!-- End Region Basic CRUD -->
 </mapper>
  
