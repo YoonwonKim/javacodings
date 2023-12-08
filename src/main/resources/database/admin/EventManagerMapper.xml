@@ -6,71 +6,24 @@
  	
  	<!-- 이벤트 리스트 -->
 	<select id="listEvent" parameterType="pageDTO">
-	        
-	        <!-- SELECT EVENT_ID, CATEGORY, MAX(ITEM_ID) AS, MAX(CONTENT) AS CONTENT
-			FROM EVENTS
-			GROUP BY EVENT_ID, CATEGORY -->
-			
-			
 			
 			SELECT EVENT_ID, CATEGORY, CONTENT
 			FROM EVENTS
 			
-			
-			<!-- SELECT * 
-				FROM 
-				(
-					SELECT E.EVENT_ID, E.CATEGORY, E.CONTENT, E.START_DATE, E.END_DATE, EI.ITEM_ID, II.PATH,
-					       ROW_NUMBER() over (ORDER BY E.EVENT_ID ASC) AS RN
-					FROM EVENTS E
-					
-		            JOIN EVENT_ITEMS EI 
-					ON E.EVENT_ID = EI.EVENT_ID
-					
-		            JOIN ITEMS I
-		            ON I.ITEM_ID = EI.ITEM_ID
-		            
-					JOIN ITEM_IMAGES II
-		            ON I.ITEM_ID = II.ITEM_ID
-		            
-			  	)
-				WHERE RN BETWEEN #{start} AND #{end} -->
-				
-				
-			
 	</select>
  	
-  <!-- 상품리스트 등록일을 최신순으로 내림차순 -->
+  <!-- 상품리스트 카테고리가 썸네일인것을 출력-->
   <select id="listEventItem" parameterType="pageDTO">
-		SELECT *
-		FROM
-		(
-			SELECT I.ITEM_ID, I.LABEL, I."DESC", E.CATEGORY,II.PATH,E.EVENT_ID,
-			       ROW_NUMBER() over (ORDER BY I.ITEM_ID DESC) AS RN
-			FROM ITEMS I
-			
-			JOIN EVENT_ITEMS EI
-			ON I.ITEM_ID = EI.ITEM_ID
-			
-			JOIN EVENTS E
-			ON E.EVENT_ID = EI.EVENT_ID
-			
-			JOIN ITEM_IMAGES II
-			ON II.ITEM_ID = I.ITEM_ID
-	  	)
-		WHERE RN BETWEEN #{start} AND #{end}
-		
-		
-	
-	
-	
-	<!-- 이벤트 추가 -->
-	<!-- <insert id="eventAdd" parameterType="pageDTO">
-		INSERT INTO EVENTS (EVENT_ID, CATEGORY, CONTENT)
-		VALUES (1, #{category}, #{content})
-	</insert> -->
+		SELECT I.ITEM_ID, I.CATEGORY, I.LABEL, I."DESC", II.PATH
+		FROM ITEMS I
+		JOIN ITEM_IMAGES II
+		ON II.ITEM_ID = I.ITEM_ID 
+		WHERE II.CATEGORY = 'thumbnail'
+
   </select>
   
+  
+  <!-- 카테고리, 컨텐츠 수정 -->
   <update id="stateUpdate" parameterType="eventDTO">
   		UPDATE EVENTS SET
   		CATEGORY = #{category},
