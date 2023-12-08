@@ -1,22 +1,17 @@
 package com.ecom.javacodings.merchandiser.controller;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.ItemImageDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
-import com.ecom.javacodings.common.transfer.table.TagDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Console;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

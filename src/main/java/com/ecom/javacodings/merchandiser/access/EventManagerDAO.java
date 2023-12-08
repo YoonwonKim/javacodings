@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ecom.javacodings.common.transfer.PageDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.page.PageDTO;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface EventManagerDAO {
@@ -24,4 +25,8 @@ public interface EventManagerDAO {
 
 	int eventAdd(EventDTO eventDTO);
 
+
+	int count();
+	List<EventDTO> findAll(@Param("page") PageDTO page);
+	List<String> getAllItemLabelByEventId(@Param("event_id") String eventId);
 }

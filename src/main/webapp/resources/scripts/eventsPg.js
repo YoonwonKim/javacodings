@@ -1,134 +1,14 @@
-/**
- * 
- */
-/*
----------------------------------1번쨰
-$().ready(function(){
-	
-	//select 수정시 자동으로 체크
-    var selectedValue = $(this).val(); //선택한 option의 value 값 가져오기
-	var selectedCategory = $("select[name='category'] option:selected").text(); //선택한 option의 텍스트 값 가져오기
-	var Content = $("input[name='content']").val(); //선택한 option의 텍스트 값 가져오기
-    var Event_id = $("input[name='event_id']").val();
-	
-	
+$().ready(() =>{
+	let rows = document.querySelectorAll('.row');
+	for (let i = 0; i < rows.length;)
+	{
+		rows[i].addEventListener('click', function()
+		{
 
-   
-
-$("select[name='category']").change(function(){
-   
-   //값 받아오는지 확인
-   console.log($(this).val());	
-   console.log($("select[name=category] option:selected").text());
-    
-   
-	
-	
-});
-    $(".stateUpdate").click(function(){
-		
-		
-		var categoryValue = $("input[name='category']").val();
-		var contentValue = $("input[name='content']").val();
-		
-		console.log("category: " + categoryValue);
-		console.log("content: " + contentValue);
-		
-		
 		});
-		
-	 $.ajax({
-    url:"/admin/actions/eventMgt",
-    type:'POST',
-    dataType :'JSON',
-    data:{
-		content : Content,
-        category: selectedCategory,
-        event_id : Event_id
-		//event_id : selectedEventId
-    },
-    
-    
-     success: function(response) {
-            // 전송 성공 시 실행할 코드
-            console.log("값이 성공적으로 전송되었습니다.");
-        },
-        error: function(error) {
-            // 전송 중 에러 발생 시 실행할 코드
-            console.log("값 전송 중 에러가 발생했습니다.");
-        }
-    });
-	alert(Content)
-	alert(selectedCategory)
-	alert(Event_id)
-}); */      
-
-/*
----------------------------------------2번째
-$(document).ready(function() {
-	
-	//select 수정시 자동으로 체크
-    var selectedValue = $("select[name='category']").val(); //선택한 option의 value 값 가져오기
-    var selectedValue1 = $("select[name='content']").val(); //선택한 option의 value 값 가져오기
-	
-	
-	var selectedCategory = $("select[name='category'] option:selected").val(); //선택한 option의 텍스트 값 가져오기
-	var content = $("input[name='content']").val(); //선택한 option의 텍스트 값 가져오기
-    var event_id = $("input[name='event_id']").val();//인풋박스의 event_id값을 가져온다
-	
-	
-
-   
-
-$("select[name='category']").change(function(){
-   
-   //값 받아오는지 확인
-   console.log($(this).val());	
-   console.log($("select[name=category] option:selected").text());
-    
-   selectedValue = $(this).val();
-   selectedCategory = $("select[name=category] option:selected").text();
-   
-	
-	
+	}
 });
-    $(".stateUpdate").click(function(){
-		
-		
-		var categoryValue = $("input[name='category']").val();
-		var contentValue = $("input[name='content']").val();
-		
-		console.log("category: " + categoryValue);
-		console.log("content: " + contentValue);
-		
-		
-		});
-		
-	 $.ajax({
-    url:"/admin/actions/eventMgt",
-    type:'POST',
-    dataType :'JSON',
-    data:{
-		content : content,
-        category: selectedCategory,
-        event_id : event_id
-		//event_id : selectedEventId
-    },
-    
-    
-     success: function(response) {
-            // 전송 성공 시 실행할 코드
-            console.log("값이 성공적으로 전송되었습니다.");
-        },
-        error: function(error) {
-            // 전송 중 에러 발생 시 실행할 코드
-            console.log("값 전송 중 에러가 발생했습니다.");
-        }
-    });
-	alert(Content)
-	alert(selectedCategory)
-	alert(Event_id)
-});   */
+
 
 
 $(document).ready(function() {

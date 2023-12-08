@@ -2,44 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.ecom.javacodings.merchandiser.access.EventManagerDAO">
- 
- 	
- 	<!-- 이벤트 리스트 -->
-	<select id="listEvent" parameterType="pageDTO">
-	        
-	        <!-- SELECT EVENT_ID, CATEGORY, MAX(ITEM_ID) AS, MAX(CONTENT) AS CONTENT
-			FROM EVENTS
-			GROUP BY EVENT_ID, CATEGORY -->
-			
-			
-			
-			SELECT EVENT_ID, CATEGORY, CONTENT
-			FROM EVENTS
-			
-			
-			<!-- SELECT * 
-				FROM 
-				(
-					SELECT E.EVENT_ID, E.CATEGORY, E.CONTENT, E.START_DATE, E.END_DATE, EI.ITEM_ID, II.PATH,
-					       ROW_NUMBER() over (ORDER BY E.EVENT_ID ASC) AS RN
-					FROM EVENTS E
-					
-		            JOIN EVENT_ITEMS EI 
-					ON E.EVENT_ID = EI.EVENT_ID
-					
-		            JOIN ITEMS I
-		            ON I.ITEM_ID = EI.ITEM_ID
-		            
-					JOIN ITEM_IMAGES II
-		            ON I.ITEM_ID = II.ITEM_ID
-		            
-			  	)
-				WHERE RN BETWEEN #{start} AND #{end} -->
-				
-				
-			
+
+	<select id="count">
+		SELECT COUNT(EVENT_ID)
+		FROM EVENTS
 	</select>
- 	
+
+	<select id="findAll">
+		SELECT *
+		FROM
+		(
+		    SELECT EVENT_ID, CATEGORY, CONTENT, LABEL, START_DATE, END_DATE,
+				   ROW_NUMBER() over (ORDER BY EVENT_ID) RN
+		    FROM EVENTS
+		)
+		WHERE RN BETWEEN #{page.start} AND #{page.end}
+	</select>
+
+	<select id="getAllItemLabelByEventId" resultType="String">
+		SELECT I.LABEL
+		FROM EVENT_ITEMS E
+		JOIN ITEMS I ON I.ITEM_ID = E.ITEM_ID
+		WHERE EVENT_ID = #{event_id}
+	</select>
+
+
   <!-- 상품리스트 등록일을 최신순으로 내림차순 -->
   <select id="listEventItem" parameterType="pageDTO">
 		SELECT *

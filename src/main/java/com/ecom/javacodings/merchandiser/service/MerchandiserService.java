@@ -1,19 +1,22 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
-import com.ecom.javacodings.common.transfer.table.ItemDTO;
-import com.ecom.javacodings.common.transfer.PageDTO;
-import com.ecom.javacodings.common.transfer.table.TagDTO;
-import com.ecom.javacodings.common.transfer.table.OrderDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
+import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.merchandiser.access.EventManagerDAO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
 import com.ecom.javacodings.merchandiser.access.TagManagerDAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -241,8 +244,7 @@ public class MerchandiserService implements ManagerService {
     public void stateUpdate(EventDTO eventDTO) {
     	eventDAO.stateUpdate(eventDTO);
     }
-    
-    
+
     @Override
     public int event1(EventDTO eventDTO) {
     	return eventDAO.event1(eventDTO);
@@ -257,5 +259,42 @@ public class MerchandiserService implements ManagerService {
     public int eventAdd(EventDTO eventDTO) {
     	return eventDAO.eventAdd(eventDTO);
     }
-    
+
+
+    // Region 이벤트 관리
+
+
+    final int DEFAULT_EVENT_ROW = 30;
+    PageConstructor eventPageConstructor = new PageConstructor(DEFAULT_PRODUCT_ROW,
+            (String criteria, PageDTO pageData) -> Collections.singletonList(eventDAO.findAll(pageData)),
+            (String criteria) -> eventDAO.count()
+    );
+
+    // * 기본 CRUD Methods -----------------------------------------------------
+    @Override public void setEventPageRow(int row) { eventPageConstructor.setRow(row); }
+
+    @Override
+    public Map<String, Object> getEventPageMap(int currentPage) {
+        Map<String, Object> resultMap = eventPageConstructor.getPageMapOrNull(currentPage);
+        if (resultMap == null) resultMap.put("responseMsg", "outboundError");
+        return resultMap;
+    }
+
+    @Override
+    public String getItemsByEventId(String eventId) {
+        List<String> itemList = eventDAO.getAllItemLabelByEventId(eventId);
+        ObjectMapper mapper = new ObjectMapper();
+        String result = "";
+        try {
+            result = mapper.writeValueAsString(itemList);
+            result = result.replace("[", "");
+            result = result.replace("]", "");
+            result = result.replace("\"", "");
+            result = result.replace(",", ", ");
+        }
+        catch (JsonProcessingException e) { }
+        return result;
+    }
+
+    // End Region 이벤트 관리
 }

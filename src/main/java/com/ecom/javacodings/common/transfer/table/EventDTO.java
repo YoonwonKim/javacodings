@@ -8,6 +8,7 @@ import lombok.ToString;
 public class EventDTO {
 
 	private String event_id  ;
+	private String label;
 	private String category  ;
 	private String content   ;
 	private String start_date ;
