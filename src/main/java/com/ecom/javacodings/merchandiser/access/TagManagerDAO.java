@@ -20,5 +20,7 @@ public interface TagManagerDAO {
 	int deleteTagsByItemId(String item_id);
 
 	String[] findAllByItemId(@Param("item_id") String itemId);
+
+	int insertTags(Map<String, Object> params);
 	// End Region Delete
 }

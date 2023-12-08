@@ -37,7 +37,7 @@ public class MangerPageController {
 
         if (pageMap.get("responseMsg") != null)
             return "redirect:/admin/products?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
-        return "/merchandiser/products";
+        return "list";
     }
 
     @RequestMapping("/orders")

@@ -12,19 +12,19 @@ import org.apache.ibatis.annotations.Param;
 public interface ItemDAO {
 	// Region Metadata
 
-	int countItems();
-	int countItemsByTag(@Param("tag") String tag);
-	int countItemsByCategory(@Param("category") String category);
+	int count();
+	int countByTag(@Param("tag") String tag);
+	int countByCategory(@Param("category") String category);
 
 	// End Region Metadata
 	// Region Basic CRUD
 
-	ItemDTO findItemByItemId(@Param("item_id") String itemId);
+	ItemDTO findByItemId(@Param("item_id") String itemId);
 
-	List<ItemDTO> findAllItemsByCategory(@Param("category") String category, @Param("page") PageDTO pageData);
-	List<ItemDTO> findFewItemsOrderByOrderCount(@Param("limit") int limit);
-	List<ItemDTO> findFewItemsOrderByRegDate(@Param("limit") int limit);
-	List<ItemDTO> findFewItemsByTag(@Param("tag") String tag, @Param("limit") int limit);
+	List<ItemDTO> findAllByCategory(@Param("category") String category, @Param("page") PageDTO pageData);
+	List<ItemDTO> findAllByOrderCount(@Param("limit") int limit);
+	List<ItemDTO> findAllByRegDate(@Param("limit") int limit);
+	List<ItemDTO> findAllByTag(@Param("tag") String tag, @Param("limit") int limit);
 
 	// End Region Basic CRUD
 }

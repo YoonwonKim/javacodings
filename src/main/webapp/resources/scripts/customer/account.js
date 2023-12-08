@@ -40,8 +40,9 @@ function account() {
 		method: 'POST',
 		url: '/actions/account/login',
 		data: {member_id, password},
-		dataType: 'json',
-		complete: function(data) { location.reload(); }
+		success: function(data) {
+			location.reload();
+		}
 	})
 }
 // End Region Login

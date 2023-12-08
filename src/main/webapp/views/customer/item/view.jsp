@@ -24,14 +24,14 @@
 
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/customer/product-view.js"></script>
-	<link rel="stylesheet" href="/resources/css/customer/product-view.css" />
+	<link rel="stylesheet" href="/resources/styles/customer/product-view.css" />
 </head>
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
 <main>
 
 	<article>
-		<img src="/resources/images/${item.path}.png" id="item-image">
+		<img src="/resources/images/${item.path}" id="item-image">
 		<div id="item-metadata">
 			<div id="article">
 				<h1 id="item-label">${item.label}</h1>

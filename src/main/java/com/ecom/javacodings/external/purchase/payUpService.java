@@ -105,7 +105,7 @@ public class payUpService implements PurchaseService {
         requestBody.setSignature(getSignature(signature));
 
         // 결제 정보
-        ItemDTO itemData = itemDAO.findItemByItemId(order.getItem_id());
+        ItemDTO itemData = itemDAO.findByItemId(order.getItem_id());
         requestBody.setOrder(order, itemData.getPrice());
 
         // 결제수단 정보

@@ -2,6 +2,7 @@ package com.ecom.javacodings.merchandiser.access;
 
 import java.util.List;
 
+import com.ecom.javacodings.common.page.PageDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,16 @@ public interface OrderManagerDAO {
     int countOrdersByOrderId(@Param("order_id") String order_id);
 
 	int insertOrder(OrderDTO order);	//보류
+
+	List<OrderDTO> orderList(PageDTO page);
+
+	OrderDTO orderUpdate(OrderDTO order);
+
+	int countOrders();
+
+	List<OrderDTO> countState();
+
+	int orderStateCnt(OrderDTO order);
+
+	int updateOrderStates(OrderDTO orders);
 }

@@ -13,8 +13,8 @@
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
 
 	<title>자바코딩즈</title>
-	<link rel="stylesheet" href="/resources/css/landing.css" />
-	<script src="/resources/scripts/landing.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/landing.css" />
+	<script src="${pageContext.request.contextPath}/resources/scripts/landing.js"></script>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/header.jsp" %>
@@ -43,7 +43,7 @@
 			<h1>${key}</h1>
 			<div class="grid">
 			<c:forEach var="item" items="${mdList.get(key)}">
-				<a href="#" class="card">
+				<a href="/product/${item.item_id}" class="card">
 					<img src="/resources/images/${item.path}">
 					<h1>${item.getLabel()}</h1>
 					<p>${item.getPrice()}원</p>

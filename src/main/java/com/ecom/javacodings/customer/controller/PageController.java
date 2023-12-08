@@ -1,6 +1,5 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
@@ -11,14 +10,11 @@ import com.ecom.javacodings.customer.service.IMemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.*;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +47,7 @@ public class PageController {
 		Map<String, Object> mdList = memberService.getItemPageOfMain(tagList);
     	model.addAttribute("mdList", mdList);
 
-    	return "index";
+    	return "customer/index";
     }
 
 	@RequestMapping("/account/login")
@@ -69,9 +65,9 @@ public class PageController {
     	return "customer/account/register";
     }
 	
-	@RequestMapping("account/search")
+	@RequestMapping("account/find")
 	public String findAccount() {
-		return "customer/account/search";
+		return "customer/account/find";
 	}
 
 	// Region Account
@@ -107,27 +103,25 @@ public class PageController {
 	// End Region Account
 	// Region Product
 
-	@RequestMapping("/product/c/{category}")
-	public String getcategorylist(HttpServletRequest request, HttpServletResponse response,
-								  Model model, @PathVariable("category") String category) {
-		model.addAttribute("category", category.toUpperCase());
-		return "customer/category";
+	@GetMapping("/item/{item_id}")
+	public String viewItem(Model model, @PathVariable("item_id") String itemId) {
+		ItemDTO item = memberService.findItemByItemId(itemId);
+		model.addAttribute("item", item);
+		return "customer/item/view";
 	}
 
-    @GetMapping("/product/{item_id}")
-    public String viewProduct(Model model, @PathVariable("item_id") String itemId) {
-    	ItemDTO item = memberService.findItemByItemId(itemId);
-    	model.addAttribute("item", item);
-
-    	return "customer/product-view";
-    }
+	@RequestMapping("/item/c/{category}")
+	public String listItem(Model model, @PathVariable("category") String category) {
+		model.addAttribute("category", category.toUpperCase());
+		return "customer/item/category";
+	}
 
 	// End Region Product
 	// Region Cart
 
 	@RequestMapping("/cart")
-	public String orderItems(HttpServletRequest request,
-							 String page, String row, Model model) {
+	public String listCart(HttpServletRequest request,
+						   String page, String row, Model model) {
 		HttpSession session = request.getSession();
 		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 		if (ssKey == null) return "redirect:/account/login";
@@ -140,7 +134,7 @@ public class PageController {
 
 //		if (resultMap == null) return "redirect:/cart?page=" + (currentPage - 1) + "&row=" + currentRow;
 		model.addAllAttributes(resultMap);
-		return "customer/cart";
+		return "customer/order/cart";
 	}
 
 	// End Region Cart
@@ -149,7 +143,7 @@ public class PageController {
     @RequestMapping("/order")
     public String order(HttpServletRequest request, HttpServletResponse response,
     		Model model, PageDTO page) {
-    	return "index";
+    	return "customer/index";
     }
 
 	// End Region Order

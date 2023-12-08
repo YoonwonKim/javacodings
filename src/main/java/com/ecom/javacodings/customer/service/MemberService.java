@@ -132,8 +132,8 @@ public class MemberService implements IMemberService {
     final int GRID_COUNT = 8;
     final int DEFAULT_PRODUCT_ROW = 15;
     PageConstructor productPageConstructor = new PageConstructor(DEFAULT_PRODUCT_ROW,
-            (String criteria, PageDTO pageData) -> Collections.singletonList(itemDAO.findAllItemsByCategory(criteria, pageData)),
-            (String criteria) -> itemDAO.countItemsByCategory(criteria)
+            (String criteria, PageDTO pageData) -> Collections.singletonList(itemDAO.findAllByCategory(criteria, pageData)),
+            (String criteria) -> itemDAO.countByCategory(criteria)
     );
 
     //? Basic CRUD --------------------------------------------------------------
@@ -154,12 +154,12 @@ public class MemberService implements IMemberService {
     @Override
     public Map<String, Object> getItemPageOfMain(List<String> tags) {
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("news", itemDAO.findFewItemsOrderByRegDate(GRID_COUNT));
-        resultMap.put("bestsellers", itemDAO.findFewItemsOrderByOrderCount(GRID_COUNT));
+        resultMap.put("news", itemDAO.findAllByRegDate(GRID_COUNT));
+        resultMap.put("bestsellers", itemDAO.findAllByOrderCount(GRID_COUNT));
 
         Map<String, Object> itemListByTag = new HashMap<>();
         for(String tag : tags) {
-            itemListByTag.put(tag, itemDAO.findFewItemsByTag(tag, GRID_COUNT));
+            itemListByTag.put(tag, itemDAO.findAllByTag(tag, GRID_COUNT));
         }
         resultMap.putAll(itemListByTag);
         return resultMap;
@@ -167,7 +167,7 @@ public class MemberService implements IMemberService {
 
     @Override
     public ItemDTO findItemByItemId(String itemId){
-        return itemDAO.findItemByItemId(itemId);
+        return itemDAO.findByItemId(itemId);
     }
 
     // End Region Item

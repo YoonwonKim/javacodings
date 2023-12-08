@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
 
 	<title>자바코딩즈</title>
-	<link rel="stylesheet" href="/resources/css/customer/category.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/customer/category.css" />
 	
 	<%-- Page Scripts --%>
 	<script src="/resources/scripts/common/policies/validates.js"></script>
