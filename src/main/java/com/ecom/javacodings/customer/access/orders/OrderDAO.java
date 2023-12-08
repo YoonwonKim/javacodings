@@ -1,4 +1,4 @@
-package com.ecom.javacodings.customer.access;
+package com.ecom.javacodings.customer.access.orders;
 
 import java.util.List;
 

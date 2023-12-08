@@ -38,16 +38,15 @@
 	</div>
 
 	<div id="md-list" class="list">
-	<c:forEach var="list" items="${mdList}">
+	<c:forEach var="key" items="${mdList.keySet()}">
 		<div class="layer">
-			<h1>${list.label}</h1>
-			<p>${list.desc}</p>
+			<h1>${key}</h1>
 			<div class="grid">
-			<c:forEach var="item" items="${list.itemList}">
+			<c:forEach var="item" items="${mdList.get(key)}">
 				<a href="#" class="card">
-					<img src="/resources/images/${item.image}.png">
-					<h1>${item.label}</h1>
-					<p>${item.price}원</p>
+					<img src="/resources/images/${item.path}">
+					<h1>${item.getLabel()}</h1>
+					<p>${item.getPrice()}원</p>
 				</a>
 			</c:forEach>
 			</div>

@@ -4,27 +4,31 @@
 <mapper namespace="com.ecom.javacodings.merchandiser.access.ItemManagerDAO">
 <!-- Region Create -->
 	<insert id="createItem" parameterType="itemDTO">
-		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", IMAGE, PRICE, STOCK, CATEGORY)
-		VALUES (#{item_id}, #{label}, #{desc}, #{image}, #{price}, #{stock}, #{category})
+		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY)
+		VALUES (#{item_id}, #{label}, #{desc}, #{price}, #{stock}, #{category})
 	</insert>
 <!-- End Region Create -->
 <!-- Region Read -->
-	<select id="listItem" parameterType="pageDTO">
+	<select id="findAll" parameterType="pageDTO">
 		SELECT *
 		FROM
 		(
-			SELECT I.ITEM_ID, I.LABEL, I."DESC", I.CATEGORY, II.PATH, I.PRICE, I.STOCK, 
+			SELECT I.ITEM_ID, I.LABEL, I."DESC", I.CATEGORY, I.PRICE, I.STOCK,
 			ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
 			FROM ITEMS I
-				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
 	  	)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 
+	<select id="findImagesByItemId" resultType="ImageDTO">
+		SELECT "CATEGORY", PATH
+		FROM ITEM_IMAGES
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
 	<select id="getItemById" parameterType="String" resultType="itemDTO">
-		SELECT I.ITEM_ID, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, I.CATEGORY
+		SELECT I.ITEM_ID, I.LABEL, I."DESC", I.PRICE, I.STOCK, I.CATEGORY
 		FROM ITEMS I 
-			JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID 
 		WHERE I.ITEM_ID = #{value}
 	</select>
 
@@ -32,8 +36,9 @@
 		SELECT CATEGORY FROM ITEMS GROUP BY CATEGORY
 	</select>
 
-	<select id="countItems" resultType="int">
-		SELECT COUNT(ITEM_ID) FROM ITEMS
+	<select id="count" resultType="int">
+		SELECT COUNT(ITEM_ID)
+		FROM ITEMS
 	</select>
 <!-- End Region Read -->
 <!-- Region Update -->
@@ -48,9 +53,8 @@
 		WHERE ITEM_ID=#{item_id}
 	</update>
 	<update id="updateImageById">
-		UPDATE ITEM_IMAGES
-		SET PATH = #{image}
-		WHERE ITEM_ID = #{item_id}
+		INSERT INTO ITEM_IMAGES(ITEM_ID, PATH, CATEGORY)
+		VALUES (#{item_id}, #{image_id}, 'detail')
 	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->

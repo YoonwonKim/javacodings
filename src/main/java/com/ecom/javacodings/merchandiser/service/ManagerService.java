@@ -2,25 +2,35 @@ package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.transfer.TagDTO;
+import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ManagerService {
     //int updateImage(ItemDTO item, MultipartFile file);
+
+    int updateImage(String itemId, MultipartFile file);
 
     // End Region Data access objects
     // Region Item
     // Read table
     List<ItemDTO> listItem(PageDTO page);
+
+    // * 기본 CRUD Methods -----------------------------------------------------
+    void setProductPageRow(int row);
+
+    // * 기본 CRUD Methods -----------------------------------------------------
+    Map<String, Object> getProductPageMap(int currentPage);
+
     ItemDTO readItemById(String id);
     // Create and Update
     int updateItem(ItemDTO item);
-    int updateImageById(ItemDTO item, MultipartFile file);
+//    int updateImageById(ItemDTO item, MultipartFile file);
 
-    int createItem(ItemDTO item);
+    String createItem(ItemDTO item);
 
     int updateTags(String item_id, List<String> tags);
     // Delete
@@ -30,8 +40,7 @@ public interface ManagerService {
 
     //? Get Metadata
     List<String> listCategory();
-    List<String> listTags();
-    List<TagDTO> listTagsById(String itemId);
+    List<String> findAllTags();
     int countItems();
     // Region Orders
     int updateOrderStates(OrderDTO orders);
@@ -46,5 +55,9 @@ public interface ManagerService {
 
     OrderDTO orderUpdate(OrderDTO order);
     List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
+
+    List<ItemImageDTO> findImagesByItemId(String itemId);
+
+    String[] findTagsByItemId(String itemId);
     // End Region Item
 }

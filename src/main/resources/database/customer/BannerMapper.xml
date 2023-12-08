@@ -4,14 +4,7 @@
 
     <select id="getBannerByCategory" resultType="bannerDTO">
         SELECT *
-        FROM (
-               SELECT I.LABEL, I."DESC", II.PATH, ROW_NUMBER() over (ORDER BY REG_DATE) AS RN
-               FROM  ITEMS I
-               	JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
-               WHERE II.CATEGORY = #{category}
-               ORDER BY REG_DATE DESC
-             )
-        WHERE RN BETWEEN #{start} AND #{end}
+        FROM EVENTS
     </select>
 
 </mapper>

@@ -3,13 +3,14 @@ package com.ecom.javacodings.common.identity;
 import java.util.Random;
 
 public class SequenceGenerator {
-    public String generateUnique(DuplicateChecker duplicateChecker, int length) {
+
+    public String generateUnique(DuplicateChecker isDuplicate, int length) {
         Boolean isDuplicated = false;
         String generatedSequence = "";
 
         do {
             generatedSequence = generate(length);
-            isDuplicated = duplicateChecker.check(generatedSequence);
+            isDuplicated = isDuplicate.check(generatedSequence);
         } while ( isDuplicated );
         return generatedSequence;
     }

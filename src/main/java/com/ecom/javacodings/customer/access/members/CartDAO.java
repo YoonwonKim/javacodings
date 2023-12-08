@@ -1,4 +1,4 @@
-package com.ecom.javacodings.customer.access;
+package com.ecom.javacodings.customer.access.members;
 
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
@@ -17,13 +17,13 @@ public interface CartDAO {
 	// Region Basic CRUD
 
 	List<CartDTO> findAllCartByMemberId(@Param("member_id") String memberId, @Param("page") PageDTO pageData);
-	int getQuantityOfCartByItemIdAndMemberId(@Param("member_id") String memberId, @Param("item_id") String itemId);
+	Integer getQuantityByItemIdAndMemberId(@Param("member_id") String memberId, @Param("item_id") String itemId);
 
 	int addCart(@Param("cart") CartDTO cart);
 
 	int editCartByItemIdAndMemberId(CartDTO cart);
 
-	int deleteCartByMemberIdAndItemId(@Param("member_id") String memberId, @Param("item_id") String itemId);
+	int deleteByMemberIdAndItemId(@Param("member_id") String memberId, @Param("item_id") String itemId);
 
 	// End Region Basic CRUD
 }

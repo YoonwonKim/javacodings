@@ -14,11 +14,6 @@ tr {
 #modal-div div, #modal-div cds-stack {
     flex: 1;
 }
-#modal-div img {
-    margin-top:  24px;
-    margin-left: 16px;
-    max-width:  400px;
-}
 
 
 .button {
@@ -52,3 +47,21 @@ tr {
 
     background-color: #fff;
 }
+
+/* Region Modal */
+
+cds-modal #image-block {
+}
+
+cds-modal #image-block #images {
+    width:  400px;
+    height: 400px;
+    overflow: hidden;
+}
+
+cds-modal #image-block img {
+    width:  400px;
+    height: 400px;
+}
+
+/* End Region Modal */

@@ -5,10 +5,9 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class TagDTO {
-	
-	private String tag_id  ;
-	private String label   ;
-	private String desc    ;
+public class ItemImageDTO {
+
+	private String path;
+	private String category;
 
 }

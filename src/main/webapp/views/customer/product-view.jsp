@@ -31,7 +31,7 @@
 <main>
 
 	<article>
-		<img src="/resources/images/${item.image}.png" id="item-image">
+		<img src="/resources/images/${item.path}.png" id="item-image">
 		<div id="item-metadata">
 			<div id="article">
 				<h1 id="item-label">${item.label}</h1>

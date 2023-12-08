@@ -10,19 +10,10 @@ import org.springframework.web.context.WebApplicationContext;
 @Scope( value= WebApplicationContext.SCOPE_SESSION,
         proxyMode = ScopedProxyMode.TARGET_CLASS)
 @ToString
-public class MemberDTO {
+public class MemberPaymentDTO {
     String member_id;
-    String password;
-    String reg_date;
-    String role;
-    String level;
-
-    // Region Metadata
-
-    String name;
-    String email;
-    String birth;
-    String phone;
-
-    // End Region Metadata
+    String card_no;
+    String card_pw;
+    String expire_year;
+    String expire_month;
 }

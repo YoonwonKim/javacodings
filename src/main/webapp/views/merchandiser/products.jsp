@@ -22,7 +22,13 @@
 	<link rel="stylesheet" href="/views/merchandiser/fragments/footer.css" />
 	<link rel="stylesheet" href="/resources/css/components/pagination.css" />
 	<script src="/resources/scripts/common/components/pagination.js"></script>
-	<script src="/resources/scripts/manage_products.js"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+	<script type="module" src="/resources/scripts/merchandiser/products/manage.js"></script>
+
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/header.jsp" %>
@@ -38,7 +44,7 @@
 			<cds-table-toolbar-content>
 				<cds-table-toolbar-search
 						placeholder="Filter table"></cds-table-toolbar-search>
-				<cds-button onclick="create()">상품 추가</cds-button>
+				<cds-button id="create">상품 추가</cds-button>
 			</cds-table-toolbar-content>
 			<cds-table-batch-actions>
 				<cds-button>Delete
@@ -59,7 +65,6 @@
 				<cds-table-header-cell>재고</cds-table-header-cell>
 				<cds-table-header-cell>분류</cds-table-header-cell>
 				<cds-table-header-cell>태그</cds-table-header-cell>
-				<cds-table-header-cell></cds-table-header-cell>
 			</cds-table-header-row>
 		</cds-table-head>
 		<cds-table-body>
@@ -72,12 +77,6 @@
 					<cds-table-cell>${item.stock}</cds-table-cell>
 					<cds-table-cell>${item.category}</cds-table-cell>
 					<cds-table-cell class="item-tags"></cds-table-cell>
-					<cds-table-cell class="button-cell">
-						<cds-button kind="ghost" id="item-modal-button"
-						            onclick="modify(this)">
-							수정
-						</cds-button>
-					</cds-table-cell>
 				</cds-table-row>
 			</c:forEach>
 		</cds-table-body>

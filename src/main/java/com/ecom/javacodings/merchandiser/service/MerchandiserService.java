@@ -1,9 +1,10 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import org.springframework.beans.factory.annotation.Value;
-import com.ecom.javacodings.common.transfer.TagDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.merchandiser.access.ItemManagerDAO;
 import com.ecom.javacodings.merchandiser.access.OrderManagerDAO;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,24 @@ public class MerchandiserService implements ManagerService {
     @Autowired OrderManagerDAO  orderDAO;
     // End Region Data access objects
     // Region 상품 관리
+
+    final int DEFAULT_PRODUCT_ROW = 30;
+    PageConstructor productPageConstructor = new PageConstructor(DEFAULT_PRODUCT_ROW,
+            (String criteria, PageDTO pageData) -> Collections.singletonList(itemDAO.findAll(pageData)),
+            (String criteria) -> itemDAO.count()
+    );
+
+    // * 기본 CRUD Methods -----------------------------------------------------
+    @Override public void setProductPageRow(int row) { productPageConstructor.setRow(row); }
+
+    @Override
+    public Map<String, Object> getProductPageMap(int currentPage) {
+        Map<String, Object> resultMap = productPageConstructor.getPageMapOrNull(currentPage);
+        if (resultMap == null) resultMap.put("responseMsg", "outboundError");
+        return resultMap;
+    }
+
+
     // 기본 CRUD 메소드 =================================
     @Override public ItemDTO readItemById(String id) { return itemDAO.getItemById(id); }
     @Override public int updateItem(ItemDTO item) { return itemDAO.updateItem(item); }
@@ -39,7 +59,7 @@ public class MerchandiserService implements ManagerService {
     @Override public int deleteItemTegs(ItemDTO item) { return itemDAO.deleteItem(item); }
 
     @Override
-    public int createItem(ItemDTO item) {
+    public String createItem(ItemDTO item) {
         Random random = new Random();
         int leftLimit  =  48; // numeral '0'
         int rightLimit = 122; // letter 'z'
@@ -56,11 +76,13 @@ public class MerchandiserService implements ManagerService {
         } while ( checkDuplicate != null );
         item.setItem_id(randomItemID);
 
-        return itemDAO.createItem(item);
+        int result = itemDAO.createItem(item);
+        if (result > 0) return randomItemID;
+        else return "error";
     }
 
     @Override
-    public int updateImage(ItemDTO item, MultipartFile file) {
+    public int updateImage(String itemId, MultipartFile file) {
         String absoluteClassPath = new File("").getAbsolutePath() + "/src/main/webapp/";
         File targetFile;
 
@@ -83,8 +105,7 @@ public class MerchandiserService implements ManagerService {
         try {
             targetFile.getParentFile().mkdirs();
             file.transferTo(targetFile);
-            item.setImage(randomImageName);
-            result = itemDAO.updateImageById(item);
+            result = itemDAO.updateImageById(itemId, randomImageName + ".png");
         }
         catch (IOException e) { return -1; };
         return result;
@@ -92,7 +113,7 @@ public class MerchandiserService implements ManagerService {
 
     @Override
     public List<ItemDTO> listItem(PageDTO page){
-        List<ItemDTO> result = itemDAO.listItem(page);
+        List<ItemDTO> result = itemDAO.findAll(page);
         return result;
     }
     @Override
@@ -114,15 +135,15 @@ public class MerchandiserService implements ManagerService {
         return result;
     }
 
-    public List<String> listTags() {
-        return tagDAO.listTags();
+    public List<String> findAllTags() {
+        return tagDAO.findAll();
     }
 
-    @Override
-    public List<TagDTO> listTagsById(String itemId) {
-        return tagDAO.listTagsById(itemId);
-    }
-    public int countItems() { return itemDAO.countItems(); }
+//    @Override
+//    public List<TagDTO> listTagsById(String itemId) {
+//        return tagDAO.listTagsById(itemId);
+//    }
+    public int countItems() { return itemDAO.count(); }
     // End Region 상품 메타 정보
     // Region Order
     // READ ===============================
@@ -152,6 +173,16 @@ public class MerchandiserService implements ManagerService {
     }
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
+    }
+
+    @Override
+    public List<ItemImageDTO> findImagesByItemId(String itemId) {
+        return itemDAO.findImagesByItemId(itemId);
+    }
+
+    @Override
+    public String[] findTagsByItemId(String itemId) {
+        return tagDAO.findAllByItemId(itemId);
     }
 
     // EDIT ===============================

@@ -7,14 +7,18 @@ import com.ecom.javacodings.common.policies.OrderPolicies;
 
 import com.ecom.javacodings.common.transfer.BannerDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
-import com.ecom.javacodings.customer.access.CartDAO;
-import com.ecom.javacodings.customer.access.ItemDAO;
-import com.ecom.javacodings.customer.access.MemberDAO;
-import com.ecom.javacodings.customer.access.OrderDAO;
+import com.ecom.javacodings.customer.access.members.CartDAO;
+import com.ecom.javacodings.customer.access.items.ItemDAO;
+import com.ecom.javacodings.customer.access.members.MemberAddressDAO;
+import com.ecom.javacodings.customer.access.members.MemberDAO;
+import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
+import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
+import com.ecom.javacodings.customer.access.orders.OrderDAO;
 import com.ecom.javacodings.external.purchase.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,9 @@ public class MemberService implements IMemberService {
     // Region Member
 
     @Autowired MemberDAO memberDAO;
+    @Autowired MemberInfoDAO memberInfoDAO;
+    @Autowired MemberAddressDAO addressDAO;
+    @Autowired MemberPaymentDAO paymentDAO;
 
     final int TEMP_PASSWORD_LENGTH = 16;
 
@@ -47,8 +54,12 @@ public class MemberService implements IMemberService {
     // * Create Row
 
     @Override
-    public int addMember(MemberDTO member) {
-        return memberDAO.addMember(member);
+    public int addMember(MemberDTO member, MemberAddressDTO address) {
+        int result = 0;
+        result += memberDAO.add(member);
+        result += addressDAO.add(address);
+
+        return result;
     }
 
     // * Read Table
@@ -68,44 +79,49 @@ public class MemberService implements IMemberService {
 
     @Override
     public MemberDTO findMemberByIdAndPassword(String memberId, String password) {
-        return memberDAO.findMemberByIdAndPassword(memberId, password);
+        return memberDAO.findByIdAndPassword(memberId, password);
     }
 
     // * Update Row
 
     @Override
     public int archiveMemberByMemberId(String memberId) {
-        return memberDAO.archiveMemberByMemberId(memberId);
+        return memberDAO.archiveByMemberId(memberId);
     }
 
     //? Query Sub-Tables ---------------------------------------------------------
     // Member Address
 
     @Override
-    public MemberDTO getAddressByMemberId(String memberId) {
-        return memberDAO.getAddressByMemberId(memberId);
+    public MemberAddressDTO getPrimaryAddress(String memberId) {
+        return addressDAO.findPrimaryByMemberId(memberId);
+    }
+
+    @Override
+    public List<MemberAddressDTO> getAddressByMemberId(String memberId) {
+        return addressDAO.findAllByMemberId(memberId);
     }
 
     @Override
     public int editAddress(MemberDTO addressData, int priority, String memberId) {
-        return memberDAO.editAddressByPriorityAndMemberId(addressData, priority, memberId);
+        return addressDAO.editByPriorityAndMemberId(addressData, priority, memberId);
     }
     
     @Override
     public int editAddressPriorityAndMemberId(int newPriority, int oldPriority, String memberId) {
-    	return memberDAO.editPriorityOfAddressByPriorityAndMemberId(newPriority, oldPriority, memberId);
+    	return addressDAO.setPriorityByPriorityAndMemberId(newPriority, oldPriority, memberId);
     }
 
     @Override
     public int deleteAddressByPriorityAndMemberId(int priority, String memberId) {
-        return memberDAO.deleteAddressByPriorityAndMemberID(priority, memberId);
+        return addressDAO.deleteByPriorityAndMemberID(priority, memberId);
     }
 
     // Member Information
 
     @Override
     public int editMemberInfoByMemberId(MemberDTO memberData, String memberId) {
-        return memberDAO.editMemberInfoByMemberId(memberData, memberId);
+        return memberInfoDAO.editMemberInfoByMemberId(memberData, memberId);
     }
 
     // End Region Member
@@ -113,7 +129,7 @@ public class MemberService implements IMemberService {
 
     @Autowired ItemDAO itemDAO;
 
-    final int GRId_COUNT = 8;
+    final int GRID_COUNT = 8;
     final int DEFAULT_PRODUCT_ROW = 15;
     PageConstructor productPageConstructor = new PageConstructor(DEFAULT_PRODUCT_ROW,
             (String criteria, PageDTO pageData) -> Collections.singletonList(itemDAO.findAllItemsByCategory(criteria, pageData)),
@@ -138,14 +154,14 @@ public class MemberService implements IMemberService {
     @Override
     public Map<String, Object> getItemPageOfMain(List<String> tags) {
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("news", itemDAO.findFewItemsOrderByRegDate(GRId_COUNT));
-        resultMap.put("bestsellers", itemDAO.findFewItemsOrderByOrderCount(GRId_COUNT));
+        resultMap.put("news", itemDAO.findFewItemsOrderByRegDate(GRID_COUNT));
+        resultMap.put("bestsellers", itemDAO.findFewItemsOrderByOrderCount(GRID_COUNT));
 
         Map<String, Object> itemListByTag = new HashMap<>();
         for(String tag : tags) {
-            itemListByTag.put(tag, itemDAO.findFewItemsByTag(tag, GRId_COUNT));
+            itemListByTag.put(tag, itemDAO.findFewItemsByTag(tag, GRID_COUNT));
         }
-        resultMap.put("items", itemListByTag);
+        resultMap.putAll(itemListByTag);
         return resultMap;
     }
 
@@ -184,19 +200,21 @@ public class MemberService implements IMemberService {
 
     @Override
     public Map<String, Object> getCartPageByMemberId(int page, String memberId) {
+        cartPageConstructor.setCriteria(memberId);
         return cartPageConstructor.getPageMapOrNull(page);
     }
 
     @Override
     public Map<String, Object> getCartPageByMemberIdWithRow(int page, String memberId, int row) {
         cartPageConstructor.setRow(row);
+        cartPageConstructor.setCriteria(memberId);
         return cartPageConstructor.getPageMapOrNull(page);
     }
 
     @Override
     public int addCart(CartDTO cart) {
-        int quantity = cartDAO.getQuantityOfCartByItemIdAndMemberId(cart.getItem_id(), cart.getMember_id());
-        if (quantity == 0)
+        Integer quantity = cartDAO.getQuantityByItemIdAndMemberId(cart.getItem_id(), cart.getMember_id());
+        if (quantity == null || quantity == 0)
             return cartDAO.addCart(cart);
 
         cart.setQuantity(quantity + cart.getQuantity());
@@ -205,7 +223,7 @@ public class MemberService implements IMemberService {
 
     @Override
     public int deleteCartByMemberAndItemId(String memberId, String itemId) {
-        return cartDAO.deleteCartByMemberIdAndItemId(memberId, itemId);
+        return cartDAO.deleteByMemberIdAndItemId(memberId, itemId);
     }
 
     // End Region Cart
@@ -230,7 +248,7 @@ public class MemberService implements IMemberService {
         );
         item.setOrder_id(order_id);
         int result = orderDAO.addOrder(item);
-        result *= cartDAO.deleteCartByMemberIdAndItemId(item.getMember_id(), item.getItem_id());
+        result *= cartDAO.deleteByMemberIdAndItemId(item.getMember_id(), item.getItem_id());
         return result;
     }
 

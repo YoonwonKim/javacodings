@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public interface IMemberService {
     int isExistMemberId(String memberId);
 
-    int addMember(MemberDTO member);
+    int addMember(MemberDTO member, MemberAddressDTO address);
 
     String getMemberIdByNameAndPhone(String name, String phone);
 
@@ -20,7 +20,7 @@ public interface IMemberService {
 
     int archiveMemberByMemberId(String memberId);
 
-    MemberDTO getAddressByMemberId(String memberId);
+    List<MemberAddressDTO> getAddressByMemberId(String memberId);
 
     int editAddress(MemberDTO addressData, int priority, String memberId);
 
@@ -51,4 +51,6 @@ public interface IMemberService {
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
     int addOrder(CartDTO item);
+
+    MemberAddressDTO getPrimaryAddress(String memberId);
 }

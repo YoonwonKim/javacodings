@@ -12,10 +12,14 @@
         <typeAlias alias="hashMap" type="java.util.HashMap" />
         <typeAlias alias="map" type="java.util.Map" />
 
-        <typeAlias alias="memberDTO" type="com.ecom.javacodings.common.transfer.MemberDTO" />
-        <typeAlias alias="bannerDTO" type="com.ecom.javacodings.common.transfer.BannerDTO" />
+        <typeAlias alias="MemberDTO" type="com.ecom.javacodings.common.transfer.MemberDTO" />
+        <typeAlias alias="AddressDTO" type="com.ecom.javacodings.common.transfer.MemberAddressDTO" />
+        <typeAlias alias="PaymentDTO" type="com.ecom.javacodings.common.transfer.MemberPaymentDTO" />
+
         <typeAlias alias="itemDTO" type="com.ecom.javacodings.common.transfer.ItemDTO" />
-        <typeAlias alias="tagDTO" type="com.ecom.javacodings.common.transfer.TagDTO" />
+        <typeAlias alias="ImageDTO" type="com.ecom.javacodings.common.transfer.ItemImageDTO" />
+
+        <typeAlias alias="bannerDTO" type="com.ecom.javacodings.common.transfer.BannerDTO" />
         <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.page.PageDTO" />
         <typeAlias alias="orderDTO" type="com.ecom.javacodings.common.transfer.OrderDTO" />
 

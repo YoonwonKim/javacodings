@@ -38,8 +38,8 @@ public class PageConstructor {
         ObjectMapper mapper = new ObjectMapper();
 
         // Page Metadata
-        Map<String, Object> pageMap = new HashMap<>();
         PageDTO pageData = new PageDTO(page, row);
+        Map<String, Object> pageMap = new HashMap<>();
         pageMap.putAll(mapper.convertValue(pageData, Map.class));
 
         int count = countMethod.count(criteria);
@@ -51,7 +51,7 @@ public class PageConstructor {
         if(page > totalPages) return null;
 
         // Get Page
-        List<Object> objectList = listMethod.getList(criteria, pageData);
+        List<Object> objectList = (List<Object>) listMethod.getList(criteria, pageData).get(0);
         pageMap.put("objectList", objectList);
         pageMap.put("criteria", criteria);
 

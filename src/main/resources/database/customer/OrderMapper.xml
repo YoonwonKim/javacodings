@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.OrderDAO">
+<mapper namespace="com.ecom.javacodings.customer.access.orders.OrderDAO">
 	<!-- Region Metadata -->
 
-	<select id="countOrdersByMemberID" parameterType="String">
+	<select id="countOrdersByMemberId" parameterType="String">
 		SELECT COUNT(ORDER_ID)
 		FROM ORDERS
-		WHERE MEMBER_ID = #{value}
+		WHERE MEMBER_ID = #{member_id}
 	</select>
 
 	<select id="isDuplicatedID" parameterType="String">
 		SELECT COUNT(ORDER_ID)
 		FROM ORDERS
-		WHERE ORDER_ID = #{value}
+		WHERE ORDER_ID = #{order_id}
 	</select>
 
 	<!-- End Region Metadata -->

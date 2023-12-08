@@ -37,7 +37,7 @@
 			<c:forEach var="item" items="${objectList}">
 				<cds-selectable-tile name="${item.item_id}" id="item" selected>
 				<div id="item-div">
-					<img src="/resources/images/${item.image}.png">
+					<img src="/resources/images/${item.path}.png">
 					<div id="item-desc">
 						<h1>${item.label}</h1>
 						<p>${item.desc}</p>

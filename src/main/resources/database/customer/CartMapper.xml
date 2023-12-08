@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecom.javacodings.customer.access.CartDAO">
+<mapper namespace="com.ecom.javacodings.customer.access.members.CartDAO">
 	<!-- Region Metadata -->
 
-	<select id="countCartByMemberID" parameterType="String" resultType="int">
+	<select id="countCartByMemberId" resultType="int">
 		SELECT COUNT(ITEM_ID)
 		FROM CARTS
-		WHERE MEMBER_ID = #{value}
+		WHERE MEMBER_Id = #{member_id}
 	</select>
 
 	<!-- End Region Metadata -->
 	<!-- Region Basic CRUD -->
 
-	<select id="findAllCartByMemberID" parameterType="map" resultType="Integer">
+	<select id="findAllCartByMemberId" parameterType="map" resultType="cartDTO">
 		SELECT *
 		FROM (
-				SELECT C.ITEM_ID, C.QUANTITY, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
+				SELECT C.ITEM_Id, C.QUANTITY, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_Id) AS RN
 				FROM CARTS C
-					JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
-					JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID 
-				WHERE MEMBER_ID = #{criteria}
+					JOIN ITEMS I ON I.ITEM_Id = C.ITEM_Id
+					JOIN ITEM_IMAGES II ON I.ITEM_Id = II.ITEM_Id
+				WHERE MEMBER_ID = #{member_id}
 			 )
-		WHERE RN BETWEEN #{start} AND #{end}
+		WHERE RN BETWEEN #{page.start} AND #{page.end}
 	</select>
 
-	<select id="getQuantityByItemIDAndMemberID" parameterType="cartDTO" resultType="Integer">
+	<select id="getQuantityByItemIdAndMemberId" resultType="Integer">
 		SELECT QUANTITY
 		FROM CARTS
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</select>
 
-	<insert id="addCart" parameterType="cartDTO">
+	<insert id="addCart">
 		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
-		VALUES (#{member_id}, #{item_id}, #{quantity})
+		VALUES (#{cart.member_id}, #{cart.item_id}, #{cart.quantity})
 	</insert>
 
 	<update id="updateCart" parameterType="cartDTO">
 		UPDATE CARTS
 		SET QUANTITY = #{quantity}
-		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
+		WHERE MEMBER_Id = #{member_id} AND ITEM_Id = #{item_id}
 	</update>
 
-	<delete id="deleteCartByMemberIDAndItemID" parameterType="cartDTO">
+	<delete id="deleteByMemberIdAndItemId" parameterType="cartDTO">
 		DELETE FROM CARTS
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</delete>
