@@ -1,44 +1,45 @@
 sessionStorage.setItem("debugMode", true);
 const DEBUG_MODE = sessionStorage.getItem("debugMode");
-import {modal} from './modal.js';
+import {editor} from './editor.js';
 
 $().ready(() => {
-
     // * Set Image Slide
-    $('#images').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        fade: true,
-        asNavFor: '#image-nav'
-    });
-    $('#image-nav').slick({
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        asNavFor: '#images',
-        dots: true,
-        centerMode: true,
-        focusOnSelect: true
-    });
+    // $('#images').slick({
+    //     slidesToShow: 1,
+    //     slidesToScroll: 1,
+    //     arrows: false,
+    //     fade: true,
+    //     asNavFor: '#image-nav'
+    // });
+    // $('#image-nav').slick({
+    //     slidesToShow: 3,
+    //     slidesToScroll: 1,
+    //     asNavFor: '#images',
+    //     dots: true,
+    //     centerMode: true,
+    //     focusOnSelect: true
+    // });
 
     // * Set Modal by Item info
     let rows = document.querySelectorAll('.row');
     rows.forEach(row => {
         row.addEventListener('click', function(event) {
-            let itemId = row.getAttribute('item-id');
-            let item;
+            if (editor.proceed())
+            {
+                let itemId = row.getAttribute('item-id');
+                let itemData  = editor.getItem(itemId);
+                let imageList = editor.getImages(itemId);
 
-            $.ajax({
-                type: 'GET',
-                url: "/admin/actions/item/get",
-                async: false,
-                dataType: 'json',
-                data: {itemId},
-                success: function(data) { item = data; }
-            });
+                if(DEBUG_MODE) console.log(
+                    "%c에디터 화면 구성", "font-size: 16px; padding-bottom: 4px;",
+                    "\n제품 아이디 : ", itemId,
+                    "\n제품 정보 : ", itemData,
+                    "\n제품 사진 : ", imageList,
+                );
 
-            modal.action = 'edit';
-            modal.set(item);
+                editor.setItem(itemData);
+                editor.setImages(imageList);
+            }
         });
     })
 
@@ -55,11 +56,9 @@ $().ready(() => {
             data.images = [];
             data.item.category = '';
 
-            modal.action = 'add';
-            modal.set(data);
+            editor.action = 'add';
+            editor.set(data);
         });
 
-    // * Submit Modal
-    document.querySelector('#submit')
-        .addEventListener('click', () => modal.submit());
+    editor.setEvents();
 })

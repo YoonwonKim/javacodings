@@ -2,6 +2,7 @@ package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
+import com.ecom.javacodings.common.transfer.SummaryDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
@@ -168,13 +169,14 @@ public class MerchandiserService implements ManagerService {
     public int countOrders() { return orderDAO.countOrders(); }
     @Override
     public List<OrderDTO> countOrderState() {
-        List<OrderDTO> result = orderDAO.countState();
-        String[] states = {"장바구니", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
-
-        for (OrderDTO order : result) {
-            order.setOrder_id(states[order.getState()]);
-        }
-        return result;
+//        List<OrderDTO> result = orderDAO.countState();
+//        String[] states = {"장바구니", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
+//
+//        for (OrderDTO order : result) {
+//            order.setOrder_id(states[order.getState()]);
+//        }
+//        return result;
+        return null;
     }
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
@@ -294,6 +296,16 @@ public class MerchandiserService implements ManagerService {
         }
         catch (JsonProcessingException e) { }
         return result;
+    }
+
+    @Override
+    public List<SummaryDTO> summaryItemsByCategory() {
+        return itemDAO.summaryItemsByCategory();
+    }
+
+    @Override
+    public List<SummaryDTO> summaryItemsByTag() {
+        return itemDAO.summaryItemsByTag();
     }
 
     // End Region 이벤트 관리

@@ -5,6 +5,7 @@ import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/actions")
 public class ManagerActionController {
-    // Region Services
+
     @Autowired ManagerService managerService;
-    // End Region Services
+
     // Region Get Item
 
     @PutMapping("/item/add")
@@ -37,14 +38,27 @@ public class ManagerActionController {
     public Map<String, Object> getItem(String itemId) {
         ItemDTO item  = managerService.readItemById(itemId);
         String[] tags = managerService.findTagsByItemId(itemId);
-        List<ItemImageDTO> images = managerService.findImagesByItemId(itemId);
 
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("item", item);
+        ObjectMapper mapper = new ObjectMapper();
+        resultMap.putAll(mapper.convertValue(item, Map.class));
         resultMap.put("tags", tags);
-        resultMap.put("images", images);
         return resultMap;
     }
+
+    @GetMapping("/item/get/images")
+    public List<ItemImageDTO> getImages(String itemId) {
+        List<ItemImageDTO> imageList = managerService.findImagesByItemId(itemId);
+        ObjectMapper mapper = new ObjectMapper();
+        return imageList;
+//        return mapper.convertValue(imageList, Map.class);
+    }
+
+
+
+
+
+
 
     @PutMapping("/item/edit")
     public String editItem(ItemDTO item, @RequestParam(required=false, name="tags[]") List<String> tags) {

@@ -17,17 +17,17 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/pagination.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
 	<%-- Fragment CSS --%>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/init.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/header.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/footer.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/global/init.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/global/header.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/views/merchandiser/fragments/global/footer.css" />
 
 	<%-- Page Component --%>
 	<script type="module" src="${pageContext.request.contextPath}/resources/scripts/manage_orders.js"></script>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/manage_orders.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/components/pagination.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/manage_orders.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/components/pagination.css" />
 </head>
 <body>
-<%@ include file="/views/merchandiser/fragments/header.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
 <main>
 <cds-layer level="1">
 <cds-stack class="main" gap="16px" use-custom-gap-value>
@@ -89,6 +89,6 @@
 </cds-stack>
 </cds-layer>
 </main>
-<%@ include file="/views/merchandiser/fragments/footer.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/footer.jsp" %>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.ecom.javacodings.merchandiser.access;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
+import com.ecom.javacodings.common.transfer.SummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,11 +13,15 @@ import java.util.List;
 public interface ItemManagerDAO {
 	// Region Read
 
+	List<SummaryDTO> summaryItemsByCategory();
+	List<SummaryDTO> summaryItemsByTag();
 	int count();
+	List<String> listCategory();
+
+
 	List<ItemDTO> findAll(PageDTO page);
 
 
-	List<String> listCategory();
 	//? Get
 	ItemDTO getItemById(String item_id);
 	// End Region Read
@@ -31,5 +36,7 @@ public interface ItemManagerDAO {
 	int deleteItemTegs(ItemDTO item);
 
 	List<ItemImageDTO> findImagesByItemId(@Param("item_id") String itemId);
+
+
 	// End Region Delete
 }

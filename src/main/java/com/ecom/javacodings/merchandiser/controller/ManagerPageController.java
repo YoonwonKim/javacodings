@@ -1,7 +1,6 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +30,7 @@ public class ManagerPageController {
 
     @RequestMapping("/item")
     public String products(Model model, String page, String row) {
+        // * List Items
         int currentPage = (page == null) ? 1 : Integer.parseInt(page);
         int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
 
@@ -40,9 +41,23 @@ public class ManagerPageController {
         model.addAttribute("categoryList", managerService.listCategory());
         model.addAttribute("tagList", managerService.findAllTags());
 
+        // * Summary Items
+        List<Map<String, Object>> summaryList = new ArrayList<>();
+        Map<String, Object> summary = new HashMap<>();
+        summary.put("label", "상품 분류 요약");
+        summary.put("itemList", managerService.summaryItemsByCategory());
+        summaryList.add(summary);
+
+        summary = new HashMap<>();
+        summary.put("label", "상품 태그 요약");
+        summary.put("itemList", managerService.summaryItemsByTag());
+        summaryList.add(summary);
+        model.addAttribute("summaryList", summaryList);
+
+        // * Return Page
         if (pageMap.get("responseMsg") != null)
             return "redirect:/admin/item?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
-        return "merchandiser/item/list";
+        return "merchandiser/item/main";
     }
 
     @RequestMapping("/orders")
@@ -54,7 +69,7 @@ public class ManagerPageController {
 //                request.getParameter("row"),
 //                managerService.countOrders()
 //        );
-//
+
 //        if((Integer) pageMap.get("currentPage") > (Integer) pageMap.get("totalPages")) {
 //            return "redirect:/admin/orders?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
 //        }

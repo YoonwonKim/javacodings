@@ -1,14 +1,13 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.transfer.SummaryDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -84,4 +83,7 @@ public interface ManagerService {
     void setEventPageRow(int row);
     Map<String, Object> getEventPageMap(int currentPage);
     String getItemsByEventId(String eventId);
+
+    List<SummaryDTO> summaryItemsByCategory();
+    List<SummaryDTO> summaryItemsByTag();
 }
