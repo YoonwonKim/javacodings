@@ -1,8 +1,8 @@
 const DEBUG_MODE = sessionStorage.getItem("debugMode");
 export let editor = [];
 
-let object = document.getElementById('editor');
-let fields = object.querySelectorAll('.field');
+let editorElement = document.getElementById('editor');
+let fields = editorElement.querySelectorAll('.field');
 
 let itemId = "";
 let imageList = [];
@@ -26,7 +26,7 @@ editor.setEvents = function()
 
 
 editor.proceed = () => {
-    let isOpen = (object.style.visibility == "visible");
+    let isOpen = (editorElement.style.visibility == "visible");
     if (isOpen) {
         let proceed = confirm("편집 중인 항목이 있습니다. 수정을 취소하시겠습니까?");
         return proceed;
@@ -35,12 +35,12 @@ editor.proceed = () => {
 }
 editor.open  = () => {
 
-    object.style.visibility = "visible";
-    object.style.display= "block";
+    editorElement.style.visibility = "visible";
+    editorElement.style.display= "block";
 }
 editor.close = () => {
-    object.style.visibility = "hidden";
-    object.style.display= "none";
+    editorElement.style.visibility = "hidden";
+    editorElement.style.display= "none";
 }
 
 editor.action = 'edit';
@@ -135,7 +135,7 @@ editor.getItem = function(itemId)
 
 editor.setItem = function(itemData)
 {
-    let itemFields = object.querySelectorAll('.field');
+    let itemFields = editorElement.querySelectorAll('.field');
     for(let field of itemFields)
     {
         let data = field.getAttribute('data');
@@ -183,9 +183,12 @@ editor.putItem = function(action)
 // End Region Item
 // Region Image -----------------------------------------------------
 
+// * --------------------------------
+// * 서버와 데이터 교환
+// * --------------------------------
+
 editor.getImages = function(itemId)
 {
-    let imageList;
     $.ajax({
         type: 'GET',
         url: "/admin/actions/item/get/images",
@@ -198,90 +201,108 @@ editor.getImages = function(itemId)
     return imageList;
 }
 
-editor.setImages = function(imageList)
-{
-
-    imageGrid = object.querySelector("#image-grid");
-    imageGrid.innerHTML = '';
-
-    for( let image of imageList )
-    {
-        let imageObject = document.createElement("img");
-        imageObject.className = image["category"];
-        imageObject.src = "/resources/images/" + image['path'];
-        imageObject.addEventListener("error", function(event) {
-            event.target.src = "https://picsum.photos/400";
-            event.onerror = null;
-        })
-
-        if(image["category"] == "desc")
-        {
-            let descImage = object.querySelector("#desc-image");
-            descImage.replaceWith(imageObject);
-        }
-        else { imageGrid.append(imageObject); }
-    }
-
-    editor.addButton();
-}
-
-editor.addImage = function()
-{
-    const file = document.getElementById('file');
-    const detailImages = object.querySelector("#image-grid");
-
-    const fileData = file.files[0];
-    imageList.push(fileData);
-
-    let image = document.createElement("img");
-    image.src = (window.url || window.webkitURL).createObjectURL(fileData);
-    object.addEventListener("error", function(event) {
-        event.target.src = "https://picsum.photos/400";
-        event.onerror = null;
-    })
-
-    detailImages.querySelector("#detail-image-upload").remove();
-    detailImages.append(image);
-    if(detailImages.children.length < 8)
-    {
-        detailImages.append(editor.button());
-        const file = document.getElementById("file");
-        file.addEventListener('input', function() { editor.addImage() });
-    }
-
-    if(DEBUG_MODE) console.log(
-        "%c이미지 업로드", "font-size: 16px; line-height: 20px",
-        "\n파일 데이터 : ", fileData
-    );
-}
-
 editor.putImages = function()
 {
-    let thumbnail = object.querySelector("#thumbnail").src.split("/");
-    thumbnail = thumbnail[thumbnail.length - 1];
-    thumbnail = {path: thumbnail, category: "thumbnail"};
+    console.log(imageList);
 
     $.ajax({
 
     });
 }
 
+// * --------------------------------
+// * 페이지 구성
+// * --------------------------------
 
+editor.setImages = function()
+{
+    imageGrid = editorElement.querySelector("#image-grid");
+    imageGrid.innerHTML = '';
+
+    for( let image of imageList )
+    {
+        let imageElement = editor.imageElement(image);
+        if(image["category"] == "desc")
+        {
+            let descImage = editorElement.querySelector(".desc");
+            descImage.replaceWith(imageElement);
+        }
+        else { imageGrid.append(imageElement); }
+    }
+
+    editor.addButton();
+}
 
 editor.addButton = function()
 {
+    try {editorElement.querySelector("#detail-image-upload").remove();}
+    catch (error) {}
     if(imageGrid.children.length < 8)
     {
-        imageGrid.append(editor.button());
+        imageGrid.append(editor.imageUploadButton());
         const file = document.getElementById("file");
-        file.addEventListener('change', function() { editor.addImage() });
+        file.addEventListener('change', function() {
+            editor.uploadImage();
+        });
     }
+}
+
+// * --------------------------------
+// * 이벤트 동작
+// * --------------------------------
+
+editor.setThumbnail = function(newThumbnail)
+{
+    let thumbnailPath = newThumbnail.src.split("/");
+    thumbnailPath = thumbnailPath[thumbnailPath.length - 1];
+
+    for(let image of imageList)
+    {
+        switch (image["category"])
+        {
+            case "desc": continue;
+            case "thumbnail": image["category"] = "detail";
+            default:
+            {
+                let imagePath = image["path"].split("/");
+                imagePath = imagePath[imagePath.length - 1];
+
+                if(thumbnailPath == imagePath) image["category"] = "thumbnail";
+            }
+        }
+    }
+
+    editor.setImages();
+}
+
+editor.uploadImage = function()
+{
+    const file = document.getElementById('file');
+    const detailImages = editorElement.querySelector("#image-grid");
+
+    const fileData = file.files[0];
+
+    let imageData = {
+        path: (window.url || window.webkitURL).createObjectURL(fileData),
+        category: 'detail',
+        file: fileData
+    };
+    let imageElement = editor.imageElement(imageData);
+    imageList.push(imageData);
+
+    if(DEBUG_MODE) console.log(
+        "%c이미지 업로드", "font-size: 16px; line-height: 20px",
+        "\n파일 데이터 : ", fileData
+    );
+
+    detailImages.append(imageElement);
+    editor.addButton();
 }
 
 // End Region Image
 // Region Element -----------------------------------------------------
 
-editor.button = function()
+editor.imageUploadButton = function()
 {
     let button = document.createElement("input");
     button.id   = "file";
@@ -299,6 +320,25 @@ editor.button = function()
     imageUpload.append(label);
     imageUpload.append(button);
     return imageUpload;
+}
+
+editor.imageElement = function(imageData)
+{
+    let imageElement = document.createElement("img");
+    imageElement.className = imageData["category"];
+
+    let isBlob = imageData.path.split("blob:").length > 1;
+    imageElement.src = ((isBlob)? "" : "/resources/images/") + imageData["path"];
+
+    imageElement.addEventListener("error", function(event) {
+        event.target.src = "https://picsum.photos/400";
+        event.onerror = null;
+    });
+    imageElement.addEventListener("click", function() {
+        editor.setThumbnail(this);
+    });
+
+    return imageElement;
 }
 
 // End Region Element
