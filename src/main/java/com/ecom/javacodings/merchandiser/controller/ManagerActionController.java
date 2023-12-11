@@ -5,6 +5,8 @@ import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,54 +21,69 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/actions")
 public class ManagerActionController {
-    // Region Services
-    @Autowired ManagerService managerService;
-    // End Region Services
-    // Region Get Item
 
-    @PutMapping("/item/add")
-    public String setItem(ItemDTO item,
-                          @RequestParam(required=false, name="tags[]") List<String> tags) {
-        String result;
-        result = managerService.createItem(item);
-        if (!result.equals("error")) managerService.updateTags(item.getItem_id(), tags);
-        return result;
-    }
+    @Autowired ManagerService managerService;
+
+    // Region Get Item
 
     @GetMapping("/item/get")
     public Map<String, Object> getItem(String itemId) {
         ItemDTO item  = managerService.readItemById(itemId);
         String[] tags = managerService.findTagsByItemId(itemId);
-        List<ItemImageDTO> images = managerService.findImagesByItemId(itemId);
 
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("item", item);
+        ObjectMapper mapper = new ObjectMapper();
+        resultMap.putAll(mapper.convertValue(item, Map.class));
         resultMap.put("tags", tags);
-        resultMap.put("images", images);
         return resultMap;
     }
 
-    @PutMapping("/item/edit")
-    public String editItem(ItemDTO item, @RequestParam(required=false, name="tags[]") List<String> tags) {
-        int result = 0;
-        result += managerService.updateItem(item);
-        if (tags != null) result *= managerService.updateTags(item.getItem_id(), tags);
+    @GetMapping("/item/get/images")
+    public List<ItemImageDTO> getImages(String itemId) {
+        List<ItemImageDTO> imageList = managerService.findImagesByItemId(itemId);
+        ObjectMapper mapper = new ObjectMapper();
+        return imageList;
+    }
 
-        if (result > 0) return "success";
+    @PutMapping("/item/put")
+    public String putItem(ItemDTO item,
+                          @RequestParam(required=false, name="tags[]") List<String> tags) {
+        String result;
+        Boolean isExistItem = item.getItem_id().length() > 0;
+        if (isExistItem) { result = managerService.editItem(item); }
+        else { result = managerService.createItem(item); }
+        return result;
+    }
+
+    @PutMapping("/item/put/images")
+    public String putImages(String imageList, String itemId,
+                           @RequestParam(value = "fileList", required = false) List<MultipartFile> fileList)
+            throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Object> itemImageList = mapper.readValue(imageList, List.class);
+
+        try {
+            Map<String, String> imageNameList = managerService.uploadImages(itemId, fileList);
+            for(int i = 0; i < imageNameList.size(); i++) {
+                String originalName = (String) imageNameList.keySet().toArray()[i];
+                String newName = (String) imageNameList.get(originalName);
+
+                for(int j = 0; j < itemImageList.size(); j++) {
+                    Map<String, String> imageObject = (Map<String, String>) itemImageList.get(j);
+                    if (imageObject.get("path").equals(originalName))
+                        imageObject.put("path", newName);
+                }
+            }
+        } catch (Exception e) {}
+
+        int result = managerService.setItemImages(itemId, itemImageList);
+        if (result != 0) { return "success"; }
         return "error";
     }
 
     @GetMapping("/item/tag/list")
     public List<String> getTags(String item_id) {
         return managerService.findAllTags();
-    }
-
-    @PutMapping("/item/image/add")
-    public String setImage(String itemId, @RequestParam("file") MultipartFile file) {
-        int result = managerService.updateImage(itemId, file);
-
-        if (result > 0) return "success";
-        return "error";
     }
 
     // End Region Get Data

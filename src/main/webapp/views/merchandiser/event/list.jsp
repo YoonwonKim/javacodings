@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>자바코딩즈 상품 이벤트 관리</title>
-	<link rel="stylesheet" href="/resources/styles/manage_products.css" />
+	<link rel="stylesheet" href="/resources/styles/merchandiser/item.css" />
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
 	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
@@ -20,16 +20,16 @@
 
 	<%-- Custom Components ------------------------------------------------------------------------------------------------%>
 	<%-- Fragements --%>
-	<link rel="stylesheet" href="/views/merchandiser/fragments/init.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/header.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/footer.css" />
 	<%-- Widgets --%>
 	<link rel="stylesheet" href="/resources/styles/components/pagination.css" />
 	<script src="/resources/scripts/common/components/pagination.js"></script>
 
 </head>
 <body>
-<%@ include file="/views/merchandiser/fragments/header.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
 
 <main>
 <cds-layer level="1">
@@ -70,6 +70,6 @@
 </cds-layer>
 </main>
 
-<%@ include file="/views/merchandiser/fragments/footer.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/footer.jsp" %>
 </body>
 </html>

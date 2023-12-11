@@ -2,6 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.ItemManagerDAO">
+<!-- Region Metadata ====================================================-->
+
+	<select id="summaryItemsByCategory" resultType="summaryDTO">
+		SELECT CATEGORY AS LABEL, COUNT(ITEM_ID) AS QUANTITY
+		FROM ITEMS
+		GROUP BY CATEGORY
+	</select>
+
+	<select id="summaryItemsByTag" resultType="summaryDTO">
+		SELECT TAG AS LABEL, COUNT(ITEM_ID) AS QUANTITY
+		FROM ITEM_TAGS
+		GROUP BY TAG
+	</select>
+
+	<select id="count" resultType="int">
+		SELECT COUNT(ITEM_ID)
+		FROM ITEMS
+	</select>
+
+	<select id="listCategory" resultType="String">
+		SELECT CATEGORY
+		FROM ITEMS
+		GROUP BY CATEGORY
+	</select>
+
+	<select id="isExistId" resultType="Boolean">
+		SELECT CASE WHEN COUNT(ITEM_ID) > 0 THEN '1' ELSE '0' END
+		FROM ITEMS
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
+<!-- End Region Metadata -->
+<!-- Region CRUD Methods ====================================================-->
+
+	<select id="deleteAllImagesByItemId">
+		DELETE
+		FROM ITEM_IMAGES
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
+<!-- End Region CRUD Methods -->
+
+
+
 <!-- Region Create -->
 	<insert id="createItem" parameterType="itemDTO">
 		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY)
@@ -31,15 +75,6 @@
 		FROM ITEMS I 
 		WHERE I.ITEM_ID = #{value}
 	</select>
-
-	<select id="listCategory" resultType="String">
-		SELECT CATEGORY FROM ITEMS GROUP BY CATEGORY
-	</select>
-
-	<select id="count" resultType="int">
-		SELECT COUNT(ITEM_ID)
-		FROM ITEMS
-	</select>
 <!-- End Region Read -->
 <!-- Region Update -->
 	<update id="updateItem" parameterType="ItemDTO">
@@ -54,7 +89,7 @@
 	</update>
 	<update id="updateImageById">
 		INSERT INTO ITEM_IMAGES(ITEM_ID, PATH, CATEGORY)
-		VALUES (#{item_id}, #{image_id}, 'detail')
+		VALUES (#{item_id}, #{image.path}, #{image.category})
 	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->

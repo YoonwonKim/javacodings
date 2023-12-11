@@ -1,79 +1,55 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/modal.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/text-input.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/form.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/number-input.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.rtl.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/multi-select.min.js"></script>
-<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/file-uploader.min.js"></script>
+<cds-layer level="0">
+<cds-tile id="editor">
+	<header>
+		<h1>상품 편집기</h1>
+	</header>
+	<cds-stack id="form"
+	           gap="16px" orientation="vertical" use-custom-gap-value>
+		<cds-text-input label="상품 이름" invalid-text="Error message" name="label"
+						placeholder="상품 이름을 입력해주세요"
+						class="field" data="label"></cds-text-input>
+		<cds-text-input label="상품 설명" invalid-text="Error message" name="desc"
+						placeholder="상품 설명을 입력해주세요"
+						class="field" data="desc"></cds-text-input>
+		<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
+			<cds-number-input step="1000" min="0"
+							  label="가격" name="price"
+							  class="field" data="price"></cds-number-input>
+			<cds-number-input min="0"
+							  label="재고 수량" name="stock"
+							  class="field" data="stock"></cds-number-input>
+		</cds-stack>
 
+		<cds-select label-text="분류" placeholder="상품 분류를 선택해주세요"
+					class="field" data="category">
+		<c:forEach items="${categoryList}" var="category">
+			<cds-select-item value="${category}">${category}</cds-select-item>
+		</c:forEach>
+		</cds-select>
+		<cds-multi-select title-text="태그" direction="top" label="태그 선택" filterable
+						  class="field" data="tags">
+			<c:forEach items="${tagList}" var="tag">
+				<cds-multi-select-item value="${tag}">${tag}</cds-multi-select-item>
+			</c:forEach>
+		</cds-multi-select>
 
+		<%-- Image Grid ------------------------------------------------------%>
+		<h1>상품 이미지 관리</h1>
+		<p>썸네일로 설정하려면 사진을 클릭하세요
+			<br>제품 사진은 최대 8개 업로드만 가능합니다. PNG 형식만 업로드 가능합니다
+			<br>썸네일을 지정하지 않으면 랜덤으로 설정됩니다
+		</p>
+		<div id="image-grid"></div>
+		<%-- End Image Grid --------------------------------------------------%>
 
-<cds-layer>
-<cds-modal id="modal-template">
-	<cds-modal-header>
-		<cds-modal-close-button></cds-modal-close-button>
-		<cds-modal-label class="field" data="item.item_id">Item ID</cds-modal-label>
-		<cds-modal-heading>상품 세부 관리</cds-modal-heading>
-	</cds-modal-header>
-
-	<cds-modal-body class="cds--layout">
-		<div id="modal-div">
-			<div id="image-block">
-				<div id="images" class="field" data="images">
-				</div>
-				<div id="image-nav"></div>
-			</div>
-
-			<cds-stack gap="16px" orientation="vertical" use-custom-gap-value>
-				<cds-text-input label="상품 이름" invalid-text="Error message" name="label"
-				                placeholder="상품 이름을 입력해주세요"
-				                class="field" data="item.label"></cds-text-input>
-				<cds-text-input label="상품 설명" invalid-text="Error message" name="desc"
-				                placeholder="상품 설명을 입력해주세요"
-				                class="field" data="item.desc"></cds-text-input>
-				<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
-					<cds-number-input step="1000" min="0"
-					                  label="가격" name="price"
-					                  class="field" data="item.price"></cds-number-input>
-					<cds-number-input min="0"
-					                  label="재고 수량" name="stock"
-					                  class="field" data="item.stock"></cds-number-input>
-				</cds-stack>
-				<cds-stack gap="8px" orientation="horizontal" use-custom-gap-value>
-					<cds-select label-text="분류" placeholder="상품 분류를 선택해주세요"
-					            class="field" data="item.category">
-					<c:forEach items="${categoryList}" var="category">
-						<cds-select-item value="${category}">${category}</cds-select-item>
-					</c:forEach>
-					</cds-select>
-				</cds-stack>
-				<cds-multi-select title-text="태그" direction="top" label="태그 선택" filterable
-				                  class="field" data="tags">
-					<c:forEach items="${tagList}" var="tag">
-						<cds-multi-select-item value="${tag}">${tag}</cds-multi-select-item>
-					</c:forEach>
-				</cds-multi-select>
-				<div id="uploader" role="button">
-					<p>상품 이미지 추가</p>
-					<p style="color: #525252; padding-bottom: 16px;">PNG 형식 만 업로드 가능합니다</p>
-					<div id="upload-label">
-						<label for="file" class="button">업로드</label>
-						<p id="uploaded-file"></p>
-					</div>
-					<input id="file" name="file" type="file"
-					       accept="image/png" hidden="true"/>
-				</div>
-			</cds-stack>
+		<div id="button-group">
+			<cds-button kind="primary" id="editor-submit">완료하기</cds-button>
+			<cds-button kind="secondary" id="desc-image-upload">상품 설명 업로드</cds-button>
 		</div>
-	</cds-modal-body>
 
-	<cds-modal-footer>
-		<cds-modal-footer-button kind="secondary" data-modal-close>그만두기</cds-modal-footer-button>
-		<cds-modal-footer-button kind="primary" id="submit">완료하기</cds-modal-footer-button>
-	</cds-modal-footer>
-</cds-modal>
+		<h1>상품 설명 이미지</h1>
+		<div id="desc"></div>
+	</cds-stack>
+</cds-tile>
 </cds-layer>

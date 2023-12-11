@@ -1,0 +1,21 @@
+#summary {
+    padding: 16px;
+    background: #ffffff;
+    overflow: hidden;
+    border: 1px solid #525252;
+}
+
+#summary h1 {
+    font-size: 20px;
+    line-height: 24px;
+    padding-bottom: 16px;
+}
+
+#summary .value .label {padding-bottom: 8px;}
+#summary .value {
+    padding-right: 32px;
+    border-right: 1px solid #e0e0e0;
+    height: 48px;
+}
+#summary .value:last-child { border: none; }
+#summary .value h1 { color: #0f62fe; }

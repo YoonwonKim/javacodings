@@ -14,13 +14,13 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/checkbox.min.js"></script>
 	<%-- Fragment CSS --%>
-	<link rel="stylesheet" href="/views/merchandiser/fragments/init.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/header.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/merchandiser/fragments/global/footer.css" />
 	<script src="/resources/scripts/eventsPg.js"></script>
 </head>
 <body>
-<%@ include file="/views/merchandiser/fragments/header.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
 <main>
 	<div class="layer-01">
 	
@@ -75,6 +75,6 @@
 
 	<%@ include file="/views/merchandiser/components/product_modal.jsp" %>
 </main>
-<%@ include file="/views/merchandiser/fragments/footer.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/footer.jsp" %>
 </body>
 </html>

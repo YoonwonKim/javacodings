@@ -20,10 +20,12 @@
         <typeAlias alias="ImageDTO" type="com.ecom.javacodings.common.transfer.ItemImageDTO" />
 
         <typeAlias alias="bannerDTO" type="com.ecom.javacodings.common.transfer.BannerDTO" />
-        <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.page.PageDTO" />
         <typeAlias alias="orderDTO" type="com.ecom.javacodings.common.transfer.OrderDTO" />
 
         <typeAlias alias="cartDTO" type="com.ecom.javacodings.common.transfer.CartDTO" />
         <typeAlias alias="eventDTO" type="com.ecom.javacodings.common.transfer.table.EventDTO" />
+
+        <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.page.PageDTO" />
+        <typeAlias alias="summaryDTO" type="com.ecom.javacodings.common.transfer.SummaryDTO" />
     </typeAliases>
 </configuration>

@@ -1,7 +1,9 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
+import com.ecom.javacodings.common.transfer.SummaryDTO;
 import com.ecom.javacodings.common.transfer.table.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
@@ -19,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Service("mdService")
 public class MerchandiserService implements ManagerService {
@@ -32,10 +34,13 @@ public class MerchandiserService implements ManagerService {
     @Value("${spring.servlet.multipart.location}")
     String filePath;
 
+    SequenceGenerator sequenceGenerator = new SequenceGenerator();
+
     @Autowired ItemManagerDAO itemDAO;
     @Autowired TagManagerDAO  tagDAO;
     @Autowired OrderManagerDAO  orderDAO;
     @Autowired EventManagerDAO eventDAO;
+
     // End Region Data access objects
     // Region 상품 관리
 
@@ -65,55 +70,37 @@ public class MerchandiserService implements ManagerService {
 
     @Override
     public String createItem(ItemDTO item) {
-        Random random = new Random();
-        int leftLimit  =  48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 20;
-        String randomItemID;
-        ItemDTO checkDuplicate = new ItemDTO();
-        do {
-            randomItemID = random.ints(leftLimit, rightLimit + 1)
-                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                    .limit(targetStringLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
-            checkDuplicate = itemDAO.getItemById(randomItemID);
-        } while ( checkDuplicate != null );
-        item.setItem_id(randomItemID);
+        String randomId = sequenceGenerator.generateUnique(
+                (String sequence) -> itemDAO.isExistId(sequence), 20);
+        item.setItem_id(randomId);
 
         int result = itemDAO.createItem(item);
-        if (result > 0) return randomItemID;
+        if (result > 0) return randomId;
         else return "error";
     }
 
+
     @Override
-    public int updateImage(String itemId, MultipartFile file) {
+    public Map<String, String> uploadImages(String itemId, List<MultipartFile> fileList)
+            throws IOException {
         String absoluteClassPath = new File("").getAbsolutePath() + "/src/main/webapp/";
-        File targetFile;
+        Map<String, String> imageNameMap = new HashMap<>();
 
-        // 이미지 파일 이름을 20자리 랜덤 문자열로 지정
-        Random random = new Random();
-        int leftLimit  =  48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 20;
-        String randomImageName;
-        do {
-            randomImageName = random.ints(leftLimit, rightLimit + 1)
-                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                    .limit(targetStringLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
-            targetFile = new File(absoluteClassPath + filePath + "/" + randomImageName + ".png");
-        } while ( targetFile.exists() );
+        for(MultipartFile file : fileList) {
+            File targetFile;
+            String randomFileName = sequenceGenerator.generateUnique(
+                    (String sequence) -> new File(absoluteClassPath + filePath + "/" + sequence + ".png").exists(),
+                    20
+            );
 
-        int result = 0;
-        try {
+            targetFile = new File(absoluteClassPath + filePath + "/" + randomFileName + ".png");
             targetFile.getParentFile().mkdirs();
             file.transferTo(targetFile);
-            result = itemDAO.updateImageById(itemId, randomImageName + ".png");
+
+            imageNameMap.put(file.getOriginalFilename(), randomFileName + ".png");
         }
-        catch (IOException e) { return -1; };
-        return result;
+
+        return imageNameMap;
     }
 
     @Override
@@ -168,13 +155,14 @@ public class MerchandiserService implements ManagerService {
     public int countOrders() { return orderDAO.countOrders(); }
     @Override
     public List<OrderDTO> countOrderState() {
-        List<OrderDTO> result = orderDAO.countState();
-        String[] states = {"장바구니", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
-
-        for (OrderDTO order : result) {
-            order.setOrder_id(states[order.getState()]);
-        }
-        return result;
+//        List<OrderDTO> result = orderDAO.countState();
+//        String[] states = {"장바구니", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
+//
+//        for (OrderDTO order : result) {
+//            order.setOrder_id(states[order.getState()]);
+//        }
+//        return result;
+        return null;
     }
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
@@ -293,6 +281,36 @@ public class MerchandiserService implements ManagerService {
             result = result.replace(",", ", ");
         }
         catch (JsonProcessingException e) { }
+        return result;
+    }
+
+    @Override
+    public List<SummaryDTO> summaryItemsByCategory() {
+        return itemDAO.summaryItemsByCategory();
+    }
+
+    @Override
+    public List<SummaryDTO> summaryItemsByTag() {
+        return itemDAO.summaryItemsByTag();
+    }
+
+    @Override
+    public String editItem(ItemDTO item) {
+        itemDAO.updateItem(item);
+        return item.getItem_id();
+    }
+
+    @Override
+    public int setItemImages(String itemId, List<Object> itemImageList) {
+        Integer result = itemDAO.deleteAllImagesByItemId(itemId);
+        result = (result == null) ? 0 : result;
+
+        for (int i = 0; i < itemImageList.size(); i++) {
+            Map<String, String> imageObject = (Map<String, String>) itemImageList.get(i);
+            result *= itemDAO.updateImageById(itemId, imageObject);
+        }
+
+        result = (result == null) ? 0 : result;
         return result;
     }
 
