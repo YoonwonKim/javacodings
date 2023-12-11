@@ -6,6 +6,7 @@ let fields = object.querySelectorAll('.field');
 
 let itemId = "";
 let imageList = [];
+let imageGrid;
 
 editor.setEvents = function()
 {
@@ -199,41 +200,35 @@ editor.getImages = function(itemId)
 
 editor.setImages = function(imageList)
 {
-    const thumbnail = object.querySelector("#thumbnail");
-    const detailImages = object.querySelector("#detail-image");
-    let descImage = object.querySelector("#desc-image");
-    detailImages.innerHTML = '';
+
+    imageGrid = object.querySelector("#image-grid");
+    imageGrid.innerHTML = '';
+
     for( let image of imageList )
     {
-        let object;
-        if(image["category"] == "thumbnail") object = thumbnail;
-        else object = document.createElement("img");
-
-        object.src = "/resources/images/" + image['path'];
-        object.addEventListener("error", function(event) {
+        let imageObject = document.createElement("img");
+        imageObject.className = image["category"];
+        imageObject.src = "/resources/images/" + image['path'];
+        imageObject.addEventListener("error", function(event) {
             event.target.src = "https://picsum.photos/400";
             event.onerror = null;
         })
 
-        if(image["category"] == "detail") { detailImages.append(object); }
-        if(image["category"] == "desc") {
-            // descImage.remove();
-            descImage.replaceWith(object);
+        if(image["category"] == "desc")
+        {
+            let descImage = object.querySelector("#desc-image");
+            descImage.replaceWith(imageObject);
         }
+        else { imageGrid.append(imageObject); }
     }
 
-    if(detailImages.children.length < 8)
-    {
-        detailImages.append(editor.button());
-        const file = document.getElementById("file");
-        file.addEventListener('change', function() { editor.addImage() });
-    }
+    editor.addButton();
 }
 
 editor.addImage = function()
 {
     const file = document.getElementById('file');
-    const detailImages = object.querySelector("#detail-image");
+    const detailImages = object.querySelector("#image-grid");
 
     const fileData = file.files[0];
     imageList.push(fileData);
@@ -269,6 +264,18 @@ editor.putImages = function()
     $.ajax({
 
     });
+}
+
+
+
+editor.addButton = function()
+{
+    if(imageGrid.children.length < 8)
+    {
+        imageGrid.append(editor.button());
+        const file = document.getElementById("file");
+        file.addEventListener('change', function() { editor.addImage() });
+    }
 }
 
 // End Region Image

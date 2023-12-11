@@ -26,7 +26,7 @@ main {
 
     background: #e0e0e0;
     min-height: 80vh;
-    min-width:  40vw;
+    width:  40vw;
     border-left: 1px solid #e0e0e0;
 }
 #editor h1 { font-size: 20px; line-height: 32px;}
@@ -46,38 +46,37 @@ main {
     flex: 1;
 }
 
-#editor #images h1 { padding-top: 16px; }
-#editor #thumbnail {
-    width:  398px;
-    height: 398px;
-    border: 1px solid #525252;
-}
 
-#editor #detail-image {
+#editor #form {
+    width: inherit;
+}
+#editor #images { width: 100%; }
+#editor #images h1  { padding-top: 16px; }
+#editor #image-grid {
+    width: inherit;
     display: grid;
-    grid-template-columns: repeat(4, 190px);
-    grid-template-rows: repeat(4, 190px);
-    gap: 16px;
-    height: 400px;
+    grid-gap: 16px;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
 }
-#editor #detail-image img {
-    width:  190px;
-    height: 190px;
+#editor #image-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
     border: 1px solid #525252;
-}
-#editor #detail-image img:hover {
-    opacity: 0.8;
-    transition: 1s ease;
-}
-#editor #desc h1 {
-    padding-bottom: 8px;
-}
 
-#editor #image-upload {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#editor #image-grid img.thumbnail {
+    grid-row: 1 / span 2;
+    grid-column: 1 / span 2;
+}
+#editor #image-grid #image-upload {
     display: block;
     background: #f4f4f4;
-    width:  190px;
-    height: 190px;
+    width:  100%;
+    aspect-ratio: 1 / 1;
     border: 1px solid #525252;
     padding: 16px;
 
@@ -85,14 +84,26 @@ main {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-#editor #image-upload:hover {
+#editor #image-grid #image-upload:hover {
     background: #8d8d8d;
     opacity: 12%;
     transition: 0.2s ease;
 }
-#editor #image-upload:hover p {
-    opacity: 100%;
+
+/*#editor #detail-image img {*/
+/*    width:  190px;*/
+/*    height: 190px;*/
+/*    border: 1px solid #525252;*/
+/*}*/
+/*#editor #detail-image img:hover {*/
+/*    opacity: 0.8;*/
+/*    transition: 1s ease;*/
+/*}*/
+
+#editor #desc h1 {
+    padding-bottom: 8px;
 }
+
 
 /* End Region Editor */
 

@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="/resources/styles/components/pagination.css" />
 	<link rel="stylesheet" href="/resources/styles/components/summary.css" />
 
-	<link rel="stylesheet" href="/resources/styles/manage_products.css"/>
+	<link rel="stylesheet" href="/resources/styles/merchandiser/item.css"/>
 	<script type="module" src="/resources/scripts/merchandiser/products/manage.js"></script>
 </head>
 <body>
