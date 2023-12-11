@@ -48,10 +48,8 @@
 			<cds-button kind="secondary" id="desc-image-upload">상품 설명 업로드</cds-button>
 		</div>
 
-		<div id="desc">
-			<h1>상품 설명 이미지</h1>
-			<img class="desc">
-		</div>
+		<h1>상품 설명 이미지</h1>
+		<div id="desc"></div>
 	</cds-stack>
 </cds-tile>
 </cds-layer>

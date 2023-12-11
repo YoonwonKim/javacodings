@@ -27,7 +27,22 @@
 		GROUP BY CATEGORY
 	</select>
 
+	<select id="isExistId" resultType="Boolean">
+		SELECT CASE WHEN COUNT(ITEM_ID) > 0 THEN '1' ELSE '0' END
+		FROM ITEMS
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
 <!-- End Region Metadata -->
+<!-- Region CRUD Methods ====================================================-->
+
+	<select id="deleteAllImagesByItemId">
+		DELETE
+		FROM ITEM_IMAGES
+		WHERE ITEM_ID = #{item_id}
+	</select>
+
+<!-- End Region CRUD Methods -->
 
 
 
@@ -74,7 +89,7 @@
 	</update>
 	<update id="updateImageById">
 		INSERT INTO ITEM_IMAGES(ITEM_ID, PATH, CATEGORY)
-		VALUES (#{item_id}, #{image_id}, 'detail')
+		VALUES (#{item_id}, #{image.path}, #{image.category})
 	</update>
 <!-- End Region Update -->
 <!-- Region Delete -->

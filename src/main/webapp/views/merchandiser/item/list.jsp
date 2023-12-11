@@ -31,7 +31,6 @@
 			<cds-table-header-cell>가격</cds-table-header-cell>
 			<cds-table-header-cell>재고</cds-table-header-cell>
 			<cds-table-header-cell>분류</cds-table-header-cell>
-			<cds-table-header-cell>태그</cds-table-header-cell>
 		</cds-table-header-row>
 	</cds-table-head>
 	<cds-table-body>
@@ -43,7 +42,6 @@
 				<cds-table-cell>${item.price}</cds-table-cell>
 				<cds-table-cell>${item.stock}</cds-table-cell>
 				<cds-table-cell>${item.category}</cds-table-cell>
-				<cds-table-cell class="item-tags"></cds-table-cell>
 			</cds-table-row>
 		</c:forEach>
 	</cds-table-body>

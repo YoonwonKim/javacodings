@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>자바코딩즈 상품 이벤트 관리</title>
-	<link rel="stylesheet" href="/resources/styles/manage_products.css" />
+	<link rel="stylesheet" href="/resources/styles/merchandiser/item.css" />
 	<script src="https://code.jquery.com/jquery-3.7.1.js"
 	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 

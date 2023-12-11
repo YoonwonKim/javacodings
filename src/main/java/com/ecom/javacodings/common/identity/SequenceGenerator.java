@@ -4,6 +4,11 @@ import java.util.Random;
 
 public class SequenceGenerator {
 
+    /**
+     * @param isDuplicate Boolean check(String generatedId);
+     * @param length
+     * @return sequence
+     */
     public String generateUnique(DuplicateChecker isDuplicate, int length) {
         Boolean isDuplicated = false;
         String generatedSequence = "";

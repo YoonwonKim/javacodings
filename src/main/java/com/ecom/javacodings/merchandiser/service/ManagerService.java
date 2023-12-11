@@ -8,13 +8,13 @@ import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public interface ManagerService {
-    //int updateImage(ItemDTO item, MultipartFile file);
 
-    int updateImage(String itemId, MultipartFile file);
+    Map<String, String> uploadImages(String itemId, List<MultipartFile> file) throws IOException;
 
     // End Region Data access objects
     // Region Item
@@ -56,7 +56,8 @@ public interface ManagerService {
     // End Region Orders
 
     OrderDTO orderUpdate(OrderDTO order);
-    List<OrderDTO> orderList(PageDTO page);int orderStateCnt(OrderDTO order);
+    List<OrderDTO> orderList(PageDTO page);
+    int orderStateCnt(OrderDTO order);
 
     List<ItemImageDTO> findImagesByItemId(String itemId);
 
@@ -86,4 +87,8 @@ public interface ManagerService {
 
     List<SummaryDTO> summaryItemsByCategory();
     List<SummaryDTO> summaryItemsByTag();
+
+    String editItem(ItemDTO item);
+
+    int setItemImages(String itemId, List<Object> itemImageList);
 }

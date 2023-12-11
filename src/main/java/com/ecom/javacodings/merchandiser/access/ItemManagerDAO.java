@@ -8,9 +8,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ItemManagerDAO {
+
+	Boolean isExistId(@Param("item_id") String itemId);
+
 	// Region Read
 
 	List<SummaryDTO> summaryItemsByCategory();
@@ -28,7 +32,7 @@ public interface ItemManagerDAO {
 	// Region Create or Update
 	int createItem(ItemDTO item);
 	int updateItem(ItemDTO item);
-	int updateImageById(@Param("item_id") String itemId, @Param("image_id") String imageId);
+	int updateImageById(@Param("item_id") String itemId, @Param("image") Map<String, String> imageData);
 	// End Region Create or Update
 	// Region Delete
 	int deleteItem(ItemDTO item);
@@ -36,6 +40,9 @@ public interface ItemManagerDAO {
 	int deleteItemTegs(ItemDTO item);
 
 	List<ItemImageDTO> findImagesByItemId(@Param("item_id") String itemId);
+
+	Integer deleteAllImagesByItemId(@Param("item_id") String itemId);
+	Integer addAllImagesByItemId(@Param("item_id") String itemId, @Param("image_list") List<Object> itemImageList);
 
 
 	// End Region Delete
