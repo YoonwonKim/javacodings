@@ -138,6 +138,7 @@ editor.submit = function()
 
     let itemId = editor.putItem();
     editor.putImages(itemId);
+    location.reload();
 }
 
 // End Region Page

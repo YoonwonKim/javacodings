@@ -49,7 +49,7 @@ public class ManagerActionController {
     public String putItem(ItemDTO item,
                           @RequestParam(required=false, name="tags[]") List<String> tags) {
         String result;
-        Boolean isExistItem = item.getItem_id() != null;
+        Boolean isExistItem = item.getItem_id().length() > 0;
         if (isExistItem) { result = managerService.editItem(item); }
         else { result = managerService.createItem(item); }
         return result;
