@@ -43,7 +43,7 @@
 			<h1>${key}</h1>
 			<div class="grid">
 			<c:forEach var="item" items="${mdList.get(key)}">
-				<a href="/product/${item.item_id}" class="card">
+				<a href="/item/${item.item_id}" class="card">
 					<img src="/resources/images/${item.path}">
 					<h1>${item.getLabel()}</h1>
 					<p>${item.getPrice()}원</p>
