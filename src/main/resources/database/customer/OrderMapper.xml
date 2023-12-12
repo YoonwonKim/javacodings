@@ -17,32 +17,55 @@
 	</select>
 
 	<!-- End Region Metadata -->
-	<!-- Region Basic CRUD -->
+	<!-- Region 기본 읽고 쓰기 ===============================================================-->
+
+	<insert id="add" useGeneratedKeys="false">
+		INSERT ALL
+		INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID)
+		VALUES (#{order.order_id}, #{order.item_id}, #{order.member_id})
+
+		INTO ORDER_STATES(ORDER_ID, STATE)
+		VALUES (#{order.order_id}, 0)
+
+		<foreach collection="order.itemList" item="item">
+			INTO ORDER_ITEMS(ORDER_ID, ITEM_ID, AMOUNT)
+			VALUES(#{item.order_id}, #{item_item_id}, #{item.amount})
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+
+	<!-- ** READ ** -->
 
 	<select id="findUnPayedOrderByOrderId" resultType="orderDTO">
-		SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.TRANSACTION_ID, O.AMOUNT,
-			   TO_CHAR(S.REG_DATE, 'YYYYMMDDHH24MISS') AS REG_DATE, S.STATE
-		FROM ORDERS O JOIN ORDER_STATES S ON O.ORDER_ID = S.ORDER_ID
-		WHERE
-			(SELECT MAX(S.STATE) FROM ORDERS WHERE O.ORDER_ID = #{order_id}) = '0'
-			AND O.ORDER_ID = #{order_id}
+		SELECT O.ORDER_ID, O.MEMBER_ID,
+			   A.AMOUNT,
+			   S.STATE, TO_CHAR(S.REG_DATE, 'YYYYMMDDHH24MISS') AS REG_DATE
+		FROM ORDERS O
+		JOIN ORDER_STATES S
+			 ON O.ORDER_ID = S.ORDER_ID
+			 AND (SELECT MAX(S.STATE) FROM ORDERS WHERE O.ORDER_ID = #{order_id}) = '0'
+		JOIN (
+			SELECT SUM(AMOUNT) AS AMOUNT
+		  	FROM ORDER_ITEMS
+		  	WHERE ORDER_ID = #{order_id}
+		  	GROUP BY AMOUNT
+		) A
+		WHERE O.ORDER_ID = #{order_id}
+	</select>
+
+	<select id="findAllItemByOrderId" resultType="CartDTO">
+		SELECT O.ITEM_ID, I.LABEL, O.AMOUNT
+	    FROM ORDER_ITEMS O
+	    JOIN ITEMS I ON O.ITEM_ID = I.ITEM_ID
+		WHERE O.ORDER_ID = #{order_id}
 	</select>
 
 	<select id="getItemIdByOrderId" resultType="String">
 		SELECT ITEM_ID
-		FROM ORDERS
+		FROM ORDER_ITEMS
 		WHERE ORDER_ID = #{order_id}
 	</select>
 
-	<insert id="addOrder" parameterType="cartDTO" useGeneratedKeys="false">
-		INSERT ALL
-			INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID, AMOUNT)
-			VALUES (#{item.order_id}, #{item.item_id}, #{item.member_id}, #{item.amount})
-
-			INTO ORDER_STATES(ORDER_ID, STATE)
-			VALUES (#{item.order_id}, 0)
-		SELECT 1 FROM DUAL
-	</insert>
 
 	<insert id="increaseStateByOrderId">
 		INSERT INTO ORDER_STATES (ORDER_ID,STATE, REG_DATE) VALUES

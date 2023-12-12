@@ -5,13 +5,9 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class CartDTO extends OrderDTO {
+public class CartDTO extends ItemDTO {
 
-    private String category    ;
-    private String label       ;
-    private String desc;
-    private String path       ;
-    private int price       ;
-    private int stock       ;
+    private String member_id;
+    private int amount;
 
 }

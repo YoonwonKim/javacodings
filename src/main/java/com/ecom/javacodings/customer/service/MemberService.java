@@ -260,16 +260,27 @@ public class MemberService implements IMemberService {
     }
 
     @Override
-    public OrderDTO addOrder(CartDTO cartData) {
-        String order_id = sequenceGenerator.generateUnique(
+    public OrderDTO addOrder(String memberId, List<CartDTO> cartList) {
+        int result = 1;
+        int amount = 0;
+        for(CartDTO cart : cartList) {
+            result *= cartDAO.deleteByMemberIdAndItemId(memberId, cart.getItem_id());
+            amount += cart.getAmount();
+        }
+
+        String orderId = sequenceGenerator.generateUnique(
                 (String generatedId) -> orderDAO.isExistOrderId(generatedId),
                 OrderPolicies.ID_LENGTH.getOrderPolicies()
         );
-        cartData.setOrder_id(order_id);
-        int result = orderDAO.addOrder(cartData);
-        result *= cartDAO.deleteByMemberIdAndItemId(cartData.getMember_id(), cartData.getItem_id());
 
-        if (result != 0) { return (OrderDTO) cartData; }
+        OrderDTO orderData = new OrderDTO();
+        orderData.setOrder_id(orderId);
+        orderData.setMember_id(memberId);
+        orderData.setItemList(cartList);
+        orderData.setAmount(amount);
+        result *= orderDAO.add(orderData);
+
+        if (result != 0) { return orderData; }
         return null;
     }
 

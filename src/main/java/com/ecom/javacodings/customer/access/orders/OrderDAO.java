@@ -3,9 +3,9 @@ package com.ecom.javacodings.customer.access.orders;
 import java.util.List;
 
 import com.ecom.javacodings.common.transfer.CartDTO;
-import org.apache.ibatis.annotations.Mapper;
-
 import com.ecom.javacodings.common.transfer.OrderDTO;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
@@ -17,19 +17,23 @@ public interface OrderDAO {
 	Boolean isExistOrderId(@Param("order_id") String orderId);
 
 	// End Region Metadata
-	// Region Basic CRUD
+	// Region Basic CRUD --------------------------------------------------------------------------------
 
-	int addOrder(@Param("item") CartDTO itemData);
+	// * CREATE ------------
+
+	int add(@Param("order") OrderDTO orderData);
+
+	// * READ ------------
 
 	OrderDTO findUnPayedOrderByOrderId(@Param("order_id") String orderId);
-
-    int increaseStateByOrderId(@Param("order_id") String orderId,
-							   @Param("reg_date") String regDate);
-
-	int setTransactionIdByOrderId(@Param("transaction_id") String transactionId,
-								  @Param("order_id") String orderId);
+	List<CartDTO> findAllItemByOrderId(@Param("order_id") String orderId);
 
 	String getItemIdByOrderId(@Param("order_id") String orderId);
+
+	// * UPDATE ------------
+
+	int increaseStateByOrderId(@Param("order_id") String orderId, @Param("reg_date") String regDate);
+	int setTransactionIdByOrderId(@Param("transaction_id") String transactionId, @Param("order_id") String orderId);
 
 	// End Region Basic CRUD
 }

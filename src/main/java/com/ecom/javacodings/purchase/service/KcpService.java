@@ -1,5 +1,6 @@
 package com.ecom.javacodings.purchase.service;
 
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service("kcpService")
@@ -31,9 +33,12 @@ public class KcpService implements IPurchaseService {
 
     @Override
     public Map<String, String> request(OrderDTO orderData) {
-        MemberDTO orderMemberInfoData = memberInfoDAO.findByMemberId(orderData.getMember_id());
-        ItemDTO itemData = itemDAO.findByItemId(orderData.getItem_id());
-        RequestData requestData = new RequestData(orderData, orderMemberInfoData, itemData.getLabel());
+        List<CartDTO> itemList = orderData.getItemList();
+        String itemLabel = itemList.get(0).getLabel();
+        if (itemList.size() > 1) itemLabel += "외 " + (itemList.size() - 1) + "개";
+        MemberDTO memberData = memberInfoDAO.findByMemberId(orderData.getMember_id());
+
+        RequestData requestData = new RequestData(orderData, memberData, itemLabel);
         requestData.setSignature(MERCHANT_ID, CERT_KEY);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -45,6 +50,14 @@ public class KcpService implements IPurchaseService {
         catch (Exception e) { return null; }
         return responseBody;
     }
+
+
+
+
+
+
+
+
 
     @Override
     public Map<String, String> purchase(String ordr_idxx, PurchaseData purchaseData) {

@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 public class RequestData {
 
     private String signature;   // 서명값
+
     public void setSignature(String merchantId, String apiCertKey) {
         String[] dataList = {merchantId, orderNumber, String.valueOf(amount), apiCertKey, timestamp};
         Signature signatureMethod = new Signature();
@@ -31,7 +32,6 @@ public class RequestData {
 
     private final String userAgent = "WP"; // 사용자 환경
     private final String returnUrl = "/order";
-    private RequestData requestData;
 
 
     public RequestData(OrderDTO orderData, MemberDTO memberInfoData, String itemLabel) {

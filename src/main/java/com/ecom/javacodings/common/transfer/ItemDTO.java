@@ -6,15 +6,16 @@ import lombok.ToString;
 @Data
 @ToString
 public class ItemDTO {
-	private String item_id;
+
+	protected String item_id;
 	private String category;
 	private String reg_date;
-	private String label;
-	private String desc;
 
-	private int price;
-	private int stock;
+	protected String label;
+	protected String desc;
+	protected String path;
 
-	// Primary Image path
-	private String path;
+	protected int price;
+	protected int stock;
+
 }
