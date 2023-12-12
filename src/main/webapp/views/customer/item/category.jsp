@@ -33,7 +33,7 @@
 
 	<cds-layer>
 	<div id="grid">
-		<cds-clickable-tile href="/product/" id="item">
+		<cds-clickable-tile href="/item/" id="item">
 		<cds-stack>
 			<img id="item-image">
 			<h1 id="item-label"></h1>

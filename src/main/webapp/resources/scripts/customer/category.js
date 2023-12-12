@@ -39,7 +39,7 @@ function appendTiles(response) {
         if(DEBUG_MODE) console.log(item);
 
         let item_tile = template.cloneNode(true);
-        item_tile.href = '/product/' + item['item_id'];
+        item_tile.href = '/item/' + item['item_id'];
         item_tile.querySelector('#item-image').src = '/resources/images/' + item.path;
         item_tile.querySelector('#item-label').innerText = item.label;
         item_tile.querySelector('#item-price').innerHTML = item.price.toLocaleString('en-US') + ' 원';
