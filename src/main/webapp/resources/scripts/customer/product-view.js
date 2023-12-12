@@ -12,6 +12,10 @@ $(document).ready(function() {
 		});
 
 	orderPrice();
+
+	document.querySelector("#cart").addEventListener('click', function() {
+		cart();
+	});
 });
 // End Region Style
 
@@ -49,11 +53,16 @@ function order(state) {
 function cart(state) {
 	let url = location.href.split('/');
 	let item_id  = url[url.length - 1];
-	let quantity = document.getElementById("order-quantity").value;
+
+	const quantity = document.getElementById("order-quantity").value;
+	const price = document.getElementById("item-price-value").innerText;
+
+	let data = {item_id: item_id, amount: quantity * price};
 
 	$.ajax({
-		method: 'POST',
-		url: '/actions/cart/' + item_id + '?quantity='+quantity,
+		method: 'PUT',
+		url: '/actions/cart/put',
+		data: data,
 		success: function(response) {
 			if (response == 'auth error') {
 				alert('로그인이 필요한 항목입니다');
@@ -65,26 +74,3 @@ function cart(state) {
 		}
 	});
 }
-
-
-// $().ready(function(){
-// 	 var q = $('input[name=quantity]').val();
-// 	 var s = $('input[name=stock]').val();
-// 	 //숫자가 아닐때
-// 	 if(!$.isNumeric(q)) {
-// 		 alert('숫자를 입력하시오')
-// 		 $('input[name=quantity]').focus()
-// 		 return false;
-// 	 }
-// 	 //구매수량이 재고보다 많으면
-// 	 if(parseInt(q)>parseInt(s)){
-// 		 alert('재고가 부족합니다.')
-// 		 return false;
-// 	 }
-// 	 $('form[name=itemForm]').submit();
-//   });
-//
-//   $('itemDt').on('click', function(){
-//
-//   });
-

@@ -26,5 +26,7 @@ public interface ItemDAO {
 	List<ItemDTO> findAllByRegDate(@Param("limit") int limit);
 	List<ItemDTO> findAllByTag(@Param("tag") String tag, @Param("limit") int limit);
 
-	// End Region Basic CRUD
+    int decreaseStockByItemId(@Param("item_id") String itemId);
+
+    // End Region Basic CRUD
 }

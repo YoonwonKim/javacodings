@@ -50,7 +50,13 @@ public interface IMemberService {
 
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
-    int addOrder(CartDTO item);
+    OrderDTO addOrder(CartDTO item);
 
     MemberAddressDTO getPrimaryAddress(String memberId);
+
+    OrderDTO findOrderByOrderId(String orderId);
+
+    int successPurchase(String orderId, String regDate);
+
+    int setTransactionIdByOrderId(String transactionId, String orderId);
 }

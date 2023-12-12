@@ -10,8 +10,8 @@
 		WHERE MEMBER_ID = #{member_id}
 	</select>
 
-	<select id="isDuplicatedID" parameterType="String">
-		SELECT COUNT(ORDER_ID)
+	<select id="isExistOrderId">
+		SELECT CASE WHEN COUNT(ORDER_ID) > 0 THEN '1' ELSE '0' END
 		FROM ORDERS
 		WHERE ORDER_ID = #{order_id}
 	</select>
@@ -28,24 +28,37 @@
 			AND O.ORDER_ID = #{order_id}
 	</select>
 
-	<insert id="addOrder" parameterType="cartDTO">
+	<select id="getItemIdByOrderId" resultType="String">
+		SELECT ITEM_ID
+		FROM ORDERS
+		WHERE ORDER_ID = #{order_id}
+	</select>
+
+	<insert id="addOrder" parameterType="cartDTO" useGeneratedKeys="false">
 		INSERT ALL
-			INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, TRANSACTION_ID)
-			VALUES (#{order_id}, #{item_id}, #{member_id}, #{quantity}, #{transaction_id})
-
-			INTO ORDER_STATE(ORDER_ID, STATE)
-			VALUES (#{order_id}, 1)
 			INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID, AMOUNT)
-			VALUES (#{order_id}, #{item_id}, #{member_id}, #{AMOUNT})
+			VALUES (#{item.order_id}, #{item.item_id}, #{item.member_id}, #{item.amount})
 
-			INTO ORDER_STATE(ORDER_ID, STATE)
-			VALUES (#{order_id}, '1')
+			INTO ORDER_STATES(ORDER_ID, STATE)
+			VALUES (#{item.order_id}, 0)
 		SELECT 1 FROM DUAL
+	</insert>
+
+	<insert id="increaseStateByOrderId">
+		INSERT INTO ORDER_STATES (ORDER_ID,STATE, REG_DATE) VALUES
+		(#{order_id}, (SELECT MAX(STATE) FROM ORDER_STATES) + 1,
+		 TO_DATE(#{reg_date}, 'YYYYMMDDHH24MISS'))
 	</insert>
 
 	<update id="updateOrderStateByOrderID" parameterType="orderDTO">
 		UPDATE ORDER_STATES SET
 			STATE = #{state}
+		WHERE ORDER_ID = #{order_id}
+	</update>
+
+	<update id="setTransactionIdByOrderId">
+		UPDATE ORDERS SET
+			TRANSACTION_ID = #{transaction_id}
 		WHERE ORDER_ID = #{order_id}
 	</update>
 

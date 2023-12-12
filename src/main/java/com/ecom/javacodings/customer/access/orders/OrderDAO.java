@@ -20,7 +20,16 @@ public interface OrderDAO {
 	// Region Basic CRUD
 
 	int addOrder(@Param("item") CartDTO itemData);
-	int setStateOfOrderByOrderID(@Param("state") int orderState, @Param("order_id") String orderId);
+
+	OrderDTO findUnPayedOrderByOrderId(@Param("order_id") String orderId);
+
+    int increaseStateByOrderId(@Param("order_id") String orderId,
+							   @Param("reg_date") String regDate);
+
+	int setTransactionIdByOrderId(@Param("transaction_id") String transactionId,
+								  @Param("order_id") String orderId);
+
+	String getItemIdByOrderId(@Param("order_id") String orderId);
 
 	// End Region Basic CRUD
 }

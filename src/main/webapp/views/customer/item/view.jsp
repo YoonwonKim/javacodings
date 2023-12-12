@@ -5,29 +5,14 @@
 <html>
 <head>
 	<title>자바코딩즈 상품 디테일 페이지</title>
-	<!-- <link rel="stylesheet" href="/resources/css/manage_products.css" /> -->
-	<script src="https://code.jquery.com/jquery-3.7.1.js"
-	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-	<%--  Web Components --%>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/text-input.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/number-input.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
-	<%-- Fragment CSS --%>
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
-	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
+	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
 
 	<%-- Page Scripts --%>
-	<script src="/resources/scripts/customer/product-view.js"></script>
+	<script type="module" src="/resources/scripts/customer/product-view.js"></script>
 	<link rel="stylesheet" href="/resources/styles/customer/product-view.css" />
 </head>
 <body>
-<%@ include file="/views/customer/fragments/header.jsp" %>
+<%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 
 	<article>
@@ -62,12 +47,12 @@
 			</div>
 			<cds-stack orientation="horizontal" gap="8px" use-custom-gap-value>
 				<cds-button onclick="order(1)" kind="primary">구매하기</cds-button>
-				<cds-button onclick="cart()" kind="secondary">장바구니</cds-button>
+				<cds-button id="cart" kind="secondary">장바구니</cds-button>
 			</cds-stack>
 		</div>
 	</article>
 
 </main>
-<%@ include file="/views/customer/fragments/footer.jsp" %>
+<%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
 </html>

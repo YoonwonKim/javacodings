@@ -76,5 +76,11 @@
         WHERE RN BETWEEN 0 AND #{limit}
     </select>
 
+    <update id="decreaseStockByItemId">
+        UPDATE ITEMS
+        SET STOCK = STOCK - 1
+        WHERE ITEM_ID = #{item_id}
+    </update>
+
     <!-- End Region Basic CRUD -->
 </mapper>

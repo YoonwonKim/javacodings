@@ -1,3 +1,10 @@
+sessionStorage.setItem("DEBUG_MODE", true);
+const DEBUG_MODE = sessionStorage.getItem("DEBUG_MODE");
+
+import {order} from '/resources/scripts/common/order.js';
+
+
+
 $(document).ready(function(){
 	// 문서 초기화
 	orderSummary();
@@ -25,10 +32,12 @@ $(document).ready(function(){
 function calcPrice(item) {
 	let row = item.closest('#item-div');
 	let quantity = item.value;
-	let price = row.querySelector("#cart-price").getAttribute('price');
+	let price = row.querySelector("#cart-amount").getAttribute('price');
+	let amount = price * quantity;
 
-	row.querySelector('#cart-price').innerHTML =
-		(quantity * price).toLocaleString('en-US') + ' 원';
+	let column = row.querySelector('#cart-amount');
+	column.setAttribute("amount", amount);
+	column.innerHTML = amount.toLocaleString('en-US') + ' 원';
 	item.value = quantity;
 }
 
@@ -76,16 +85,30 @@ function deleteSelected() {
 // End Region Cart
 // Region Order
 
-function orderOne(item_id) {
-	$.ajax({
-		url: '/actions/cart/order/' + item_id,
-		method: 'POST',
-		success: function() {
-			console.log('Order');
-			location.reload();
-		}
-	});
+$(document).ready(function() {
+
+	let orderButtonList = document.querySelectorAll('.order-button');
+	orderButtonList.forEach(function(value) {
+		let itemId = value.getAttribute('item-id');
+		value.addEventListener('click', function() {
+			orderM(itemId);
+		})
+	})
+
+});
+
+function orderM(itemId)
+{
+	const tile = document.querySelector("cds-selectable-tile[name='" + itemId + "']");
+	const amount = tile.querySelector("#cart-amount").getAttribute("amount");
+	// const data = {item_id: itemId, amount: amount};
+
+	order.set(itemId, amount);
+	order.request();
 }
+
+
+
 function orderSelected() {
 	let orderList = [];
 
@@ -98,16 +121,6 @@ function orderSelected() {
 
 		orderList.push({ item_id, quantity });
 	}
-
-	$.ajax({
-		url: '/actions/cart/order',
-		method: 'POST',
-		data: orderList,
-		success: function() {
-			console.log('Order Selected');
-			location.reload();
-		}
-	});
 }
 
 // End Region Order
@@ -124,7 +137,7 @@ function orderSummary() {
 	for( let i = 0; i < itemList.length; i++ ) {
 		let item = itemList[i];
 
-		let price = item.querySelector('#cart-price').innerHTML.split(' ')[0];
+		let price = item.querySelector('#cart-amount').innerHTML.split(' ')[0];
 		totalPrice += parseInt(price);
 
 		// let discount = item.querySelector('#item-discount').innerHTML.split(' ')[0];
