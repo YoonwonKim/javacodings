@@ -35,5 +35,7 @@ public interface OrderDAO {
 	int increaseStateByOrderId(@Param("order_id") String orderId, @Param("reg_date") String regDate);
 	int setTransactionIdByOrderId(@Param("transaction_id") String transactionId, @Param("order_id") String orderId);
 
+	List<String> getAllItemIdByOrderId(String orderId);
+
 	// End Region Basic CRUD
 }

@@ -8,6 +8,7 @@ import lombok.ToString;
 public class CartDTO extends ItemDTO {
 
     private String member_id;
+    private String order_id;
     private int amount;
 
 }

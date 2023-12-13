@@ -14,10 +14,10 @@ main {
 
 /* Region Item **********************************************/
 
-#item img {
+.order img {
     width: 176px;
 }
-#item h1 {
+.order h1 {
     font-size: 20px;
     line-height: 24px;
     font-weight:  300;
@@ -25,7 +25,7 @@ main {
     padding-top: 8px;
     padding-bottom: 8px;
 }
-#item p {
+.order p {
     font-size: 16px;
     line-height: 24px;
     flex: 1;
@@ -42,7 +42,8 @@ main {
     display: flex;
     flex-direction: column;
 }
-#item #cart-price {
+
+.order #order-amount .field {
     font-size: 20px;
     line-height: 24px;
     text-align: right;

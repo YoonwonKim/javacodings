@@ -1,6 +1,7 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
@@ -161,6 +162,9 @@ public class PageController {
 	public String purchaseOrder(@PathVariable("order_id") String orderId,
 								Model model) {
 		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
+		List<CartDTO> cartList = memberService.findAllItemsByOrderId(orderId);
+		orderData.setItemList(cartList);
+
 		Map<String, String> responseBody = payUpService.request(orderData);
 		model.addAllAttributes(responseBody);
 		model.addAttribute("order_id", orderId);
@@ -169,8 +173,7 @@ public class PageController {
 
 	@PostMapping("/order/confirm/{order_id}")
 	public String confirmOrder(String ordr_idxx, @PathVariable("order_id") String orderId,
-							   PurchaseData purchaseData, Model responseBody,
-							   HttpServletRequest request) {
+							   PurchaseData purchaseData, Model responseBody) {
 		String page = "purchase/confirm";
 		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
 

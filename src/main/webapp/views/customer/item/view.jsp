@@ -17,7 +17,7 @@
 
 	<article>
 		<img src="/resources/images/${item.path}" id="item-image">
-		<div id="item-metadata">
+		<div id="item-metadata" class="order" item-id="${item.item_id}">
 			<div id="article">
 				<h1 id="item-label">${item.label}</h1>
 				<p  id="item-desc" >${item.desc}</p>
@@ -25,7 +25,7 @@
 				           gap="8px" use-custom-gap-value orientation="vertical">
 					<label id="item-price-label">판매 가격</label>
 					<div>
-						<p id="item-price-value">${item.price}</p>
+						<p id="item-price">${item.price}</p>
 						<p id="item-event"></p>
 					</div>
 				</cds-stack>
@@ -41,13 +41,13 @@
 					</cds-layer>
 				</div>
 			</div>
-			<div>
+			<div id="order-amount">
 				<p>총 금액</p>
-				<p id="order-price"></p>
+				<p class="field" value="${item.price}" price="${item.price}">${item.price}</p>
 			</div>
 			<cds-stack orientation="horizontal" gap="8px" use-custom-gap-value>
-				<cds-button onclick="order(1)" kind="primary">구매하기</cds-button>
-				<cds-button id="cart" kind="secondary">장바구니</cds-button>
+				<cds-button id="request-order" kind="primary">구매하기</cds-button>
+				<cds-button id="put-cart" kind="secondary">장바구니</cds-button>
 			</cds-stack>
 		</div>
 	</article>

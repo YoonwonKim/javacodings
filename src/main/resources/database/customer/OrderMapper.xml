@@ -21,15 +21,15 @@
 
 	<insert id="add" useGeneratedKeys="false">
 		INSERT ALL
-		INTO ORDERS(ORDER_ID, ITEM_ID, MEMBER_ID)
-		VALUES (#{order.order_id}, #{order.item_id}, #{order.member_id})
+		INTO ORDERS(ORDER_ID, MEMBER_ID)
+		VALUES (#{order.order_id}, #{order.member_id})
 
 		INTO ORDER_STATES(ORDER_ID, STATE)
 		VALUES (#{order.order_id}, 0)
 
 		<foreach collection="order.itemList" item="item">
 			INTO ORDER_ITEMS(ORDER_ID, ITEM_ID, AMOUNT)
-			VALUES(#{item.order_id}, #{item_item_id}, #{item.amount})
+			VALUES(#{order.order_id}, #{item.item_id}, #{item.amount})
 		</foreach>
 		SELECT 1 FROM DUAL
 	</insert>
@@ -40,17 +40,20 @@
 		SELECT O.ORDER_ID, O.MEMBER_ID,
 			   A.AMOUNT,
 			   S.STATE, TO_CHAR(S.REG_DATE, 'YYYYMMDDHH24MISS') AS REG_DATE
+
 		FROM ORDERS O
-		JOIN ORDER_STATES S
-			 ON O.ORDER_ID = S.ORDER_ID
-			 AND (SELECT MAX(S.STATE) FROM ORDERS WHERE O.ORDER_ID = #{order_id}) = '0'
-		JOIN (
-			SELECT SUM(AMOUNT) AS AMOUNT
-		  	FROM ORDER_ITEMS
-		  	WHERE ORDER_ID = #{order_id}
-		  	GROUP BY AMOUNT
-		) A
+		 	 JOIN ORDER_STATES S
+		     ON O.ORDER_ID = S.ORDER_ID
+
+			 CROSS JOIN (
+			 SELECT SUM(AMOUNT) AS AMOUNT
+			 FROM ORDER_ITEMS
+			 WHERE ORDER_ID = #{order_id}
+			 GROUP BY ORDER_ID
+			 ) A
+
 		WHERE O.ORDER_ID = #{order_id}
+	    AND (SELECT MAX(STATE) FROM ORDER_STATES WHERE ORDER_ID = #{order_id}) = '0'
 	</select>
 
 	<select id="findAllItemByOrderId" resultType="CartDTO">
@@ -58,6 +61,12 @@
 	    FROM ORDER_ITEMS O
 	    JOIN ITEMS I ON O.ITEM_ID = I.ITEM_ID
 		WHERE O.ORDER_ID = #{order_id}
+	</select>
+
+	<select id="getAllItemIdByOrderId" resultType="String">
+		SELECT ITEM_ID
+		FROM ORDER_ITEMS
+		WHERE ORDER_ID = #{order_id}
 	</select>
 
 	<select id="getItemIdByOrderId" resultType="String">

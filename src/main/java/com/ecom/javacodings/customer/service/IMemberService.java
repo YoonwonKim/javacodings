@@ -59,4 +59,6 @@ public interface IMemberService {
     int setTransactionIdByOrderId(String transactionId, String orderId);
 
     OrderDTO addOrder(String memberId, List<CartDTO> cartList);
+
+    List<CartDTO> findAllItemsByOrderId(String orderId);
 }

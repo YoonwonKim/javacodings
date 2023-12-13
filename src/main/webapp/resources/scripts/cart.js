@@ -2,7 +2,7 @@ sessionStorage.setItem("DEBUG_MODE", true);
 const DEBUG_MODE = sessionStorage.getItem("DEBUG_MODE");
 
 import {order} from '/resources/scripts/common/order.js';
-
+import {orderable} from "/resources/scripts/customer/orderable.js";
 
 
 $(document).ready(function(){
@@ -24,6 +24,29 @@ $(document).ready(function(){
 	document.addEventListener('cds-current-selectable-tile-selections',
 		function() {
 		orderSummary();
+	});
+
+
+	// * 단일 주문 요청
+	const requestSingleButtonList = document.querySelectorAll(".request-single");
+	requestSingleButtonList.forEach(function(element) {
+		element.addEventListener('click', function() {
+			const orderElement = element.closest(".order");
+			const orderData = orderable.getCartData(orderElement);
+			order.request(orderData);
+		})
+	});
+
+	// * 선택 주문 요청
+	const requestSelectedButton = document.getElementById("request-selected");
+	requestSelectedButton.addEventListener('click', function() {
+		const orderElementList = document.querySelectorAll(".order[selected]");
+		let cartList = [];
+		for(let orderElement of orderElementList) {
+			let cartData = orderable.getCartData(orderElement);
+			cartList.push(cartData);
+		}
+		order.request(cartList);
 	});
 });
 
@@ -83,47 +106,6 @@ function deleteSelected() {
 }
 
 // End Region Cart
-// Region Order
-
-$(document).ready(function() {
-
-	let orderButtonList = document.querySelectorAll('.order-button');
-	orderButtonList.forEach(function(value) {
-		let itemId = value.getAttribute('item-id');
-		value.addEventListener('click', function() {
-			orderM(itemId);
-		})
-	})
-
-});
-
-function orderM(itemId)
-{
-	const tile = document.querySelector("cds-selectable-tile[name='" + itemId + "']");
-	const amount = tile.querySelector("#cart-amount").getAttribute("amount");
-	// const data = {item_id: itemId, amount: amount};
-
-	order.set(itemId, amount);
-	order.request();
-}
-
-
-
-function orderSelected() {
-	let orderList = [];
-
-	let selectedItems =
-		document.querySelectorAll('#item[selected]');
-	for (let i = 0; i < selectedItems.length; i++) {
-		let item = selectedItems[i];
-		let item_id = item.getAttribute('name');
-		let quantity = item.querySelector('.cart-quantity').value;
-
-		orderList.push({ item_id, quantity });
-	}
-}
-
-// End Region Order
 // Region Order Summary
 
 function orderSummary() {

@@ -248,8 +248,10 @@ public class MemberService implements IMemberService {
 
     @Override
     public int successPurchase(String orderId, String regDate) {
-        String itemId = orderDAO.getItemIdByOrderId(orderId);
-        int result = itemDAO.decreaseStockByItemId(itemId);
+        List<String> itemList = orderDAO.getAllItemIdByOrderId(orderId);
+        int result = 1;
+        for (String itemId : itemList)
+            result *= itemDAO.decreaseStockByItemId(itemId);
         result *= orderDAO.increaseStateByOrderId(orderId, regDate);
         return result;
     }
@@ -282,6 +284,11 @@ public class MemberService implements IMemberService {
 
         if (result != 0) { return orderData; }
         return null;
+    }
+
+    @Override
+    public List<CartDTO> findAllItemsByOrderId(String orderId) {
+        return orderDAO.findAllItemByOrderId(orderId);
     }
 
     // End Region Order

@@ -251,13 +251,12 @@ public class ActionController {
     // Region Order -----------------------------------------------------------------------------------------------
 
     @PostMapping("/order")
-    public String setOrder(HttpSession session,
-                           @RequestParam("cart_list") List<CartDTO> cartList) {
+    public String setOrder(HttpSession session, @RequestBody OrderDTO order) {
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
         String memberId = ssKey.getMember_id();
 
-        OrderDTO orderData = memberService.addOrder(memberId, cartList);
+        OrderDTO orderData = memberService.addOrder(memberId, order.getItemList());
         return orderData.getOrder_id();
     }
 

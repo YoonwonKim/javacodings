@@ -19,7 +19,7 @@
 		<cds-tile-group>
 		<cds-stack gap="8px" use-custom-gap-value>
 			<c:forEach var="item" items="${objectList}">
-				<cds-selectable-tile name="${item.item_id}" id="item" selected>
+				<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
 				<div id="item-div">
 					<img src="/resources/images/${item.path}">
 					<div id="item-desc">
@@ -28,9 +28,11 @@
 						<cds-number-input class="cart-quantity" name="cart-quantity"
 										  value="${item.amount/item.price}" min="1" max="${item.stock}"
 										  inline ></cds-number-input>
-						<p id="cart-amount" price="${item.price}" amount="${item.amount}">${item.amount} 원</p>
+						<div id="order-amount">
+							<p class="field" price="${item.price}" value="${item.amount}">${item.amount} 원</p>
+						</div>
 						<div class="button-group">
-							<cds-button kind="secondary" class="order-button"
+							<cds-button kind="secondary" class="request-single"
 							            item-id="${item.item_id}">구매하기</cds-button>
 							<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
 						</div>
@@ -59,7 +61,7 @@
 				<p>총 결제 금액</p>
 				<p class="value">0 원</p>
 			</div>
-			<cds-button onclick="orderSelected()">구매하기</cds-button>
+			<cds-button id="request-selected">구매하기</cds-button>
 		</cds-stack>
 	</cds-tile>
 	<cds-button kind="ghost" onclick="deleteSelected()">선택 삭제하기</cds-button>
