@@ -27,5 +27,8 @@
 
         <typeAlias alias="pageDTO" type="com.ecom.javacodings.common.page.PageDTO" />
         <typeAlias alias="summaryDTO" type="com.ecom.javacodings.common.transfer.SummaryDTO" />
+        <typeAlias alias="eventBannerDTO" type="com.ecom.javacodings.common.transfer.EventBannerDTO" />
+        <typeAlias alias="eventItemDTO" type="com.ecom.javacodings.common.transfer.EventItemDTO" />
+        <typeAlias alias="itemImageDTO" type="com.ecom.javacodings.common.transfer.ItemImageDTO" />
     </typeAliases>
 </configuration>

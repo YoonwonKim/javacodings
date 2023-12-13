@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+*{
+  margin:0 auto; 
+  padding:0;
+}
+
+a:link{color:  rgb(0, 128, 0); text-decoration: none;}
+a:visited{color:  rgb(0, 128, 0); text-decoration: none;}
+a:active{color:  rgb(0, 128, 0); text-decoration: none;}
+a:hover{color:  rgb(0, 128, 0);
+    text-decoration: none; font-weight: bold;}
+    
+ul{list-style:none;}
+
+.tabmenu{ 
+  top:40px;
+  width:1000px; 
+  height:300px;
+  margin: 0 auto; 
+  position:relative; 
+}
+
+.tabmenu ul li{
+  width:50%; 
+  float:left;  
+  text-align:center; 
+  background :#f9f9f9;
+}
+
+.tabmenu ul li a{
+  display:block;
+  line-height:40px;
+  height:40px;
+  text-decoration:none; 
+  color: #000;
+}
+
+.tabCon{
+  width:1000px;
+  height:400px;
+  display:none; 
+  text-align:left; 
+  padding: 20px;
+  position:absolute; 
+  left:0; top:40px; 
+  box-sizing: border-box; 
+  border : 5px solid #f9f9f9;
+}
+
+.btnCon:target  {
+  background : #ccc;
+}
+.btnCon:target .tabCon{
+  display: block;
+}
+
+#tabCon #content .conimg{
+	display: inline;
+	width:40px;
+}
+
+img {
+  width: 200px;
+}
