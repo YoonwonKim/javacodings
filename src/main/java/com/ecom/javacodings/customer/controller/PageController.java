@@ -105,6 +105,11 @@ public class PageController {
 
 		return "customer/account/information";
 	}
+	
+	@RequestMapping("account/customercenter")
+	public String customercenter() {
+		return "customer/account/customercenter";
+	}
 
 	@GetMapping("/account/{tab}")
 	public String accountTab(@PathVariable("tab") String tab) {
