@@ -1,3 +1,10 @@
+sessionStorage.setItem("DEBUG_MODE", true);
+const DEBUG_MODE = sessionStorage.getItem("DEBUG_MODE");
+
+import {order} from '/resources/scripts/common/order.js';
+import {orderable} from "/resources/scripts/customer/orderable.js";
+
+
 $(document).ready(function(){
 	// 문서 초기화
 	orderSummary();
@@ -18,6 +25,29 @@ $(document).ready(function(){
 		function() {
 		orderSummary();
 	});
+
+
+	// * 단일 주문 요청
+	const requestSingleButtonList = document.querySelectorAll(".request-single");
+	requestSingleButtonList.forEach(function(element) {
+		element.addEventListener('click', function() {
+			const orderElement = element.closest(".order");
+			const orderData = orderable.getCartData(orderElement);
+			order.request(orderData);
+		})
+	});
+
+	// * 선택 주문 요청
+	const requestSelectedButton = document.getElementById("request-selected");
+	requestSelectedButton.addEventListener('click', function() {
+		const orderElementList = document.querySelectorAll(".order[selected]");
+		let cartList = [];
+		for(let orderElement of orderElementList) {
+			let cartData = orderable.getCartData(orderElement);
+			cartList.push(cartData);
+		}
+		order.request(cartList);
+	});
 });
 
 // Region Cart
@@ -25,10 +55,12 @@ $(document).ready(function(){
 function calcPrice(item) {
 	let row = item.closest('#item-div');
 	let quantity = item.value;
-	let price = row.querySelector("#cart-price").getAttribute('price');
+	let price = row.querySelector("#cart-amount").getAttribute('price');
+	let amount = price * quantity;
 
-	row.querySelector('#cart-price').innerHTML =
-		(quantity * price).toLocaleString('en-US') + ' 원';
+	let column = row.querySelector('#cart-amount');
+	column.setAttribute("amount", amount);
+	column.innerHTML = amount.toLocaleString('en-US') + ' 원';
 	item.value = quantity;
 }
 
@@ -74,43 +106,6 @@ function deleteSelected() {
 }
 
 // End Region Cart
-// Region Order
-
-function orderOne(item_id) {
-	$.ajax({
-		url: '/actions/cart/order/' + item_id,
-		method: 'POST',
-		success: function() {
-			console.log('Order');
-			location.reload();
-		}
-	});
-}
-function orderSelected() {
-	let orderList = [];
-
-	let selectedItems =
-		document.querySelectorAll('#item[selected]');
-	for (let i = 0; i < selectedItems.length; i++) {
-		let item = selectedItems[i];
-		let item_id = item.getAttribute('name');
-		let quantity = item.querySelector('.cart-quantity').value;
-
-		orderList.push({ item_id, quantity });
-	}
-
-	$.ajax({
-		url: '/actions/cart/order',
-		method: 'POST',
-		data: orderList,
-		success: function() {
-			console.log('Order Selected');
-			location.reload();
-		}
-	});
-}
-
-// End Region Order
 // Region Order Summary
 
 function orderSummary() {
@@ -124,7 +119,7 @@ function orderSummary() {
 	for( let i = 0; i < itemList.length; i++ ) {
 		let item = itemList[i];
 
-		let price = item.querySelector('#cart-price').innerHTML.split(' ')[0];
+		let price = item.querySelector('#cart-amount').innerHTML.split(' ')[0];
 		totalPrice += parseInt(price);
 
 		// let discount = item.querySelector('#item-discount').innerHTML.split(' ')[0];

@@ -11,16 +11,16 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.rtl.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/form-group.min.js"></script>
 
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 	
 
 	<title>자바코딩즈</title>
 	<script src="/resources/scripts/searchmember.js"></script>
 </head>
 <body>
-<%@ include file="/views/customer/fragments/header.jsp" %>
+<%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 	<div>
 		<!-- 아이디 찾기 -->
@@ -61,6 +61,6 @@
 		</form>
 	</div>
 </main>
-<%@ include file="/views/customer/fragments/footer.jsp" %>
+<%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
 </html>

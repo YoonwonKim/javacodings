@@ -9,16 +9,16 @@
 	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"/>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<%-- Fragement CSS --%>
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 
 	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
 </head>
 <body>
-<c:import url="../fragments/header.jsp" />
+<c:import url="../fragments/global/header.jsp" />
 <form action="registerProc" name="form1" method="post">
 	<table>
 		<thead>
@@ -131,5 +131,5 @@
 		</tfoot>
 	</table>
 </form>
-<c:import url="../fragments/footer.jsp" />
+<c:import url="../fragments/global/footer.jsp" />
 </body>

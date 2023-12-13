@@ -8,16 +8,16 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 
 	<title>자바코딩즈</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/landing.css" />
 	<script src="${pageContext.request.contextPath}/resources/scripts/landing.js"></script>
 </head>
 <body>
-<%@ include file="/views/customer/fragments/header.jsp" %>
+<%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 	<div class="banner">
 	<c:forEach items="${mainList}" var="banner">
@@ -43,7 +43,7 @@
 			<h1>${key}</h1>
 			<div class="grid">
 			<c:forEach var="item" items="${mdList.get(key)}">
-				<a href="/product/${item.item_id}" class="card">
+				<a href="/item/${item.item_id}" class="card">
 					<img src="/resources/images/${item.path}">
 					<h1>${item.getLabel()}</h1>
 					<p>${item.getPrice()}원</p>
@@ -54,6 +54,6 @@
 	</c:forEach>
 	</div>
 </main>
-<%@ include file="/views/customer/fragments/footer.jsp" %>
+<%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
 </html>

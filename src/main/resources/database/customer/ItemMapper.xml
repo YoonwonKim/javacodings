@@ -59,8 +59,8 @@
 		FROM (
 			SELECT I.LABEL, I."DESC", II.PATH, I.CATEGORY, I.STOCK, I.PRICE, ROW_NUMBER() OVER (ORDER BY ORDER_COUNT DESC) AS RN
 			FROM ITEMS I
-				JOIN (SELECT ITEM_ID, SUM(QUANTITY) AS ORDER_COUNT
-					FROM ORDERS
+				JOIN (SELECT ITEM_ID, SUM(AMOUNT) AS ORDER_COUNT
+					FROM ORDER_ITEMS
 					GROUP BY ITEM_ID) M ON I.ITEM_ID = M.ITEM_ID
 				JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
 		) WHERE RN BETWEEN 0 AND #{limit}
@@ -75,6 +75,12 @@
             JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail')
         WHERE RN BETWEEN 0 AND #{limit}
     </select>
+
+    <update id="decreaseStockByItemId">
+        UPDATE ITEMS
+        SET STOCK = STOCK - 1
+        WHERE ITEM_ID = #{item_id}
+    </update>
 
     <!-- End Region Basic CRUD -->
 </mapper>

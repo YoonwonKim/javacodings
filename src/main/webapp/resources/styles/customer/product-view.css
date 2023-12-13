@@ -77,4 +77,15 @@ article {
 #order label {
     padding-top: 16px;
 }
+
+
+
+
+#order-amount .field {
+    padding-bottom: 16px;
+    font-size: 28px;
+    font-family: 'IBM Plex Sans KR Light', sans-serif;
+    font-weight: 300;
+    line-height: 32px;
+}
 /** End Region Order **/

@@ -4,10 +4,10 @@
 <mapper namespace="com.ecom.javacodings.merchandiser.access.OrderManagerDAO">
 
 	<select id="listOrder" parameterType="pageDTO" resultType="OrderDTO">
-		SELECT ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE
+		SELECT ORDER_ID, ITEM_ID, MEMBER_ID, AMOUNT, STATE, REG_DATE
 		FROM (
-				 SELECT O.ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY, STATE, REG_DATE,
-						ROW_NUMBER() OVER (ORDER BY REG_DATE DESC) AS RN
+				 SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.AMOUNT, S.STATE, S.REG_DATE,
+						ROW_NUMBER() OVER (ORDER BY S.REG_DATE DESC) AS RN
 				 FROM ORDERS O
 						  JOIN
 					  (
@@ -21,28 +21,28 @@
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	<insert id="orderUpdate" parameterType="OrderDTO">
-		INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, QUANTITY)
-		SELECT #{order_id}, #{item_id}, #{member_id}, #{quantity} 
+		INSERT INTO ORDERS (ORDER_ID, ITEM_ID, MEMBER_ID, AMOUNT)
+		SELECT #{order_id}, #{item_id}, #{member_id}, #{amount}
 		FROM ORDERS
-		ORDER BY REG_DATE DESC
 		WHERE ORDER_ID = #{order_id}
+		ORDER BY REG_DATE DESC
 	</insert>
 	
 	<insert id="updateOrderStates" parameterType="orderDTO" useGeneratedKeys="false">
-		INSERT INTO ORDER_STATES (ORDER_ID, STATE, REG_DATE)
-		VALUES (#{order_id}, #{state}, sysdate)
+		INSERT INTO ORDER_STATES (ORDER_ID, STATE)
+		VALUES (#{order_id}, #{state})
 	</insert>
    
 	<select id="orderList" parameterType="pageDTO">
 		SELECT * 
-		FROM (SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.QUANTITY, OS.STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
+		FROM (SELECT O.ORDER_ID, O.ITEM_ID, O.MEMBER_ID, O.AMOUNT, OS.STATE, ROW_NUMBER() over (ORDER BY REG_DATE DESC) AS RN
 			FROM ORDERS O
 				JOIN ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>	
 
 	<select id="countState" resultType="orderDTO" parameterType="int">
-		select D.STATE, NVL(Q.QUANTITY, 0) AS QUANTITY
+		select D.STATE, NVL(Q.AMOUNT, 0) AS AMOUNT
 		FROM
 			(
 			SELECT ROWNUM STATE
@@ -51,7 +51,7 @@
 			) D
 			left JOIN
 			(
-			SELECT STATE, COUNT(STATE) AS QUANTITY
+			SELECT STATE, COUNT(STATE) AS AMOUNT
 			FROM
 			(
 			SELECT MAX(STATE) AS STATE
