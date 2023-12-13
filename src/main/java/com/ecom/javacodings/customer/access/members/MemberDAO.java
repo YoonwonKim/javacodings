@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface MemberDAO {
 	// Region Metadata
 
-	int isExistMemberId(@Param("member_id") String memberId);
+	Boolean isExistMemberId(@Param("member_id") String memberId);
 
 	// End Region Metadata
 	// Region Basic CRUD

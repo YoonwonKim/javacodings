@@ -72,12 +72,11 @@ public class PageController {
 	}
 
 	@RequestMapping("/account/register")
-    public String register(HttpServletRequest request, HttpServletResponse response,
-    					MemberDTO mdto, Model model) {
+    public String register() {
     	return "customer/account/register";
     }
 	
-	@RequestMapping("account/find")
+	@RequestMapping("/account/find")
 	public String findAccount() {
 		return "customer/account/find";
 	}

@@ -47,7 +47,7 @@ public class MemberService implements IMemberService {
     // ? metadata ----------------------------------------------------------------
 
     @Override
-    public int isExistMemberId(String memberId) {
+    public Boolean isExistMemberId(String memberId) {
         return memberDAO.isExistMemberId(memberId);
     }
 

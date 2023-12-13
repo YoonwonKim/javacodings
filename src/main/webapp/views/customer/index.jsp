@@ -3,14 +3,9 @@
 
 <html>
 <head>
-	<!-- Javascript API and Frameworks -->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
-	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 
 	<title>자바코딩즈</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/landing.css" />

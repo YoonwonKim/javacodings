@@ -1,6 +1,7 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.IMemberService;
@@ -40,8 +41,7 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response,
-                        MemberDTO loginInfo) {
+    public String login(HttpServletRequest request, MemberDTO loginInfo) {
         HttpSession session = request.getSession();
         MemberDTO loginAttempt = memberService.findMemberByIdAndPassword(loginInfo.getMember_id(), loginInfo.getPassword());
 
@@ -69,9 +69,9 @@ public class ActionController {
 
     @PutMapping("/account/register")
     public String register(HttpServletRequest request, HttpServletResponse response,
-                           MemberDTO member) {
-//        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
-//        memberService.memberJoin(member);
+                           MemberDTO memberData, MemberAddressDTO addressData) {
+        memberData.setEmail(memberData.getEmail() + request.getParameter("email-domain"));
+        memberService.addMember(memberData, addressData);
 
         response.setContentType("application/json");
         return "success";
@@ -100,7 +100,6 @@ public class ActionController {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         member.setPassword(randomPassword);
-//        memberService.temporaryPassword(member);
         return randomPassword;
     }
     
@@ -147,9 +146,8 @@ public class ActionController {
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
                                  MemberDTO member) {
-        System.out.println(member.getMember_id());
-//        int r = memberService.idCheck(member.getMember_id());
-//        if (r > 0) return "duplicated";
+        Boolean r = memberService.isExistMemberId(member.getMember_id());
+        if (r) return "duplicated";
         return "not-duplicated";
     }
 

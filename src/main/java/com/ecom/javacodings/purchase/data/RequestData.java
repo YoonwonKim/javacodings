@@ -1,11 +1,9 @@
 package com.ecom.javacodings.purchase.data;
 
-import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.purchase.method.Signature;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.security.NoSuchAlgorithmException;
 
