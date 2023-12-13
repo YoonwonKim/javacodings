@@ -161,19 +161,22 @@ public class PageController {
 	public String purchaseOrder(@PathVariable("order_id") String orderId,
 								Model model) {
 		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
-		List<CartDTO> cartList = memberService.findAllItemsByOrderId(orderId);
+		List<CartDTO> cartList = memberService.findAllCartByOrderId(orderId);
 		orderData.setItemList(cartList);
 
 		Map<String, String> responseBody = payUpService.request(orderData);
 		model.addAllAttributes(responseBody);
 		model.addAttribute("order_id", orderId);
+		List<ItemDTO> itemList = memberService.findAllItemsByOrderId(orderId);
+		model.addAttribute("amount", orderData.getAmount());
+		model.addAttribute("itemList", itemList);
 		return "purchase/index";
 	}
 
 	@PostMapping("/order/confirm/{order_id}")
 	public String confirmOrder(String ordr_idxx, @PathVariable("order_id") String orderId,
 							   PurchaseData purchaseData, Model responseBody) {
-		String page = "purchase/confirm";
+		String page = "redirect:/";
 		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
 
 		Map<String, String> purchaseResponse = payUpService.purchase(ordr_idxx, purchaseData);

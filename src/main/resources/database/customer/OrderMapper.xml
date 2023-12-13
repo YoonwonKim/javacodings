@@ -56,10 +56,18 @@
 	    AND (SELECT MAX(STATE) FROM ORDER_STATES WHERE ORDER_ID = #{order_id}) = '0'
 	</select>
 
-	<select id="findAllItemByOrderId" resultType="CartDTO">
+	<select id="findAllCartByOrderId" resultType="CartDTO">
 		SELECT O.ITEM_ID, I.LABEL, O.AMOUNT
 	    FROM ORDER_ITEMS O
 	    JOIN ITEMS I ON O.ITEM_ID = I.ITEM_ID
+		WHERE O.ORDER_ID = #{order_id}
+	</select>
+
+	<select id="findAllItemsByOrderId" resultType="CartDTO">
+		SELECT O.ITEM_ID, I.LABEL, I.CATEGORY, I.PRICE, I."DESC", I.STOCK, O.AMOUNT
+		FROM ORDER_ITEMS O
+		 	 JOIN ITEMS I ON O.ITEM_ID = I.ITEM_ID
+			 JOIN ITEM_IMAGES P ON O.ITEM_ID = P.ITEM_ID AND P.CATEGORY = 'thumbnail'
 		WHERE O.ORDER_ID = #{order_id}
 	</select>
 

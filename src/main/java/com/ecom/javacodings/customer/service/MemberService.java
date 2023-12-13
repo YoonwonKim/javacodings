@@ -287,8 +287,13 @@ public class MemberService implements IMemberService {
     }
 
     @Override
-    public List<CartDTO> findAllItemsByOrderId(String orderId) {
-        return orderDAO.findAllItemByOrderId(orderId);
+    public List<CartDTO> findAllCartByOrderId(String orderId) {
+        return orderDAO.findAllCartByOrderId(orderId);
+    }
+
+    @Override
+    public List<ItemDTO> findAllItemsByOrderId(String orderId) {
+        return orderDAO.findAllItemsByOrderId(orderId);
     }
 
     // End Region Order

@@ -33,7 +33,7 @@ $(document).ready(function(){
 		element.addEventListener('click', function() {
 			const orderElement = element.closest(".order");
 			const orderData = orderable.getCartData(orderElement);
-			order.request(orderData);
+			order.request([orderData]);
 		})
 	});
 

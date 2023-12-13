@@ -3,6 +3,7 @@ package com.ecom.javacodings.customer.access.orders;
 import java.util.List;
 
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -26,7 +27,7 @@ public interface OrderDAO {
 	// * READ ------------
 
 	OrderDTO findUnPayedOrderByOrderId(@Param("order_id") String orderId);
-	List<CartDTO> findAllItemByOrderId(@Param("order_id") String orderId);
+	List<CartDTO> findAllCartByOrderId(@Param("order_id") String orderId);
 
 	String getItemIdByOrderId(@Param("order_id") String orderId);
 
@@ -37,5 +38,7 @@ public interface OrderDAO {
 
 	List<String> getAllItemIdByOrderId(String orderId);
 
-	// End Region Basic CRUD
+	List<ItemDTO> findAllItemsByOrderId(String orderId);
+
+    // End Region Basic CRUD
 }
