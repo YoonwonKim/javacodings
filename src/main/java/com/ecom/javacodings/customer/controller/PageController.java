@@ -1,6 +1,9 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.EventBannerDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
+import com.ecom.javacodings.common.transfer.EventItemDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
@@ -10,6 +13,7 @@ import com.ecom.javacodings.customer.service.IMemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -115,6 +119,7 @@ public class PageController {
 		model.addAttribute("category", category.toUpperCase());
 		return "customer/item/category";
 	}
+	
 
 	// End Region Product
 	// Region Cart
@@ -145,9 +150,35 @@ public class PageController {
     		Model model, PageDTO page) {
     	return "customer/index";
     }
+    // End Region Order
+    
+    @RequestMapping("/event/list")
+    public String eventList(Model model, String page, String row) {
 
+    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
+    
+    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
+    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
+    	
+    	
+    	model.addAllAttributes(pageMap);
+    	System.out.println(pageMap.get("objectList"));
 
-
-	// End Region Order
+    	return "customer/event/list";
+    }
+    
+    @RequestMapping("/event/item")
+    public String event(HttpServletRequest request, HttpServletResponse response,
+    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
+    	
+    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
+    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
+    	System.out.println(eventBannerDTO);
+    	
+    	return "customer/event/item";
+    }
+    
+    
 }
 

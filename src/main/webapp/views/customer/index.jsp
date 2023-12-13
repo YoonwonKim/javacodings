@@ -21,18 +21,17 @@
 <main>
 	<div class="banner">
 	<c:forEach items="${mainList}" var="banner">
-		<a href="#"><img src="/resources/images/${banner.image}"></a>
+		<a href="/event/item?event_id=${banner.event_id}">
+		<img src="/resources/images/${banner.image}"></a>
 	</c:forEach>
 	</div>
 
 	<div id="events">
 		<c:forEach items="${eventList}" var="banner">
 		<a class="card"
-		   href="#">
-			<p class="tag">${banner.item_id}</p>
+		   href="/event/item?event_id=${banner.event_id}">
 			<h1>${banner.label}</h1>
-			<p>${banner.desc}</p>
-			<img src="/resources/images/${banner.image}">
+			<img src="/resources/images/${banner.image}" width="370px;" height="400px;">
 		</a>
 		</c:forEach>
 	</div>
