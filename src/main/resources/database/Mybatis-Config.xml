@@ -24,6 +24,11 @@
         <typeAlias alias="orderDTO" type="com.ecom.javacodings.common.transfer.OrderDTO" />
 
         <typeAlias alias="cartDTO" type="com.ecom.javacodings.common.transfer.CartDTO" />
-        <typeAlias alias="eventDTO" type="com.ecom.javacodings.common.transfer.table.EventDTO" />
+        <typeAlias alias="eventDTO" type="com.ecom.javacodings.common.transfer.EventDTO" />
+        <typeAlias alias="eventBannerDTO" type="com.ecom.javacodings.common.transfer.EventBannerDTO" />
+        <typeAlias alias="eventItemDTO" type="com.ecom.javacodings.common.transfer.EventItemDTO" />
+        <typeAlias alias="itemImageDTO" type="com.ecom.javacodings.common.transfer.ItemImageDTO" />
+        
+        
     </typeAliases>
 </configuration>
