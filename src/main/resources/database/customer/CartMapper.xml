@@ -16,29 +16,30 @@
 	<select id="findAllCartByMemberId" parameterType="map" resultType="cartDTO">
 		SELECT *
 		FROM (
-				SELECT C.ITEM_Id, C.QUANTITY, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK, ROW_NUMBER() over (ORDER BY C.ITEM_Id) AS RN
+				SELECT C.ITEM_Id, C.AMOUNT, I.LABEL, I."DESC", II.PATH, I.PRICE, I.STOCK,
+					   ROW_NUMBER() over (ORDER BY C.ITEM_ID) AS RN
 				FROM CARTS C
-					JOIN ITEMS I ON I.ITEM_Id = C.ITEM_Id
-					JOIN ITEM_IMAGES II ON I.ITEM_Id = II.ITEM_Id
-				WHERE MEMBER_ID = #{member_id}
+					JOIN ITEMS I ON I.ITEM_ID = C.ITEM_ID
+					JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
+				WHERE MEMBER_ID = #{member_id} AND II.CATEGORY = 'thumbnail'
 			 )
 		WHERE RN BETWEEN #{page.start} AND #{page.end}
 	</select>
 
 	<select id="getQuantityByItemIdAndMemberId" resultType="Integer">
-		SELECT QUANTITY
+		SELECT AMOUNT
 		FROM CARTS
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</select>
 
 	<insert id="addCart">
-		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, QUANTITY)
-		VALUES (#{cart.member_id}, #{cart.item_id}, #{cart.quantity})
+		INSERT INTO CARTS(MEMBER_ID, ITEM_ID, AMOUNT)
+		VALUES (#{cart.member_id}, #{cart.item_id}, #{cart.amount})
 	</insert>
 
 	<update id="updateCart" parameterType="cartDTO">
 		UPDATE CARTS
-		SET QUANTITY = #{quantity}
+		SET AMOUNT = #{quantity}
 		WHERE MEMBER_Id = #{member_id} AND ITEM_Id = #{item_id}
 	</update>
 

@@ -1,12 +1,15 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.IMemberService;
 
+import com.ecom.javacodings.purchase.data.PurchaseData;
+import com.ecom.javacodings.purchase.service.IPurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -28,6 +32,9 @@ public class PageController {
 	
     @Autowired
 	IMemberService memberService;
+
+	@Autowired
+	IPurchaseService payUpService;
 
 	// End Region Variables
 
@@ -60,12 +67,11 @@ public class PageController {
 	}
 
 	@RequestMapping("/account/register")
-    public String register(HttpServletRequest request, HttpServletResponse response,
-    					MemberDTO mdto, Model model) {
+    public String register() {
     	return "customer/account/register";
     }
 	
-	@RequestMapping("account/find")
+	@RequestMapping("/account/find")
 	public String findAccount() {
 		return "customer/account/find";
 	}
@@ -92,6 +98,11 @@ public class PageController {
 		}
 
 		return "customer/account/information";
+	}
+	
+	@RequestMapping("/support")
+	public String support() {
+		return "customer/account/support";
 	}
 
 	@GetMapping("/account/{tab}")
@@ -145,6 +156,39 @@ public class PageController {
     		Model model, PageDTO page) {
     	return "customer/index";
     }
+
+	@GetMapping("/order/purchase/{order_id}")
+	public String purchaseOrder(@PathVariable("order_id") String orderId,
+								Model model) {
+		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
+		List<CartDTO> cartList = memberService.findAllItemsByOrderId(orderId);
+		orderData.setItemList(cartList);
+
+		Map<String, String> responseBody = payUpService.request(orderData);
+		model.addAllAttributes(responseBody);
+		model.addAttribute("order_id", orderId);
+		return "purchase/index";
+	}
+
+	@PostMapping("/order/confirm/{order_id}")
+	public String confirmOrder(String ordr_idxx, @PathVariable("order_id") String orderId,
+							   PurchaseData purchaseData, Model responseBody) {
+		String page = "purchase/confirm";
+		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
+
+		Map<String, String> purchaseResponse = payUpService.purchase(ordr_idxx, purchaseData);
+		if (!purchaseResponse.get("responseCode").equals("0000")) return page;
+
+		String transactionId = purchaseResponse.get("transactionId");
+		String regDate = purchaseResponse.get("authDateTime");
+		int result = 0;
+		result += memberService.successPurchase(orderId, regDate);
+		result *= memberService.setTransactionIdByOrderId(transactionId, orderId);
+		if (result == 0) return page;
+
+		responseBody.addAllAttributes(purchaseResponse);
+		return page;
+	}
 
 	// End Region Order
 }

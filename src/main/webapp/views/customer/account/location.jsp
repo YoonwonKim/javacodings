@@ -16,9 +16,9 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
 	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
 	<%-- Fragement CSS --%>
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 
 	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
@@ -27,7 +27,7 @@
 	<link rel="stylesheet" href="/resources/css/customer/account.css" />
 </head>
 <body>
-<c:import url="../fragments/header.jsp" />
+<c:import url="../fragments/global/header.jsp" />
 <main>
 <cds-layer>
 
@@ -98,5 +98,5 @@
 
 </cds-layer>
 </main>
-<c:import url="../fragments/footer.jsp" />
+<c:import url="../fragments/global/footer.jsp" />
 </body>

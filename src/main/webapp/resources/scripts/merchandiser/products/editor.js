@@ -10,48 +10,6 @@ let imageList = [];
 let imageGrid;
 
 
-// editor.set = function(data)
-// {
-//     let value_str;
-//     for( let field of fields )
-//     {
-//         let value = field.getAttribute('data').split('.');
-//         let table  = value[0];
-//
-//         if (table === "images")
-//         {
-//             field.innerhtml = '';
-//             for(let image of data[table])
-//             {
-//                 if (image['category'] != "detail") continue;
-//
-//                 let pwd = document.createelement("img");
-//                 pwd.src = "/resources/images/" + image['path'];
-//                 field.appendchild(pwd);
-//             }
-//         }
-//         else if(table === "tags")
-//         {
-//             field.setAttribute("value", data["tags"].toString());
-//         }
-//         else
-//         {
-//             let column = value[1];
-//             value = data[table][column];
-//             field.setAttribute('value', value);
-//         }
-//     }
-//
-//     if(DEBUG_MODE) console.log(
-//         "\n%cCONSTRUCT MODAL BY ITEM INFO\n", "font-size: 16px",
-//         "\nfields : ", fields,
-//         "\nparams : ", data,
-//         "\n\n"
-//     );
-//
-//     editor.open();
-// }
-
 // Region Page -----------------------------------------------------
 
 // * --------------------------------

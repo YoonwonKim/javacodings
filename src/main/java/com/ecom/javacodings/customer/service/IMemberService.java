@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface IMemberService {
-    int isExistMemberId(String memberId);
+    Boolean isExistMemberId(String memberId);
 
     int addMember(MemberDTO member, MemberAddressDTO address);
 
@@ -50,7 +50,15 @@ public interface IMemberService {
 
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
-    int addOrder(CartDTO item);
-
     MemberAddressDTO getPrimaryAddress(String memberId);
+
+    OrderDTO findOrderByOrderId(String orderId);
+
+    int successPurchase(String orderId, String regDate);
+
+    int setTransactionIdByOrderId(String transactionId, String orderId);
+
+    OrderDTO addOrder(String memberId, List<CartDTO> cartList);
+
+    List<CartDTO> findAllItemsByOrderId(String orderId);
 }

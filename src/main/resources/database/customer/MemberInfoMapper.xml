@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.members.MemberInfoDAO">
 
+	<select id="findByMemberId">
+		SELECT MEMBER_ID, PHONE, BIRTH, EMAIL, NAME
+		FROM MEMBER_INFOS
+		WHERE MEMBER_ID = #{member_id}
+	</select>
+
 	<insert id="add">
 		INSERT INTO MEMBER_INFOS(MEMBER_ID, NAME, EMAIL, BIRTH, PHONE)
 		VALUES (#{parameter.member_id}, #{parameter.name}, #{parameter.email}, #{parameter.birth}, #{parameter.phone})

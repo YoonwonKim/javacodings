@@ -19,7 +19,7 @@ import com.ecom.javacodings.customer.access.members.MemberDAO;
 import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
-import com.ecom.javacodings.external.purchase.PurchaseService;
+import com.ecom.javacodings.purchase.service.IPurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,8 @@ import java.util.Map;
 @Service("memberService")
 public class MemberService implements IMemberService {
 
-    @Autowired PurchaseService payUpService;
+    @Autowired
+    IPurchaseService payUpService;
     SequenceGenerator sequenceGenerator = new SequenceGenerator();
 
     // Region Member
@@ -46,7 +47,7 @@ public class MemberService implements IMemberService {
     // ? metadata ----------------------------------------------------------------
 
     @Override
-    public int isExistMemberId(String memberId) {
+    public Boolean isExistMemberId(String memberId) {
         return memberDAO.isExistMemberId(memberId);
     }
 
@@ -213,11 +214,11 @@ public class MemberService implements IMemberService {
 
     @Override
     public int addCart(CartDTO cart) {
-        Integer quantity = cartDAO.getQuantityByItemIdAndMemberId(cart.getItem_id(), cart.getMember_id());
-        if (quantity == null || quantity == 0)
+        Integer amount = cartDAO.getQuantityByItemIdAndMemberId(cart.getItem_id(), cart.getMember_id());
+        if (amount == null || amount == 0)
             return cartDAO.addCart(cart);
 
-        cart.setQuantity(quantity + cart.getQuantity());
+        cart.setAmount(amount + cart.getAmount());
         return cartDAO.editCartByItemIdAndMemberId(cart);
     }
 
@@ -241,15 +242,53 @@ public class MemberService implements IMemberService {
     //? Basic CRUD --------------------------------------------------------------
 
     @Override
-    public int addOrder(CartDTO item) {
-        String order_id = sequenceGenerator.generateUnique(
+    public OrderDTO findOrderByOrderId(String orderId) {
+        return orderDAO.findUnPayedOrderByOrderId(orderId);
+    }
+
+    @Override
+    public int successPurchase(String orderId, String regDate) {
+        List<String> itemList = orderDAO.getAllItemIdByOrderId(orderId);
+        int result = 1;
+        for (String itemId : itemList)
+            result *= itemDAO.decreaseStockByItemId(itemId);
+        result *= orderDAO.increaseStateByOrderId(orderId, regDate);
+        return result;
+    }
+
+    @Override
+    public int setTransactionIdByOrderId(String transactionId, String orderId) {
+        return orderDAO.setTransactionIdByOrderId(transactionId, orderId);
+    }
+
+    @Override
+    public OrderDTO addOrder(String memberId, List<CartDTO> cartList) {
+        int result = 1;
+        int amount = 0;
+        for(CartDTO cart : cartList) {
+            result *= cartDAO.deleteByMemberIdAndItemId(memberId, cart.getItem_id());
+            amount += cart.getAmount();
+        }
+
+        String orderId = sequenceGenerator.generateUnique(
                 (String generatedId) -> orderDAO.isExistOrderId(generatedId),
                 OrderPolicies.ID_LENGTH.getOrderPolicies()
         );
-        item.setOrder_id(order_id);
-        int result = orderDAO.addOrder(item);
-        result *= cartDAO.deleteByMemberIdAndItemId(item.getMember_id(), item.getItem_id());
-        return result;
+
+        OrderDTO orderData = new OrderDTO();
+        orderData.setOrder_id(orderId);
+        orderData.setMember_id(memberId);
+        orderData.setItemList(cartList);
+        orderData.setAmount(amount);
+        result *= orderDAO.add(orderData);
+
+        if (result != 0) { return orderData; }
+        return null;
+    }
+
+    @Override
+    public List<CartDTO> findAllItemsByOrderId(String orderId) {
+        return orderDAO.findAllItemByOrderId(orderId);
     }
 
     // End Region Order

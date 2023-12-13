@@ -13,16 +13,13 @@ import org.springframework.web.context.WebApplicationContext;
 public class MemberDTO {
     String member_id;
     String password;
+
     String reg_date;
     String role;
     String level;
-
-    // Region Metadata
 
     String name;
     String email;
     String birth;
     String phone;
-
-    // End Region Metadata
 }

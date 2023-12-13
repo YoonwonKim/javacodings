@@ -15,9 +15,9 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
 	<%-- Fragements --%>
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
+	<link rel="stylesheet" href="/views/customer/fragments/global/footer.css" />
 
 	<title>자바코딩즈</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/styles/customer/category.css" />
@@ -27,13 +27,13 @@
 	<script src="${pageContext.request.contextPath}/resources/scripts/customer/category.js"></script>
 </head>
 <body>
-<%@ include file="/views/customer/fragments/header.jsp" %>
+<%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 	<h1>${category}</h1>
 
 	<cds-layer>
 	<div id="grid">
-		<cds-clickable-tile href="/product/" id="item">
+		<cds-clickable-tile href="/item/" id="item">
 		<cds-stack>
 			<img id="item-image">
 			<h1 id="item-label"></h1>
@@ -44,6 +44,6 @@
 	</div>
 	</cds-layer>
 </main>
-<%@ include file="/views/customer/fragments/footer.jsp" %>
+<%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
 </html>

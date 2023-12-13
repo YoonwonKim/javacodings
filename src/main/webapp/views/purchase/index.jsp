@@ -29,7 +29,8 @@
 	<script type="text/javascript" src="https://testpay.kcp.co.kr/plugin/payplus_web.jsp"></script>
 
 	<form name="kcp_order_info" id="kcp_order_info"
-	      method="post" accept-charset="euc-kr" action="/order/confirm/${ordr_idxx}">
+	      accept-charset="euc-kr"
+	      method="post" action="/order/confirm/${order_id}">
 		<input type="hidden" name="ordr_idxx" value="${ordr_idxx }">
 		<input type="hidden" name="good_name" value="${good_name }">
 		<input type="hidden" name="good_mny" value="${good_mny }">

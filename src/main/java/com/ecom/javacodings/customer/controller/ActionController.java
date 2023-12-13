@@ -1,10 +1,12 @@
 package com.ecom.javacodings.customer.controller;
 
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.IMemberService;
 
+import com.ecom.javacodings.purchase.service.IPurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -27,10 +29,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/actions")
 public class ActionController {
 
+    @Autowired IMemberService memberService;
 
-    @Autowired
-    IMemberService memberService;
-
+    // Purchase Services
+    @Autowired IPurchaseService payUpService;
 
     /**
      * RQ-001 로그인 기능 구현<br>
@@ -39,8 +41,7 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, HttpServletResponse response,
-                        MemberDTO loginInfo) {
+    public String login(HttpServletRequest request, MemberDTO loginInfo) {
         HttpSession session = request.getSession();
         MemberDTO loginAttempt = memberService.findMemberByIdAndPassword(loginInfo.getMember_id(), loginInfo.getPassword());
 
@@ -64,49 +65,13 @@ public class ActionController {
         session.removeAttribute("ssKey");
         return "success";
     }
-    //장바구니 시작
-	@PostMapping("/updateCart")
-	@ResponseBody
-	public String updateCart(HttpServletRequest request, HttpServletResponse response,
-								@RequestBody List<OrderDTO> orderList) {
-		
-		HttpSession session = request.getSession();		
-		OrderDTO order = (OrderDTO) session.getAttribute("cartList");
-		
-		System.out.println("---------"+orderList);
-		
-		if(order != null) {
-//			memberService.addCart(orderList);
-		}
-		
-		
-		return "redirect:/";
-	}
-	
-	@PostMapping("/deleteCart")
-	public String deleteCart(HttpServletRequest request, HttpServletResponse response,
-								@RequestBody List<OrderDTO> orderList) {
-		HttpSession session = request.getSession();
-		OrderDTO order = (OrderDTO) session.getAttribute("cartLists");
-		
-		System.out.println("---------"+orderList);
-		
-		if(order != null) {
-//			memberService.deleteOrderStateByCart(orderList);
-//			memberService.deleteOrdersByCart(orderList);
-			return "success";
-		}
-		
-		return "failed";
-	}
-	//장바구니 끝
 
 
     @PutMapping("/account/register")
     public String register(HttpServletRequest request, HttpServletResponse response,
-                           MemberDTO member) {
-//        member.setEmail(member.getEmail() + request.getParameter("email-domain"));
-//        memberService.memberJoin(member);
+                           MemberDTO memberData, MemberAddressDTO addressData) {
+        memberData.setEmail(memberData.getEmail() + request.getParameter("email-domain"));
+        memberService.addMember(memberData, addressData);
 
         response.setContentType("application/json");
         return "success";
@@ -135,7 +100,6 @@ public class ActionController {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         member.setPassword(randomPassword);
-//        memberService.temporaryPassword(member);
         return randomPassword;
     }
     
@@ -182,9 +146,8 @@ public class ActionController {
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
                                  MemberDTO member) {
-        System.out.println(member.getMember_id());
-//        int r = memberService.idCheck(member.getMember_id());
-//        if (r > 0) return "duplicated";
+        Boolean r = memberService.isExistMemberId(member.getMember_id());
+        if (r) return "duplicated";
         return "not-duplicated";
     }
 
@@ -207,44 +170,14 @@ public class ActionController {
     // End Region Products
     // Region Cart
 
-    @PostMapping("/cart/{item_id}")
-    public String cart(HttpServletRequest request, CartDTO cart) {
+    @PutMapping("/cart/put")
+    public String putCart(HttpServletRequest request, CartDTO cart) {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
 
         cart.setMember_id(ssKey.getMember_id());
         memberService.addCart(cart);
-        return "success";
-    }
-
-    @PostMapping("/cart/order/{item_id}")
-    public String order(HttpServletRequest request, CartDTO item) {
-
-        HttpSession session = request.getSession();
-        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-        if (ssKey == null) return "auth error";
-
-        item.setMember_id(ssKey.getMember_id());
-//        item.setQuantity(memberService.getQuantity(item));
-//        memberService.order(item);
-
-        return "success";
-    }
-
-    @PostMapping("/cart/order")
-    public String orderSelectedCart(HttpServletRequest request,
-                                @RequestParam("orderList") List<CartDTO> cartList) {
-        HttpSession session = request.getSession();
-        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-        if (ssKey == null) return "auth error";
-
-        int result = 1;
-        for(CartDTO cart : cartList) {
-            cart.setMember_id(ssKey.getMember_id());
-            //memberService.order(cart);
-            order(request, cart);
-        }
         return "success";
     }
 
@@ -274,5 +207,56 @@ public class ActionController {
         return "success";
     }
 
-        // End Region Cart
+
+    //장바구니 시작
+    @PostMapping("/updateCart")
+    @ResponseBody
+    public String updateCart(HttpServletRequest request, HttpServletResponse response,
+                             @RequestBody List<OrderDTO> orderList) {
+
+        HttpSession session = request.getSession();
+        OrderDTO order = (OrderDTO) session.getAttribute("cartList");
+
+        System.out.println("---------"+orderList);
+
+        if(order != null) {
+//			memberService.addCart(orderList);
+        }
+
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/deleteCart")
+    public String deleteCart(HttpServletRequest request, HttpServletResponse response,
+                             @RequestBody List<OrderDTO> orderList) {
+        HttpSession session = request.getSession();
+        OrderDTO order = (OrderDTO) session.getAttribute("cartLists");
+
+        System.out.println("---------"+orderList);
+
+        if(order != null) {
+//			memberService.deleteOrderStateByCart(orderList);
+//			memberService.deleteOrdersByCart(orderList);
+            return "success";
+        }
+
+        return "failed";
+    }
+    //장바구니 끝
+
+    // End Region Cart
+    // Region Order -----------------------------------------------------------------------------------------------
+
+    @PostMapping("/order")
+    public String setOrder(HttpSession session, @RequestBody OrderDTO order) {
+        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+        if (ssKey == null) return "auth error";
+        String memberId = ssKey.getMember_id();
+
+        OrderDTO orderData = memberService.addOrder(memberId, order.getItemList());
+        return orderData.getOrder_id();
+    }
+
+    // End Region Order
 }
