@@ -6,8 +6,9 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ecom.javacodings.common.transfer.BannerDTO;
+import com.ecom.javacodings.common.transfer.EventBannerDTO;
 
 @Mapper
 public interface BannerDAO {
-	List<BannerDTO> getBannerByCategory(Map<String, Object> params);
+	List<EventBannerDTO> getBannerByCategory(Map<String, Object> params);
 }

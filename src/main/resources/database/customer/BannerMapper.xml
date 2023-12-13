@@ -2,9 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.BannerDAO">
 
-    <select id="getBannerByCategory" resultType="bannerDTO">
-        SELECT *
-        FROM EVENTS
+    <select id="getBannerByCategory" resultType="eventBannerDTO">
+        SELECT EB.LABEL, EB.IMAGE, E.EVENT_ID
+		FROM EVENT_BANNERS EB
+		JOIN EVENTS E
+		ON EB.EVENT_ID = E.EVENT_ID
     </select>
 
 </mapper>

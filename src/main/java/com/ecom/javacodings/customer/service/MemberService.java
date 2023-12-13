@@ -1,39 +1,46 @@
 package com.ecom.javacodings.customer.service;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.policies.OrderPolicies;
-
 import com.ecom.javacodings.common.transfer.BannerDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.EventBannerDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
+import com.ecom.javacodings.common.transfer.EventItemDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
-import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.access.BannerDAO;
-import com.ecom.javacodings.customer.access.members.CartDAO;
+import com.ecom.javacodings.customer.access.events.EventDAO;
 import com.ecom.javacodings.customer.access.items.ItemDAO;
+import com.ecom.javacodings.customer.access.members.CartDAO;
 import com.ecom.javacodings.customer.access.members.MemberAddressDAO;
 import com.ecom.javacodings.customer.access.members.MemberDAO;
 import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
 import com.ecom.javacodings.external.purchase.PurchaseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service("memberService")
 public class MemberService implements IMemberService {
 
     @Autowired PurchaseService payUpService;
     SequenceGenerator sequenceGenerator = new SequenceGenerator();
-
+    
+    
     // Region Member
 
     @Autowired MemberDAO memberDAO;
@@ -76,7 +83,7 @@ public class MemberService implements IMemberService {
             return temporaryPassword;
         else return "failed";
     }
-
+    
     @Override
     public MemberDTO findMemberByIdAndPassword(String memberId, String password) {
         return memberDAO.findByIdAndPassword(memberId, password);
@@ -178,7 +185,7 @@ public class MemberService implements IMemberService {
     //? Basic CRUD --------------------------------------------------------------
 
     @Override
-    public List<BannerDTO> findAllBannersByCategory(String category, int limit) {
+    public List<EventBannerDTO> findAllBannersByCategory(String category, int limit) {
         Map<String, Object> params = new HashMap<>();
         params.put("limit", limit);
         params.put("category", category);
@@ -195,6 +202,37 @@ public class MemberService implements IMemberService {
             (String criteria, PageDTO pageData) -> Collections.singletonList(cartDAO.findAllCartByMemberId(criteria, pageData)),
             (String criteria) -> cartDAO.countCartByMemberId(criteria)
     );
+    
+    @Autowired
+    EventDAO eventDAO;
+    
+    final int DEFAULT_EVENT_ROW = 30;
+    PageConstructor eventPageConstructor = new PageConstructor(DEFAULT_PRODUCT_ROW,
+    		(String criteria, PageDTO pageData) -> Collections.singletonList(eventDAO.findAll(pageData)),
+    		(String criteria) -> eventDAO.count()
+    		);
+    
+    @Override
+    public void setEventPageRow(int row) { eventPageConstructor.setRow(row); }
+    	
+   
+    @Override
+    public Map<String, Object> getEventPageMap(int currentPage){
+    	Map<String, Object> resultMap = eventPageConstructor.getPageMapOrNull(currentPage);
+    	if (resultMap == null) resultMap.put("responseMsg", "outboundError");
+    	return resultMap;
+    }
+    
+	/* todo 확인후 지움
+	 * @Override public String getItemsByEventId(String eventId) { List<String>
+	 * itemList = eventDAO.getAllItemLabelByEventId(eventId); ObjectMapper mapper =
+	 * new ObjectMapper(); String result = ""; try { result =
+	 * mapper.writeValueAsString(itemList); result = result.replace("[", ""); result
+	 * = result.replace("]", ""); result = result.replace("\"", ""); result =
+	 * result.replace(",", ", ");
+	 * 
+	 * } catch (JsonProcessingException e) { } return result; }
+	 */
 
     //? Basic CRUD --------------------------------------------------------------
 
@@ -251,6 +289,32 @@ public class MemberService implements IMemberService {
         result *= cartDAO.deleteByMemberIdAndItemId(item.getMember_id(), item.getItem_id());
         return result;
     }
+    
+    
 
+	@Override
+	public String getItemsByEventId(String eventId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO){
+    	List<EventBannerDTO> result = eventDAO.mainBanner(eventBannerDTO);
+    	return result;
+		
+		
+	
+	}
+
+	
+	@Override
+	public List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO){
+		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
+		return result;
+	}
+	
+	
+	 
+  
     // End Region Order
 }

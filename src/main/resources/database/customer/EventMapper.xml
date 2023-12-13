@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.ecom.javacodings.customer.access.events.EventDAO">      
+ 	
+	<select id="count">
+		SELECT COUNT(EVENT_ID)
+		FROM EVENTS
+	</select>
+	
+	<select id="findAll">
+		SELECT *
+		FROM
+		(
+		    SELECT EVENT_ID, LABEL, IMAGE,
+				   ROW_NUMBER() over (ORDER BY EVENT_ID) RN
+		    FROM EVENT_BANNERS
+		)
+		WHERE RN BETWEEN #{page.start} AND #{page.end}
+	</select>
+	
+	<select id="mainBanner" parameterType="pageDTO">
+		SELECT EB.IMAGE, EB.CATEGORY, EB.LABEL, E.EVENT_ID
+		FROM EVENT_BANNERS EB
+		JOIN EVENTS E
+		ON EB.EVENT_ID = E.EVENT_ID
+		WHERE EB.EVENT_ID = #{event_id}
+	</select>
+	
+	
+	
+	<select id="eventItem" parameterType="pageDTO">
+		SELECT I.ITEM_ID, I.LABEL, EI.EVENT_ID, II."PATH"
+		FROM EVENT_ITEMS EI
+		JOIN ITEMS I
+		ON I.ITEM_ID = EI.ITEM_ID
+		JOIN ITEM_IMAGES II
+		ON II.ITEM_ID = EI.ITEM_ID
+	</select>
+	
+<!-- 	<select id="getEventById" resultType="eventBannerDTO">
+		SELECT EB.IMAGE, EB.CATEGORY, EB.LABEL, E.EVENT_ID
+		FROM EVENT_BANNERS EB
+		JOIN EVENTS E
+		ON EB.EVENT_ID = E.EVENT_ID
+		WHERE EB.EVENT_ID = #{event_id}
+	</select>
+	 -->
+	
+	
+	
+ 
+ </mapper> 
