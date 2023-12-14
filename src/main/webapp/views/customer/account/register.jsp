@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
 
 	<%-- Page Script --%>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
 </head>
@@ -85,7 +86,7 @@
 		<tr>
 			<td class="col1">우편번호</td>
 			<td class="col2">
-				<input type="text" name="zipcode" id="sample6_postcode"
+				<input type="text" name="zipcode" id="postCode"
 				       readonly="readonly"
 				       class="chk"  title="우편번호"
 				       placeholder="우편번호를 검색하시오">
@@ -96,10 +97,10 @@
 		<tr>
 			<td >주소</td>
 			<td><input type="text" name="address" class="chk" readonly="readonly"
-			           id="sample6_address" placeholder="주소" title="주소"><br>
-				<input type="text" name="address2" class="chk" id="sample6_detailAddress"
+			           id="mainAddress" placeholder="주소" title="주소"><br>
+				<input type="text" name="address2" class="chk" id="detailAddress"
 				       placeholder="상세주소" title="상세주소">
-				<input type="hidden" id="sample_extraAddress" placeholder="참고항목">
+				<input type="hidden" id="extraAddress" placeholder="참고항목">
 			</td>
 			<td>주소를 입력하시오.</td>
 		</tr>

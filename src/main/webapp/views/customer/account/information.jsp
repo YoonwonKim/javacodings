@@ -15,6 +15,7 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
 	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
+	<link rel="stylesheet" href="//t1.daumcdn.net/postcode/cssjs/guide/1695281969613/guide.v2.min.css"/>
 	<%-- Fragement CSS --%>
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
@@ -23,8 +24,9 @@
 	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
+	<script src="/resources/scripts/memberinfo.js"></script>
 	<%-- Page Style --%>
-	<link rel="stylesheet" href="/resources/css/customer/account.css" />
+	<link rel="stylesheet" href="/resources/styles/customer/account.css" />
 </head>
 <body>
 <c:import url="../fragments/header.jsp" />
@@ -56,6 +58,8 @@
 					<cds-stack gap="0" use-custom-gap-value>
 						<h1>${ssKey.name} 님</h1>
 						<p>회원 아이디: ${ssKey.member_id}</p>
+						<p>이름: ${ssKey.name}</p>
+						<p>생년월일: ${ssKey.birth}</p>
 						<p>이메일 : ${ssKey.email}</p>
 						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,8)}</p>
 						<p class="link">프로필 수정</p>
@@ -65,9 +69,8 @@
 				<cds-clickable-tile href="/account/location">
 					<cds-stack gap="0" use-custom-gap-value>
 						<h1>배송지 관리</h1>
-						<p>${address.zipcode}</p>
-						<p>${address.address} ${address.address2}</p>
-						<p class="link">배송지 변경</p>
+						<p>우편번호: ${address.zipcode}</p>
+						<p>주소: ${address.address} ${address.address2}</p>
 					</cds-stack>
 				</cds-clickable-tile>
 			</cds-stack>
@@ -87,7 +90,7 @@
 			</cds-tile>
 
 			<div class="right">
-				<cds-button kind="ghost">회원 탈퇴</cds-button>
+				<cds-button kind="ghost" a href="/account/profile">회원 탈퇴</cds-button>
 			</div>
 		</div>
 	</div>

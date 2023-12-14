@@ -76,7 +76,7 @@ public class PageController {
 	public String information(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
-
+		
 		if (member == null) return "redirect:/account/login";
 		else {
 			member = memberService.findMemberByIdAndPassword(
@@ -86,7 +86,7 @@ public class PageController {
 
 			MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
 			model.addAttribute("address", address);
-
+			
 			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
 			model.addAttribute("countMemberOrders", countMemberOrders);
 		}
@@ -95,8 +95,26 @@ public class PageController {
 	}
 
 	@GetMapping("/account/{tab}")
-	public String accountTab(@PathVariable("tab") String tab) {
+	public String accountTab(@PathVariable("tab") String tab, HttpServletRequest request, Model model) {
 		String result = "customer/account/" + tab;
+		HttpSession session = request.getSession();
+		MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
+		
+		if (member == null) return "redirect:/account/login";
+		else {
+			member = memberService.findMemberByIdAndPassword(
+					member.getMember_id(), member.getPassword());
+			member.setPassword(null); // Hide password for safe
+			model.addAttribute("ssKey", member);
+
+			MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
+			model.addAttribute("address", address);
+			
+			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
+			model.addAttribute("countMemberOrders", countMemberOrders);
+			
+			System.out.println("=============================="+address);
+		}
 		return result;
 	}
 

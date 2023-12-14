@@ -14,6 +14,7 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/form.min.js"></script>
 	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
 	<%-- Fragement CSS --%>
 	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
@@ -23,8 +24,9 @@
 	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
+	<script src="/resources/scripts/memberinfo.js"></script>
 	<%-- Page Style --%>
-	<link rel="stylesheet" href="/resources/css/customer/account.css" />
+	<link rel="stylesheet" href="/resources/styles/customer/account.css" />
 </head>
 <body>
 <c:import url="../fragments/header.jsp" />
@@ -53,44 +55,61 @@
 		</div>
 
 		<div id="content">
-
 			<cds-stack orientation="horizontal" gap="16px" use-custom-gap-value level="1">
-				<cds-clickable-tile id="summary" href="/account/profile">
-					<cds-stack gap="0" use-custom-gap-value>
+				<cds-tile id="summary">
+					<cds-stack gap="0" use-custom-gap-value>					
 						<h1>${ssKey.name} 님</h1>
-						<p>회원 아이디: ${ssKey.member_id}</p>
-						<p>이메일 : ${ssKey.email}</p>
-						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,8)}</p>
-						<p class="link">프로필 수정</p>
+						<p class="subject">회원 아이디</p>
+						<p>
+							<input id="member_id" style="background-color: transparent; border: none; border-bottom: 1px solid #000;"
+								value="${ssKey.member_id}" readonly>
+						</p>
+						<p class="subject">이름</p>
+						<p>
+							<input id="name" style="background-color: transparent; border: none; border-bottom: 1px solid #000;"
+								value="${ssKey.name}">
+						</p>
+						<p class="subject">생년월일</p>
+						<p>
+							<input id="birth" style="background-color: transparent; border: none; border-bottom: 1px solid #000;"
+								value="${ssKey.birth}" readonly>
+						</p>
+						<p class="subject">이메일</p>
+						<p>
+							<cds-stack orientation="horizontal" gap="5px" use-custom-gap-value>
+								<input style="background-color: transparent; border: none; border-bottom: 1px solid #000;"
+									id="emailPrefix" value="${ssKey.email.substring(0, ssKey.email.indexOf('@'))}" required>
+								@
+								<input style="background-color: transparent; border: none; border-bottom: 1px solid #000;" list="user_email_address"
+									id="emailDomain" value="${ssKey.email.substring(ssKey.email.indexOf('@') + 1)}">
+								<datalist id="user_email_address" >
+									<option value="naver.com"></option>
+									<option value="daum.net"></option>
+									<option value="gmail.com"></option>
+								</datalist>
+							</cds-stack>
+						</p>
+						<p class="subject">연락처</p>
+						<p>
+							<select name="telecom" style="background-color: transparent; border: none; border-bottom: 1px solid #000; required">
+								<option>LG</option>
+								<option>SKT</option>
+								<option>KT</option>
+								<option>알뜰폰</option>
+							</select>
+							<input style="background-color: transparent; border: none; border-bottom: 1px solid #000; text-align: center;"
+								value="010" readonly>
+							<input id="phone1"style="background-color: transparent; border: none; border-bottom: 1px solid #000; text-align: center;"
+								value="${ssKey.phone.substring(0,4)}" required>
+							<input id="phone2"style="background-color: transparent; border: none; border-bottom: 1px solid #000; text-align: center;"
+								value="${ssKey.phone.substring(4,8)}" required>
+						</p>
 					</cds-stack>
-				</cds-clickable-tile>
-
-				<cds-clickable-tile href="/account/location">
-					<cds-stack gap="0" use-custom-gap-value>
-						<h1>배송지 관리</h1>
-						<p>${address.zipcode}</p>
-						<p>${address.address} ${address.address2}</p>
-						<p class="link">배송지 변경</p>
-					</cds-stack>
-				</cds-clickable-tile>
+				</cds-tile>			
 			</cds-stack>
-
-			<cds-tile href="/account/orders" id="orders">
-			<cds-stack gap="0" use-custom-gap-value orientation="vertical">
-				<h1>주문 관리</h1>
-				<div id="order-summary">
-					<cds-clickable-tile inline href="/account/orders?paid">
-						<c:import url="/resources/css/icons/price.svg" />
-						<cds-stack>
-							<p>결제 완료</p>
-						</cds-stack>
-					</cds-clickable-tile>
-				</div>
-			</cds-stack>
-			</cds-tile>
-
-			<div class="right">
-				<cds-button kind="ghost">회원 탈퇴</cds-button>
+			<div class="right">			
+				<cds-button kind="ghost" onclick="archiveByMemberId()">회원 탈퇴</cds-button>
+				<cds-button kind="ghost" onclick="editMemberInfoByMemberId()">프로필 수정</cds-button>
 			</div>
 		</div>
 	</div>

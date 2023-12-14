@@ -38,31 +38,37 @@
 		WHERE MEMBER_ID = #{member_id}
 	</update>
 	
-	<delete id="archiveByMemberID" parameterType="String">
+	<delete id="archiveByMemberId" parameterType="String">
 		UPDATE MEMBERS
 		SET ROLE = 'ARCHIVED'
-		WHERE MEMBER_ID = #{value}
+		WHERE MEMBER_ID = #{member_id}
 	</delete>
 
 	<!-- End Region Basic CRUD -->
-
-	<update id="editByPriorityAndMemberId">
-		UPDATE MEMBER_ADDRESSES SET
-									ZIPCODE  = #{zipcode},
-									ADDRESS  = #{address},
-									ADDRESS2 = #{address2}
-		WHERE MEMBER_ID = #{member_id}
-	</update>
-
-	<update id="setPriorityByMemberIdAndPriority">
-		UPDATE MEMBER_ADDRESSES
-		SET PRIORITY = #{priority}
-		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{criteria}
-	</update>
-
-	<delete id="deleteByPriorityAndMemberID">
-		DELETE FROM MEMBER_ADDRESSES
-		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{priority}
-	</delete>
+	
+	<select id="findAllByMembersOrder">
+		SELECT 
+			I.LABEL, 
+			II.PATH, 
+			I.PRICE, 
+			(OI.AMOUNT/I.PRICE) AS QUANTITY,
+			OI.AMOUNT, 
+			OS.REG_DATE, 
+			OS.STATE
+		FROM 
+		MEMBERS M
+			JOIN 
+			ORDERS O ON M.MEMBER_ID = O.MEMBER_ID
+			JOIN 
+			ORDER_ITEMS OI ON O.ORDER_ID = OI.ORDER_ID
+			JOIN 
+			ITEMS I ON OI.ITEM_ID = I.ITEM_ID
+			JOIN 
+			ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
+			JOIN 
+			ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID
+			WHERE 
+			M.MEMBER_ID = #{member_id}
+	</select>
 
 </mapper>

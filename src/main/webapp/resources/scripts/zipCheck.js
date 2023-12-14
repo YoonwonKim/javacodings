@@ -38,4 +38,4 @@
                         $("#sample6_address2").focus(); 
                     }
                 }).open();
-    }
+}
