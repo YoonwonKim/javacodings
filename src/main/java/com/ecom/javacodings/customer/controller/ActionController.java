@@ -5,17 +5,20 @@ import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.customer.service.IMemberService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.ecom.javacodings.purchase.service.IPurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.HashMap;
 import java.util.List;
 
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -103,45 +106,86 @@ public class ActionController {
         return randomPassword;
     }
     
-    @PostMapping("/account/updateMember")
+    @PostMapping("/account/editMemberInfoByMemberId")
     @ResponseBody
-    public String updateMember(HttpServletRequest request, HttpServletResponse response,
-    							MemberDTO member, Model model) {
+    public String editMemberInfoByMemberId(HttpServletRequest request, HttpServletResponse response,
+    							@RequestBody MemberDTO member, Model model) {
     	String result = "";
     	HttpSession session = request.getSession();
-    	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	MemberDTO memberInfo = (MemberDTO) session.getAttribute("ssKey");
+    	String memberId = member.getMember_id();
     	
-    	if(memebrInfo == null) {
+    	if(memberInfo == null) {
     		result = "failed";
     	} else {
-//    		memberService.updateMembers(member);
-//    		memberService.updateMemberInfos(member);
-//    		memberService.updateAddressPriority(member);
+    		memberService.editMemberInfoByMemberId(member, memberId);
+    		session.setAttribute("ssKey", member);
     		result = "success";
     	}
-    	session.setAttribute("ssKey", memebrInfo);
+    	System.out.println(member);
     	return result;
     }
     
-    @PostMapping("/accoint/deleteMember")
+    @PostMapping("/account/archiveByMemberID")
     @ResponseBody
-    public String deleteMember(HttpServletRequest request, HttpServletResponse response,
-    							MemberDTO member, Model model) {
+    public String archiveMemberByMemberId(HttpServletRequest request, HttpServletResponse response,
+    							@RequestBody MemberDTO member, Model model) {
     	String result = "";
     	HttpSession session = request.getSession();
     	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
+    	String memberId = member.getMember_id();
+    	System.out.println(memberId);
     	
     	if(memebrInfo == null) {
     		result = "failed";
     	} else {
-//    		memberService.deleteMembers(member);
-//    		memberService.deleteMemberInfos(member);
-//    		memberService.deleteAddress(member);
+    		memberService.archiveMemberByMemberId(memberId);
+    		session.setAttribute("ssKey", memebrInfo);
     		result = "success";
     	}
-    	session.setAttribute("ssKey", memebrInfo);
+    	System.out.println(memebrInfo);
     	return result;
-    }
+    }    
+    
+	@PostMapping("/account/updateDeliveryAddress")
+	@ResponseBody
+	public String updateDeliveryAddress(HttpServletRequest request, HttpServletResponse response,
+								@RequestBody Map<String, Object> requestData, Model model) {
+		String result = "";
+		HttpSession session = request.getSession();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		
+		Map<String, Object> addressDataMap = (Map<String, Object>) requestData.get("addressData");
+		MemberAddressDTO addressData = objectMapper.convertValue(addressDataMap, MemberAddressDTO.class);
+		
+		Map<String, Object> oldAddressDataMap = (Map<String, Object>) requestData.get("oldAddressData");
+		MemberAddressDTO oldAddressData = objectMapper.convertValue(oldAddressDataMap, MemberAddressDTO.class);
+		
+		int priority = Integer.parseInt((String) requestData.get("priority"));
+		String memberId = (String) requestData.get("member_id");
+		
+		
+		if(addressData == null) {
+			result = "failed";
+		} else {
+			int addressRowsCreated = memberService.addAddress(addressData, memberId);
+			int addressRowsUpdated = memberService.editAddress(oldAddressData, priority, memberId);
+			if(addressRowsCreated > 0 && addressRowsUpdated > 0) {
+				session.setAttribute("oldaddress", oldAddressData);
+				if(session.getAttribute("oldaddress") != null) {
+					session.setAttribute("address", addressData);
+					
+				}
+				result = "success";                
+			} else {
+				result = "failed";
+			}
+		}
+		System.out.println("Controller oldAddress==============>"+oldAddressData);
+		System.out.println("Controller Address==============>"+addressData);
+	    return result;
+	}
     
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,

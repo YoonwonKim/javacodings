@@ -10,16 +10,16 @@
 
 	<insert id="add">
 		INSERT INTO MEMBER_INFOS(MEMBER_ID, NAME, EMAIL, BIRTH, PHONE)
-		VALUES (#{parameter.member_id}, #{parameter.name}, #{parameter.email}, #{parameter.birth}, #{parameter.phone})
+		VALUES (#{parameter.member_id}, #{parameter.name}, #{parameter.email}, TO_TIMESTAMP(#{parameter.birth}, 'YYYY-MM-DD HH24:MI:SS.FF'), #{parameter.phone})
 	</insert>
 
-	<update id="editByMemberId">
+	<update id="editMemberInfoByMemberId">
 		UPDATE MEMBER_INFOS SET
 		 	NAME  = #{parameter.name},
 			EMAIL = #{parameter.email},
 			PHONE = #{parameter.phone},
-			BIRTH = #{parameter.birth}
+			BIRTH = TO_DATE(#{parameter.birth}, 'YYYY-MM-DD HH24:MI:SS')
 		WHERE MEMBER_ID = #{member_id}
 	</update>
-
+	
 </mapper>

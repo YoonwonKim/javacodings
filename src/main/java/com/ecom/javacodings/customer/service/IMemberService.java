@@ -24,7 +24,9 @@ public interface IMemberService {
 
     List<MemberAddressDTO> getAddressByMemberId(String memberId);
 
-    int editAddress(MemberDTO addressData, int priority, String memberId);
+    int editAddress(MemberAddressDTO oldAddressData, int priority, String memberId);
+    
+    int addAddress(MemberAddressDTO addressData, String memberId);
 
     int editAddressPriorityAndMemberId(int newPriority, int oldPriority, String memberId);
 

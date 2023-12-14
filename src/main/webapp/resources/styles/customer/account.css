@@ -58,6 +58,10 @@ main h1 {
 #summary p {
     padding-left: 16px;
     line-height:  24px;
+    margin-bottom: 10px;
+}
+#summary .subject {
+	font-weight: bold;
 }
 p.link {
     padding: 16px;
@@ -88,4 +92,7 @@ svg {
 }
 #orders p {
     padding: 8px 0 0;
+}
+input:required {
+    border: 1px solid red;
 }

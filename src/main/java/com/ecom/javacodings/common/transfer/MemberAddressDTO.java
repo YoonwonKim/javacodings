@@ -16,5 +16,8 @@ public class MemberAddressDTO {
     String zipcode;
     String address;
     String address2;
+    String oldzipcode;
+    String oldaddress;
+    String oldaddress2;
     String priority;
 }

@@ -114,10 +114,14 @@ public class MemberService implements IMemberService {
     }
 
     @Override
-    public int editAddress(MemberDTO addressData, int priority, String memberId) {
-        return addressDAO.editByPriorityAndMemberId(addressData, priority, memberId);
+    public int editAddress(MemberAddressDTO oldAddressData, int priority, String memberId) {
+        return addressDAO.editByPriorityAndMemberId(oldAddressData, priority, memberId);
     }
     
+    @Override
+	public int addAddress(MemberAddressDTO addressData, String memberId) {
+    	return addressDAO.addMemberAddress(addressData, memberId);
+	}
     @Override
     public int editAddressPriorityAndMemberId(int newPriority, int oldPriority, String memberId) {
     	return addressDAO.setPriorityByPriorityAndMemberId(newPriority, oldPriority, memberId);

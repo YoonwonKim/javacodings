@@ -14,7 +14,10 @@
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/stack.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
+	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/checkbox.min.js"></script>
 	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
+	
 	<%-- Fragement CSS --%>
 	<link rel="stylesheet" href="/views/customer/fragments/global/init.css" />
 	<link rel="stylesheet" href="/views/customer/fragments/global/header.css" />
@@ -24,7 +27,7 @@
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
 	<%-- Page Style --%>
-	<link rel="stylesheet" href="/resources/css/customer/account.css" />
+	<link rel="stylesheet" href="/resources/styles/customer/account.css" />
 </head>
 <body>
 <c:import url="../fragments/global/header.jsp" />
@@ -53,45 +56,47 @@
 		</div>
 
 		<div id="content">
-
 			<cds-stack orientation="horizontal" gap="16px" use-custom-gap-value level="1">
-				<cds-clickable-tile id="summary" href="/account/profile">
+				<cds-tile id="summary">
 					<cds-stack gap="0" use-custom-gap-value>
-						<h1>${ssKey.name} 님</h1>
-						<p>회원 아이디: ${ssKey.member_id}</p>
-						<p>이메일 : ${ssKey.email}</p>
-						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,8)}</p>
-						<p class="link">프로필 수정</p>
+						<c:if test="${not empty countMemberOrders}">
+							<cds-table>
+								<cds-table-header-title slot="title">주문 관리</cds-table-header-title>
+								<cds-table-head>								
+								<cds-table-header-row>
+									<cds-table-header-row hide-checkbox></cds-table-header-row>
+									<cds-table-header-cell>상품 이름</cds-table-header-cell>
+									<cds-table-header-cell>상품 이미지</cds-table-header-cell>
+									<cds-table-header-cell>상품 가격</cds-table-header-cell>
+									<cds-table-header-cell>상품 수량</cds-table-header-cell>
+									<cds-table-header-cell>결제 금액</cds-table-header-cell>
+									<cds-table-header-cell>결제일</cds-table-header-cell>
+									<cds-table-header-cell>주문 상태</cds-table-header-cell>
+								</cds-table-header-row>
+								</cds-table-head>
+								<cds-table-body>
+									<c:forEach var="order" items="${countMemberOrders}">
+										<cds-table-row>
+											<cds-table-cell><cds-checkbox></cds-checkbox></cds-table-cell>
+											<cds-table-cell>이름</cds-table-cell>
+											<cds-table-cell>사진</cds-table-cell>
+											<cds-table-cell>가격</cds-table-cell>
+											<cds-table-cell>수량</cds-table-cell>
+											<cds-table-cell>금액</cds-table-cell>
+											<cds-table-cell>결제일</cds-table-cell>
+											<cds-table-cell>상태</cds-table-cell>
+										</cds-table-row>
+									</c:forEach>
+								</cds-table-body>
+							</cds-table>
+						</c:if>
 					</cds-stack>
-				</cds-clickable-tile>
-
-				<cds-clickable-tile href="/account/location">
-					<cds-stack gap="0" use-custom-gap-value>
-						<h1>배송지 관리</h1>
-						<p>${address.zipcode}</p>
-						<p>${address.address} ${address.address2}</p>
-						<p class="link">배송지 변경</p>
-					</cds-stack>
-				</cds-clickable-tile>
+				</cds-tile>			
 			</cds-stack>
-
-			<cds-tile href="/account/orders" id="orders">
-			<cds-stack gap="0" use-custom-gap-value orientation="vertical">
-				<h1>주문 관리</h1>
-				<div id="order-summary">
-					<cds-clickable-tile inline href="/account/orders?paid">
-						<c:import url="/resources/css/icons/price.svg" />
-						<cds-stack>
-							<p>결제 완료</p>
-						</cds-stack>
-					</cds-clickable-tile>
-				</div>
-			</cds-stack>
-			</cds-tile>
-
-			<div class="right">
-				<cds-button kind="ghost">회원 탈퇴</cds-button>
+			<div class="right">			
+				<cds-button kind="ghost" onclick="">???</cds-button>
 			</div>
+		</div>
 		</div>
 	</div>
 	</cds-layer>

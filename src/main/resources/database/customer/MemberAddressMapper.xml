@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.customer.access.members.MemberAddressDAO">
-
+	
 	<select id="findPrimaryByMemberId" resultType="AddressDTO">
-		SELECT ZIPCODE, ADDRESS, "ADDRESS2"
+		SELECT ZIPCODE, ADDRESS, "ADDRESS2", PRIORITY 
 		FROM MEMBER_ADDRESSES
 		WHERE MEMBER_ID = #{member_id} AND PRIORITY = 1
 	</select>
@@ -13,5 +13,35 @@
 		FROM MEMBER_ADDRESSES
 		WHERE MEMBER_ID = #{member_id}
 	</select>
+	
+	<insert id="addMemberAddress">
+		INSERT INTO MEMBER_ADDRESSES
+			(MEMBER_ID, ZIPCODE, ADDRESS, ADDRESS2, PRIORITY)
+		VALUES
+			(#{member_id}, #{address.zipcode}, #{address.address}, #{address.address2}, '1')
+	</insert>
+	
+	<update id="editByPriorityAndMemberId">
+		UPDATE MEMBER_ADDRESSES SET
+									ZIPCODE  = #{oldaddress.oldzipcode},
+									ADDRESS  = #{oldaddress.oldaddress},
+									ADDRESS2 = #{oldaddress.oldaddress2},
+									PRIORITY = #{priority} + 1
+		WHERE MEMBER_ID = #{member_id} AND 
+			PRIORITY = (SELECT MAX(PRIORITY) 
+			FROM MEMBER_ADDRESSES 
+			WHERE MEMBER_ID = #{member_id})
+	</update>
+	
 
+	<!-- <update id="setPriorityByPriorityAndMemberId">
+		UPDATE MEMBER_ADDRESSES
+		SET PRIORITY = #{priority}
+		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{criteria}
+	</update> -->
+
+	<delete id="deleteByPriorityAndMemberID">
+		DELETE FROM MEMBER_ADDRESSES
+		WHERE MEMBER_ID = #{member_id} AND PRIORITY = #{priority}
+	</delete>
 </mapper>

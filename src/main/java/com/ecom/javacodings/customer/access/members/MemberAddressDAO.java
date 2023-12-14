@@ -15,8 +15,14 @@ public interface MemberAddressDAO {
 	int add(MemberAddressDTO address);
 
 	int editByPriorityAndMemberId(
-			@Param("address") MemberDTO addressData,
-			@Param("priority") int priority, @Param("member_id") String memberId);
+			@Param("oldaddress") MemberAddressDTO oldAddressData,
+			@Param("priority") int priority, 
+			@Param("member_id") String memberId);
+	
+	int addMemberAddress(
+			@Param("address") MemberAddressDTO addressData,
+			@Param("member_id") String memberId);
+	
 	int setPriorityByPriorityAndMemberId(
 			@Param("priority") int newPriority,
 			@Param("criteria") int oldPriority,
