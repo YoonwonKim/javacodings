@@ -55,6 +55,10 @@ public interface IMemberService {
 
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
+    List<OrderDTO> findAllByMemberOrderOrders(String MemberId);
+    
+    List<ItemDTO> findAllByMemberOrderItems(String MemberId);    
+    
     MemberAddressDTO getPrimaryAddress(String memberId);
 
     OrderDTO findOrderByOrderId(String orderId);
@@ -68,7 +72,6 @@ public interface IMemberService {
     List<CartDTO> findAllCartByOrderId(String orderId);
 
     List<ItemDTO> findAllItemsByOrderId(String orderId);
-    MemberAddressDTO getPrimaryAddress(String memberId);
     
     void setEventPageRow(int row);
     
@@ -80,7 +83,9 @@ public interface IMemberService {
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
   List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
-	  
+
+  
+	  	
   
 	 
     

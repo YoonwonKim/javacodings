@@ -1,7 +1,7 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

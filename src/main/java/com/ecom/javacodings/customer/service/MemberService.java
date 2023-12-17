@@ -30,7 +30,7 @@ import com.ecom.javacodings.customer.access.members.MemberDAO;
 import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
-import com.ecom.javacodings.external.purchase.PurchaseService;
+//import com.ecom.javacodings.external.purchase.PurchaseService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
@@ -283,6 +283,17 @@ public class MemberService implements IMemberService {
     public List<OrderDTO> countOrdersByMemberId(String MemberId) {
         return orderDAO.countOrdersByMemberId(MemberId);
     }
+    
+    @Override
+	public List<OrderDTO> findAllByMemberOrderOrders(String MemberId) {
+		return orderDAO.findAllByMemberOrderOrders(MemberId);
+	}
+    
+    @Override
+    public List<ItemDTO> findAllByMemberOrderItems(String MemberId) {
+    	return orderDAO.findAllByMemberOrderItems(MemberId);
+    }
+    
 
     //? Basic CRUD --------------------------------------------------------------
 
@@ -363,6 +374,8 @@ public class MemberService implements IMemberService {
 		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
 		return result;
 	}
+
+	
 	
 	
 	 

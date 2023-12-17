@@ -101,7 +101,48 @@
 			TRANSACTION_ID = #{transaction_id}
 		WHERE ORDER_ID = #{order_id}
 	</update>
-
+	
+	<select id="findAllByMemberOrderOrders">
+		SELECT 			
+			OI.AMOUNT,
+			OS.REG_DATE, 
+			OS.STATE,
+			O.ORDER_ID
+		FROM 
+		ORDERS O
+			JOIN 
+			MEMBERS M ON O.MEMBER_ID = M.MEMBER_ID 
+			JOIN 
+			ORDER_ITEMS OI ON O.ORDER_ID = OI.ORDER_ID			
+			JOIN 
+			ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID
+			WHERE 
+			M.MEMBER_ID = #{member_id}
+	</select>
+	
+	<select id="findAllByMemberOrderItems">
+    	SELECT 
+    		I.ITEM_ID, 
+			I.LABEL, 
+			II.PATH, 
+			I.PRICE 
+			<!-- CASE 
+				WHEN I.PRICE = 0 THEN 0 
+				ELSE OI.AMOUNT/I.PRICE 
+				END AS --> 
+		FROM ITEMS I 
+			JOIN
+			ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID 
+			JOIN
+			ORDER_ITEMS OI ON I.ITEM_ID = OI.ITEM_ID
+			JOIN
+			ORDERS OS ON OI.ORDER_ID = OS.ORDER_ID 
+			JOIN 
+			MEMBERS M ON OS.MEMBER_ID = M.MEMBER_ID
+			WHERE
+			M.MEMBER_ID = #{member_id}
+    </select>
+	
 	<!-- End Region Basic CRUD -->
 </mapper>
  

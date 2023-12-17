@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/")
@@ -99,6 +102,18 @@ public class PageController {
 			
 			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
 			model.addAttribute("countMemberOrders", countMemberOrders);
+			
+			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+			model.addAttribute("memberOrderOrders", memberOrderByOrder);
+			
+			List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+			model.addAttribute("memberOrderItems", memberOrderByItem);
+			
+			Map<String, Object> memberOrders = new HashMap<>();
+			memberOrders.put("memberOrderOrders", memberOrderByOrder);
+			memberOrders.put("memberOrderItems", memberOrderByItem);
+
+			model.addAttribute("memberOrders", memberOrders);
 		}
 
 		return "customer/account/information";
@@ -128,10 +143,54 @@ public class PageController {
 			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
 			model.addAttribute("countMemberOrders", countMemberOrders);
 			
-			System.out.println("=============================="+address);
+			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+			model.addAttribute("memberOrderOrders", memberOrderByOrder);
+			
+			List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+			model.addAttribute("memberOrderItems", memberOrderByItem);
+			
+			Map<String, Object> memberOrders = new HashMap<>();
+			memberOrders.put("memberOrderOrders", memberOrderByOrder);
+			memberOrders.put("memberOrderItems", memberOrderByItem);
+
+			model.addAttribute("memberOrders", memberOrders);
 		}
 		return result;
 	}
+	
+//	@GetMapping("/account/orders/detail/{order_id}")
+//	public String ordersDetail(@PathVariable("order_id") String orderId, Model model) {
+//	    // orderId를 사용하여 해당 주문에 대한 정보를 가져오는 서비스 호출
+//	    OrderDTO orderDetail = memberService.findOrderDetailById(orderId);
+//	    
+//	    // 가져온 정보를 모델에 추가
+//	    model.addAttribute("orderDetail", orderDetail);
+//
+//	    return "customer/account/ordersdetail";
+//	}
+	
+	@RequestMapping("/account/orders/{order_id}")
+    public String ordersDetail(@PathVariable("order_id") String orderId, Model model, HttpServletRequest request) {
+    	
+    	HttpSession session = request.getSession();
+    	MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
+    	
+    	List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+		model.addAttribute("memberOrderOrders", memberOrderByOrder);
+		
+		List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+		model.addAttribute("memberOrderItems", memberOrderByItem);
+		
+		Map<String, Object> memberOrders = new HashMap<>();
+		memberOrders.put("memberOrderOrders", memberOrderByOrder);
+		memberOrders.put("memberOrderItems", memberOrderByItem);
+
+		model.addAttribute("memberOrders", memberOrders);    	
+		
+		System.out.println("memberOrders: " + memberOrders);
+		
+    	return "customer/account/ordersdetail";
+    }
 
 	// End Region Account
 	// Region Product
@@ -181,39 +240,13 @@ public class PageController {
     }
     // End Region Order
     
-    @RequestMapping("/event/list")
-    public String eventList(Model model, String page, String row) {
-
-    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
     
-    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
-    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
-    	
-    	
-    	model.addAllAttributes(pageMap);
-    	System.out.println(pageMap.get("objectList"));
 	@GetMapping("/order/purchase/{order_id}")
 	public String purchaseOrder(@PathVariable("order_id") String orderId,
 								Model model) {
 		List<CartDTO> cartList = memberService.findAllCartByOrderId(orderId);
-		orderData.setItemList(cartList);
 		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
-
-    	return "customer/event/list";
-    }
-    
-    @RequestMapping("/event/item")
-    public String event(HttpServletRequest request, HttpServletResponse response,
-    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
-    	
-    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
-    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
-    	System.out.println(eventBannerDTO);
-    	
-    	return "customer/event/item";
-    }
-    
+				orderData.setItemList(cartList);
     
 		Map<String, String> responseBody = payUpService.request(orderData);
 		model.addAllAttributes(responseBody);
@@ -243,6 +276,32 @@ public class PageController {
 		responseBody.addAllAttributes(purchaseResponse);
 		return page;
 	}
+	
+	@RequestMapping("/event/item")
+    public String event(HttpServletRequest request, HttpServletResponse response,
+    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
+    	
+    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
+    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
+    	System.out.println(eventBannerDTO);
+    	
+    	return "customer/event/item";
+    }
+	
+	@RequestMapping("/event/list")
+    public String eventList(Model model, String page, String row) {
+
+    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
+    
+    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
+    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
+    	
+    	
+    	model.addAllAttributes(pageMap);
+    	System.out.println(pageMap.get("objectList"));
+    	return "customer/event/list";
+    }
 
 	// End Region Order
 }
