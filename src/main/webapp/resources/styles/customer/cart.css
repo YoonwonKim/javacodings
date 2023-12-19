@@ -14,53 +14,52 @@ main {
 
 /* Region Item **********************************************/
 
-.orderable {
-    flex: 1;
-}
-
-.order img {
-    width: 176px;
-}
-.order h1 {
-    font-size: 20px;
-    line-height: 24px;
-    font-weight:  300;
-
-    padding-top: 8px;
-    padding-bottom: 8px;
-}
-.order p {
-    font-size: 16px;
-    line-height: 24px;
-    flex: 1;
-}
-
-#item-div {
+#row {
     display: flex;
     flex-direction: row;
-    gap: 32px;
+    gap: 16px;
+}
+#row img {
+    width: 80px;
+    height: 80px;
+    box-sizing: border-box;
 }
 
-#item-desc {
+#row .orderable {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+}
+#row .orderable #desc {
     flex: 1;
     display: flex;
     flex-direction: column;
+    border-right: solid 1px #8d8d8d;
+    padding-right: 16px;
+    align-items: end;
 }
-
-.order #order-amount .field {
+#row .orderable #desc h1 {
     font-size: 20px;
     line-height: 24px;
-    text-align: right;
-    font-weight:  300;
-
-    padding-bottom: 16px;
+    width: 100%;
+    padding-bottom: 8px;
 }
-
-.button-group {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 8px;
+#row .orderable #desc p {
+    font-size: 14px;
+    line-height: 16px;
+    width: 100%;
+}
+#row .orderable #quantity {
+    display: block;
+    max-width: 160px;
+}
+#row .orderable #amount {
     padding-left: 16px;
+    padding-top: 64px;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 500;
+    width: 160px;
 }
 
 /* End Region Item **********************************************/
@@ -79,7 +78,7 @@ main {
 
 #order-summary {
     padding: 16px 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #8d8d8d;
     border-left:  none;
     border-right: none;
 

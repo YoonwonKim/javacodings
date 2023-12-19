@@ -14,34 +14,28 @@
 <%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 	<div id="table">
-		<cds-layer level="1">
 		<cds-tile-group>
 		<cds-stack gap="8px" use-custom-gap-value>
 			<c:forEach var="item" items="${objectList}">
 				<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
-				<div id="item-div">
+				<div id="row">
 					<img src="/resources/images/${item.path}">
 					<data class="orderable" id="${item.item_id}">
-						<h1>${item.label}</h1>
-						<p>${item.desc}</p>
-
-						<data id="price" value="${item.price}"></data>
-						<cds-number-input id="quantity" inline
-						                  value="${item.amount/item.price}" min="1" max="${item.stock}"></cds-number-input>
-						<data id="amount" value="${item.amount}"></data>
-
-						<div class="button-group">
-							<cds-button kind="secondary" class="request-single"
-							            item-id="${item.item_id}">구매하기</cds-button>
-							<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
+						<div id="desc">
+							<h1>${item.label}</h1>
+							<p>${item.desc}</p>
+							<data id="price" value="${item.price}"></data>
+							<cds-number-input id="quantity" inline size="sm"
+							                  value="${item.amount/item.price}" min="1" max="${item.stock}"></cds-number-input>
 						</div>
+
+						<data id="amount" value="${item.amount}"></data>
 					</data>
 				</div>
 				</cds-selectable-tile>
 			</c:forEach>
 		</cds-stack>
 		</cds-tile-group>
-		</cds-layer>
 	</div>
 
 	<cds-layer level="1" id="order">
@@ -60,10 +54,12 @@
 				<p>총 결제 금액</p>
 				<p class="value">0 원</p>
 			</div>
-			<cds-button id="request-selected">구매하기</cds-button>
+			<div>
+				<cds-button id="order">구매하기</cds-button>
+				<cds-button kind="ghost" id="delete">삭제하기</cds-button>
+			</div>
 		</cds-stack>
 	</cds-tile>
-	<cds-button kind="ghost" onclick="deleteSelected()">선택 삭제하기</cds-button>
 	</cds-layer>
 
 <%--	<div id="button-group">--%>
