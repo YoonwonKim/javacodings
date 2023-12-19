@@ -1,31 +1,40 @@
 sessionStorage.setItem("DEBUG_MODE", true);
 const DEBUG_MODE = sessionStorage.getItem("DEBUG_MODE");
 
-import {order} from '/resources/scripts/common/order.js';
-import {orderable} from "/resources/scripts/customer/orderable.js";
+import {order} from '/resources/scripts/common/data/order.js';
+
+// Region 단일 상품 =================================================================
+
+$(document).ready(function() {
+	// * 최초 총액 설정
+	const amountElements = document.querySelectorAll('.orderable');
+	for (let i = 0; i < amountElements.length; i++) updatePrice(amountElements[i]);
+
+	// * 총액 변경
+	const quantityInputs = document.querySelectorAll('#quantity');
+	for (let i = 0; i < quantityInputs.length; i++) {
+		const input = quantityInputs[i];
+		const itemElement = input.closest(".orderable");
+		input.addEventListener('click', () => updatePrice(itemElement));
+		input.addEventListener('input', () => updatePrice(itemElement));
+		orderSummary();
+	}
+});
+
+// End Region 단일 상품
+// Region 복수 상품 =================================================================
+
+
+// End Region 복수 상품
+// Region 상품 요약 =================================================================
+
+$(document).ready(() => orderSummary());
+
+// End Region 상품 요약
+
 
 
 $(document).ready(function(){
-	// 문서 초기화
-	orderSummary();
-
-	// 주문 수량 변경
-	let quantityInputs = document
-			.getElementsByClassName('cart-quantity')
-	for( let i = 0; i < quantityInputs.length; i++ ) {
-		let input = quantityInputs[i];
-		input.addEventListener('focusout', function() {
-			calcPrice(this);
-			updateOne(this.closest('#item'));
-		});
-	}
-
-	// 주문 요약
-	document.addEventListener('cds-current-selectable-tile-selections',
-		function() {
-		orderSummary();
-	});
-
 
 	// * 단일 주문 요청
 	const requestSingleButtonList = document.querySelectorAll(".request-single");
@@ -146,6 +155,17 @@ function orderSummary() {
 
 // End Region Order Summary
 
+
+function updatePrice(itemData) {
+	const amountElement = itemData.querySelector("#amount");
+	const priceValue = itemData.querySelector("#price").value;
+	const quantityValue = itemData.querySelector("#quantity").value;
+
+	let amountValue = Number(priceValue * quantityValue);
+	amountElement.innerHTML =
+		amountValue.toLocaleString() + " 원"
+		+ "<b>(1개 당 " + Number(priceValue).toLocaleString() + " 원)</b>";
+}
 
 
 

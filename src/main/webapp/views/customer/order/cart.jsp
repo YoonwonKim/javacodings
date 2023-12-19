@@ -5,7 +5,6 @@
 <head>
 	<title>자바코딩즈 장바구니</title>
 	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<%-- Page Script and Styles --%>
 	<script type="module" src="/resources/scripts/cart.js"></script>
@@ -22,21 +21,21 @@
 				<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
 				<div id="item-div">
 					<img src="/resources/images/${item.path}">
-					<div id="item-desc">
+					<data class="orderable" id="${item.item_id}">
 						<h1>${item.label}</h1>
 						<p>${item.desc}</p>
-						<cds-number-input class="cart-quantity" name="cart-quantity"
-										  value="${item.amount/item.price}" min="1" max="${item.stock}"
-										  inline ></cds-number-input>
-						<div id="order-amount">
-							<p class="field" price="${item.price}" value="${item.amount}">${item.amount} 원</p>
-						</div>
+
+						<data id="price" value="${item.price}"></data>
+						<cds-number-input id="quantity" inline
+						                  value="${item.amount/item.price}" min="1" max="${item.stock}"></cds-number-input>
+						<data id="amount" value="${item.amount}"></data>
+
 						<div class="button-group">
 							<cds-button kind="secondary" class="request-single"
 							            item-id="${item.item_id}">구매하기</cds-button>
 							<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
 						</div>
-					</div>
+					</data>
 				</div>
 				</cds-selectable-tile>
 			</c:forEach>
