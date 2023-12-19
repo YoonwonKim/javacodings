@@ -193,12 +193,6 @@ public class PageController {
     	
     	model.addAllAttributes(pageMap);
     	System.out.println(pageMap.get("objectList"));
-	@GetMapping("/order/purchase/{order_id}")
-	public String purchaseOrder(@PathVariable("order_id") String orderId,
-								Model model) {
-		List<CartDTO> cartList = memberService.findAllCartByOrderId(orderId);
-		orderData.setItemList(cartList);
-		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
 
     	return "customer/event/list";
     }
@@ -213,8 +207,14 @@ public class PageController {
     	
     	return "customer/event/item";
     }
-    
-    
+
+	@GetMapping("/order/purchase/{order_id}")
+	public String purchaseOrder(@PathVariable("order_id") String orderId,
+								Model model) {
+		List<CartDTO> cartList = memberService.findAllCartByOrderId(orderId);
+		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
+		orderData.setItemList(cartList);
+
 		Map<String, String> responseBody = payUpService.request(orderData);
 		model.addAllAttributes(responseBody);
 		model.addAttribute("order_id", orderId);

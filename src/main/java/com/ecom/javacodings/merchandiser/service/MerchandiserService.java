@@ -4,7 +4,7 @@ import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.SummaryDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.page.PageDTO;
@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -69,13 +68,15 @@ public class MerchandiserService implements ManagerService {
     @Override public int deleteItemTegs(ItemDTO item) { return itemDAO.deleteItem(item); }
 
     @Override
-    public String createItem(ItemDTO item) {
-        String randomId = sequenceGenerator.generateUnique(
+    public String createItem(ItemDTO item, List<String> tags) {
+        String itemId = sequenceGenerator.generateUnique(
                 (String sequence) -> itemDAO.isExistId(sequence), 20);
-        item.setItem_id(randomId);
+        item.setItem_id(itemId);
 
         int result = itemDAO.createItem(item);
-        if (result > 0) return randomId;
+        if (tags.size() != 0)
+            result *= itemDAO.addAllTagsWithItemId(itemId, tags);
+        if (result > 0) return itemId;
         else return "error";
     }
 
@@ -295,23 +296,23 @@ public class MerchandiserService implements ManagerService {
     }
 
     @Override
-    public String editItem(ItemDTO item) {
+    public String editItem(ItemDTO item, List<String> tags) {
+        String itemId = item.getItem_id();
         itemDAO.updateItem(item);
-        return item.getItem_id();
+        if (tags.size() != 0) {
+            itemDAO.deleteAllTagsByItemId(itemId);
+            itemDAO.addAllTagsWithItemId(itemId, tags);
+        }
+        return itemId;
     }
 
     @Override
-    public int setItemImages(String itemId, List<Object> itemImageList) {
-        Integer result = itemDAO.deleteAllImagesByItemId(itemId);
-        result = (result == null) ? 0 : result;
-
+    public void setItemImages(String itemId, List<Object> itemImageList) {
+        itemDAO.deleteAllImagesByItemId(itemId);
         for (int i = 0; i < itemImageList.size(); i++) {
             Map<String, String> imageObject = (Map<String, String>) itemImageList.get(i);
-            result *= itemDAO.updateImageById(itemId, imageObject);
+            itemDAO.updateImageById(itemId, imageObject);
         }
-
-        result = (result == null) ? 0 : result;
-        return result;
     }
 
     // End Region 이벤트 관리

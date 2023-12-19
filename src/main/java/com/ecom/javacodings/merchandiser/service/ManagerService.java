@@ -1,7 +1,7 @@
 package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.SummaryDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface ManagerService {
+
+    String createItem(ItemDTO item, List<String> tags);
 
     Map<String, String> uploadImages(String itemId, List<MultipartFile> file) throws IOException;
 
@@ -31,8 +33,6 @@ public interface ManagerService {
     // Create and Update
     int updateItem(ItemDTO item);
 //    int updateImageById(ItemDTO item, MultipartFile file);
-
-    String createItem(ItemDTO item);
 
     int updateTags(String item_id, List<String> tags);
     // Delete
@@ -88,7 +88,7 @@ public interface ManagerService {
     List<SummaryDTO> summaryItemsByCategory();
     List<SummaryDTO> summaryItemsByTag();
 
-    String editItem(ItemDTO item);
+    String editItem(ItemDTO item, List<String> tags);
 
-    int setItemImages(String itemId, List<Object> itemImageList);
+    void setItemImages(String itemId, List<Object> itemImageList);
 }
