@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<script type="text/javascript" src="/resources/scripts/common/components/pagination.js"></script>
 
 <div class="pagination"
      totalItems="${totalItems}" totalPages="${totalPages}"
