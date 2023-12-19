@@ -31,7 +31,6 @@
 		<li><a href="/item/c/clothes">의류</a></li>
 		<li><a href="/item/c/cheer">응원용품</a></li>
 		<li><a href="/item/c/baseball">야구용품</a></li>
-		<li><a href="/event/list">이벤트</a></li>
 	</ul>
 </div>
 </header>
