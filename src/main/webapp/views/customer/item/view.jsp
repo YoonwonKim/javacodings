@@ -15,41 +15,26 @@
 <%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 
-	<article>
+	<article item-id="${item.item_id}">
 		<img src="/resources/images/${item.path}" id="item-image">
-		<div id="item-metadata" class="order" item-id="${item.item_id}">
-			<div id="article">
-				<h1 id="item-label">${item.label}</h1>
-				<p  id="item-desc" >${item.desc}</p>
-				<cds-stack id="item-price"
-				           gap="8px" use-custom-gap-value orientation="vertical">
-					<label id="item-price-label">판매 가격</label>
-					<div>
-						<p id="item-price">${item.price}</p>
-						<p id="item-event"></p>
-					</div>
-				</cds-stack>
-				<div id="order">
-					<cds-layer level="1">
-					<cds-stack orientation="vertical">
-						<label>주문 수량</label>
-						<cds-number-input
-								value="1" min="1" max="${item.stock}"
-								id="order-quantity" inline>
-						</cds-number-input>
-					</cds-stack>
-					</cds-layer>
-				</div>
-			</div>
-			<div id="order-amount">
-				<p>총 금액</p>
-				<p class="field" value="${item.price}" price="${item.price}">${item.price}</p>
-			</div>
+
+		<data class="orderable" id="${item.item_id}">
+			<h1>${item.label}</h1>
+			<p>${item.desc}</p>
+
+			<label for="amount">총 금액</label>
+			<data id="amount" value="${item.price}"></data>
+			<data id="price" value="${item.price}"></data>
+
+			<cds-number-input id="quantity"
+					value="1" min="1" max="${item.stock}">
+			</cds-number-input>
+
 			<cds-stack orientation="horizontal" gap="8px" use-custom-gap-value>
 				<cds-button id="request-order" kind="primary">구매하기</cds-button>
 				<cds-button id="put-cart" kind="secondary">장바구니</cds-button>
 			</cds-stack>
-		</div>
+		</data>
 	</article>
 
 </main>

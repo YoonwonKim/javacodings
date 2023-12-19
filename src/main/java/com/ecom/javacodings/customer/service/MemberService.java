@@ -306,17 +306,17 @@ public class MemberService implements IMemberService {
         int result = 1;
         int amount = 0;
         for(CartDTO cart : cartList) {
-            result *= cartDAO.deleteByMemberIdAndItemId(memberId, cart.getItem_id());
+            result += cartDAO.deleteByMemberIdAndItemId(memberId, cart.getItem_id());
             amount += cart.getAmount();
         }
 
-        String orderId = sequenceGenerator.generateUnique(
+        String generatedOrderId = sequenceGenerator.generateUnique(
                 (String generatedId) -> orderDAO.isExistOrderId(generatedId),
                 OrderPolicies.ID_LENGTH.getOrderPolicies()
         );
 
         OrderDTO orderData = new OrderDTO();
-        orderData.setOrder_id(orderId);
+        orderData.setOrder_id(generatedOrderId);
         orderData.setMember_id(memberId);
         orderData.setItemList(cartList);
         orderData.setAmount(amount);
