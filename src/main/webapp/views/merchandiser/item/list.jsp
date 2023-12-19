@@ -9,8 +9,7 @@
 	</cds-table-header-description>
 	<cds-table-toolbar slot="toolbar">
 		<cds-table-toolbar-content>
-			<cds-table-toolbar-search
-					placeholder="Filter table"></cds-table-toolbar-search>
+			<cds-table-toolbar-search placeholder="Filter table"></cds-table-toolbar-search>
 			<cds-button id="create">상품 추가</cds-button>
 		</cds-table-toolbar-content>
 		<cds-table-batch-actions>

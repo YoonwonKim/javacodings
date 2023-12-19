@@ -26,8 +26,13 @@ main {
 
     background: #e0e0e0;
     min-height: 80vh;
+    height: 100%;
     width:  40vw;
     border-left: 1px solid #e0e0e0;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 #editor h1 { font-size: 20px; line-height: 32px;}
 #editor header {

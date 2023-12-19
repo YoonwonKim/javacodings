@@ -163,6 +163,7 @@ editor.setItem = function()
     {
         let data = field.getAttribute('data');
         let value = itemData[data];
+        field.value = value;
         field.setAttribute('value', value);
     }
 
