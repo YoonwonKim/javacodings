@@ -30,12 +30,7 @@ import com.ecom.javacodings.customer.access.members.MemberDAO;
 import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
-import com.ecom.javacodings.external.purchase.PurchaseService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service("memberService")
 public class MemberService implements IMemberService {

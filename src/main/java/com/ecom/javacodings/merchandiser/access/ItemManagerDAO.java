@@ -25,19 +25,21 @@ public interface ItemManagerDAO {
 
 	List<ItemDTO> findAll(PageDTO page);
 
-
 	//? Get
 	ItemDTO getItemById(String item_id);
 	// End Region Read
 	// Region Create or Update
+
 	int createItem(ItemDTO item);
+	int addAllTagsWithItemId(@Param("item_id") String item_id, @Param("tagList") List<String> tags);
 	int updateItem(ItemDTO item);
 	int updateImageById(@Param("item_id") String itemId, @Param("image") Map<String, String> imageData);
+
 	// End Region Create or Update
 	// Region Delete
 	int deleteItem(ItemDTO item);
 	int deleteItemImages(ItemDTO item);
-	int deleteItemTegs(ItemDTO item);
+	int deleteAllTagsByItemId(@Param("item_id") String itemId);
 
 	List<ItemImageDTO> findImagesByItemId(@Param("item_id") String itemId);
 

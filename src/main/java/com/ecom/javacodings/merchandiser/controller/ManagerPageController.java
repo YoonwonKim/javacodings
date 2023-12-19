@@ -18,15 +18,17 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class ManagerPageController {
+
+    @Autowired
+    ManagerService  managerService;
+
     // Region Pages
+
     @RequestMapping()
     public String landing(HttpServletRequest request, HttpServletResponse response,
                           Model model) {
         return "/merchandiser/index";
     }
-
-    @Autowired
-    ManagerService  managerService;
 
     @RequestMapping("/item")
     public String products(Model model, String page, String row) {

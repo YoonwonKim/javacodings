@@ -47,10 +47,21 @@
 
 
 <!-- Region Create -->
+
 	<insert id="createItem" parameterType="itemDTO">
 		INSERT INTO ITEMS(ITEM_ID, LABEL, "DESC", PRICE, STOCK, CATEGORY)
 		VALUES (#{item_id}, #{label}, #{desc}, #{price}, #{stock}, #{category})
 	</insert>
+
+	<insert id="addAllTagsWithItemId" useGeneratedKeys="false">
+		INSERT ALL
+		<foreach collection="tagList" item="tag">
+			INTO ITEM_TAGS(ITEM_ID, TAG) VALUES
+			(#{item_id}, #{tag})
+		</foreach>
+		SELECT 1 FROM DUAL
+	</insert>
+
 <!-- End Region Create -->
 <!-- Region Read -->
 	<select id="findAll" parameterType="pageDTO">
@@ -87,10 +98,12 @@
 		<if test="stock!=null">STOCK = #{stock} </if>
 		WHERE ITEM_ID=#{item_id}
 	</update>
+
 	<update id="updateImageById">
 		INSERT INTO ITEM_IMAGES(ITEM_ID, PATH, CATEGORY)
 		VALUES (#{item_id}, #{image.path}, #{image.category})
 	</update>
+
 <!-- End Region Update -->
 <!-- Region Delete -->
 	<delete id="deleteItem" parameterType="string">
@@ -98,15 +111,17 @@
 		FROM ITEMS 
 		WHERE ITEM_ID = #{value}
 	</delete>
+
 	<delete id="deleteItemImages" parameterType="string">
 		DELETE
-		FROM ITEM_IMAGES 
+		FROM ITEM_IMAGES
 		WHERE ITEM_ID = #{value}
 	</delete>
-	<delete id="deleteItemTegs" parameterType="string">
+
+	<delete id="deleteAllTagsByItemId" parameterType="string">
 		DELETE
 		FROM ITEM_TAGS 
-		WHERE ITEM_ID = #{value}
+		WHERE ITEM_ID = #{item_id}
 	</delete>
 <!-- End Region Delete -->
 </mapper>

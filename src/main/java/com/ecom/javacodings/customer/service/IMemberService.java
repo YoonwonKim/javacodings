@@ -55,8 +55,6 @@ public interface IMemberService {
 
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
-    MemberAddressDTO getPrimaryAddress(String memberId);
-
     OrderDTO findOrderByOrderId(String orderId);
 
     int successPurchase(String orderId, String regDate);
@@ -76,14 +74,8 @@ public interface IMemberService {
     
     String getItemsByEventId(String eventId);
 
-	
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
   List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
-	  
-  
-	 
-    
-    //Map<String, Object> getEventItemList(PageDTO page);
-    
+
 }

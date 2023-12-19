@@ -3,7 +3,7 @@ package com.ecom.javacodings.merchandiser.controller;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,8 +50,8 @@ public class ManagerActionController {
                           @RequestParam(required=false, name="tags[]") List<String> tags) {
         String result;
         Boolean isExistItem = item.getItem_id().length() > 0;
-        if (isExistItem) { result = managerService.editItem(item); }
-        else { result = managerService.createItem(item); }
+        if (isExistItem) {result = managerService.editItem(item, tags); }
+        else { result = managerService.createItem(item, tags); }
         return result;
     }
 
@@ -76,9 +76,8 @@ public class ManagerActionController {
             }
         } catch (Exception e) {}
 
-        int result = managerService.setItemImages(itemId, itemImageList);
-        if (result != 0) { return "success"; }
-        return "error";
+        managerService.setItemImages(itemId, itemImageList);
+        return "success";
     }
 
     @GetMapping("/item/tag/list")
