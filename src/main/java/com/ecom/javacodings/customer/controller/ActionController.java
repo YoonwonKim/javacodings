@@ -119,10 +119,11 @@ public class ActionController {
     		result = "failed";
     	} else {
     		memberService.editMemberInfoByMemberId(member, memberId);
+            String memberName = member.getName();
+            member = memberService.findMemberByMemberIdAndName(memberId, memberName);
     		session.setAttribute("ssKey", member);
     		result = "success";
     	}
-    	System.out.println(member);
     	return result;
     }
     
@@ -134,7 +135,6 @@ public class ActionController {
     	HttpSession session = request.getSession();
     	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
     	String memberId = member.getMember_id();
-    	System.out.println(memberId);
     	
     	if(memebrInfo == null) {
     		result = "failed";
@@ -143,7 +143,6 @@ public class ActionController {
     		session.setAttribute("ssKey", memebrInfo);
     		result = "success";
     	}
-    	System.out.println(memebrInfo);
     	return result;
     }    
     
@@ -163,8 +162,7 @@ public class ActionController {
 		MemberAddressDTO oldAddressData = objectMapper.convertValue(oldAddressDataMap, MemberAddressDTO.class);
 		
 		int priority = Integer.parseInt((String) requestData.get("priority"));
-		String memberId = (String) requestData.get("member_id");
-		
+		String memberId = (String) requestData.get("member_id");		
 		
 		if(addressData == null) {
 			result = "failed";
@@ -174,16 +172,13 @@ public class ActionController {
 			if(addressRowsCreated > 0 && addressRowsUpdated > 0) {
 				session.setAttribute("oldaddress", oldAddressData);
 				if(session.getAttribute("oldaddress") != null) {
-					session.setAttribute("address", addressData);
-					
+					session.setAttribute("address", addressData);					
 				}
 				result = "success";                
 			} else {
 				result = "failed";
 			}
 		}
-		System.out.println("Controller oldAddress==============>"+oldAddressData);
-		System.out.println("Controller Address==============>"+addressData);
 	    return result;
 	}
     
@@ -194,7 +189,6 @@ public class ActionController {
         if (r) return "duplicated";
         return "not-duplicated";
     }
-
 
     // Region Products
 

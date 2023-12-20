@@ -3,7 +3,6 @@ package com.ecom.javacodings.customer.controller;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.EventBannerDTO;
 import com.ecom.javacodings.common.transfer.EventDTO;
-import com.ecom.javacodings.common.transfer.EventItemDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
@@ -17,17 +16,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/")
@@ -88,18 +92,28 @@ public class PageController {
 		MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
 		
 		if (member == null) return "redirect:/account/login";
-		else {
-			member = memberService.findMemberByIdAndPassword(
-					member.getMember_id(), member.getPassword());
-			member.setPassword(null); // Hide password for safe
-			model.addAttribute("ssKey", member);
 
-			MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
-			model.addAttribute("address", address);
-			
-			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
-			model.addAttribute("countMemberOrders", countMemberOrders);
-		}
+		member = memberService.findMemberByIdAndPassword(
+				member.getMember_id(), member.getPassword());
+		member.setPassword(null); // Hide password for safe
+		model.addAttribute("ssKey", member);
+
+		MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
+		model.addAttribute("address", address);
+
+		List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
+		model.addAttribute("countMemberOrders", countMemberOrders);
+
+		List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+		model.addAttribute("memberOrderOrders", memberOrderByOrder);
+
+		List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+		model.addAttribute("memberOrderItems", memberOrderByItem);
+
+		Map<String, Object> memberOrders = new HashMap<>();
+		memberOrders.put("memberOrderOrders", memberOrderByOrder);
+		memberOrders.put("memberOrderItems", memberOrderByItem);
+		model.addAttribute("memberOrders", memberOrders);
 
 		return "customer/account/information";
 	}
@@ -128,11 +142,36 @@ public class PageController {
 			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
 			model.addAttribute("countMemberOrders", countMemberOrders);
 			
-			System.out.println("=============================="+address);
+			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+			model.addAttribute("memberOrderOrders", memberOrderByOrder);
+			
+			List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+			model.addAttribute("memberOrderItems", memberOrderByItem);
+			
+			Map<String, Object> memberOrders = new HashMap<>();
+			memberOrders.put("memberOrderOrders", memberOrderByOrder);
+			memberOrders.put("memberOrderItems", memberOrderByItem);
+			model.addAttribute("memberOrders", memberOrders);
 		}
 		return result;
 	}
-
+		
+	@RequestMapping("/account/orders/{order_id}")
+	public String ordersDetail(@PathVariable("order_id") String orderId, Model model, HttpServletRequest request) {
+		
+	    List<OrderDTO> orders = memberService.findOrderItemsByOrderId(orderId);
+	    model.addAttribute("orders", orders);
+	    
+	    List<ItemDTO> items = memberService.findItemsByOrderId(orderId);
+	    model.addAttribute("items", items);
+	    	    
+	    Map<String, Object> memberOrders = new HashMap<>();
+		memberOrders.put("orders", orders);
+		memberOrders.put("items", items);
+		model.addAttribute("memberOrders", memberOrders);		
+		
+	    return "customer/account/ordersdetail";
+	}
 	// End Region Account
 	// Region Product
 
@@ -181,11 +220,6 @@ public class PageController {
     }
     // End Region Order
     
-    @RequestMapping("/event/list")
-    public String eventList(Model model, String page, String row) {
-
-    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
     
     	if (currentRow != 0) memberService.setEventPageRow(currentRow);
     	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
@@ -243,6 +277,32 @@ public class PageController {
 		responseBody.addAllAttributes(purchaseResponse);
 		return page;
 	}
+	
+	@RequestMapping("/event/item")
+    public String event(HttpServletRequest request, HttpServletResponse response,
+    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
+    	
+    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
+    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
+    	System.out.println(eventBannerDTO);
+    	
+    	return "customer/event/item";
+    }
+	
+	@RequestMapping("/event/list")
+    public String eventList(Model model, String page, String row) {
+
+    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
+    
+    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
+    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
+    	
+    	
+    	model.addAllAttributes(pageMap);
+    	System.out.println(pageMap.get("objectList"));
+    	return "customer/event/list";
+    }
 
 	// End Region Order
 }

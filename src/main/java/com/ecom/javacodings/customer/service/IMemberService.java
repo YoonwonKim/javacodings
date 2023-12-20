@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.*;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +36,6 @@ public interface IMemberService {
     int editMemberInfoByMemberId(MemberDTO memberData, String memberId);
 
     Map<String, Object> getItemPageByCategory(String category, int page);
-
     
     Map<String, Object> getItemPageByCategoryWithRow(String category, int page, int row);
 
@@ -55,6 +55,16 @@ public interface IMemberService {
 
     List<OrderDTO> countOrdersByMemberId(String MemberId);
 
+    List<OrderDTO> findAllByMemberOrderOrders(String MemberId);
+    
+    List<ItemDTO> findAllByMemberOrderItems(String MemberId);
+    
+    List<OrderDTO> findOrderItemsByOrderId(String orderId);
+    
+    List<ItemDTO> findItemsByOrderId(String orderId);        
+    
+    MemberAddressDTO getPrimaryAddress(String memberId);
+
     OrderDTO findOrderByOrderId(String orderId);
 
     int successPurchase(String orderId, String regDate);
@@ -66,7 +76,6 @@ public interface IMemberService {
     List<CartDTO> findAllCartByOrderId(String orderId);
 
     List<ItemDTO> findAllItemsByOrderId(String orderId);
-    MemberAddressDTO getPrimaryAddress(String memberId);
     
     void setEventPageRow(int row);
     
@@ -74,8 +83,13 @@ public interface IMemberService {
     
     String getItemsByEventId(String eventId);
 
+	
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
   List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
 
+    MemberDTO findMemberByMemberIdAndName(String memberId, String memberName);
+
+    //Map<String, Object> getEventItemList(PageDTO page);
+    
 }

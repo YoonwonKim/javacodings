@@ -21,5 +21,7 @@ public interface MemberDAO {
 
 	int archiveByMemberId(@Param("member_id") String memberId);
 
-	// End Region Basic CRUD
+    MemberDTO findByIdAndName(@Param("member_id") String memberId, @Param("name") String memberName);
+
+    // End Region Basic CRUD
 }

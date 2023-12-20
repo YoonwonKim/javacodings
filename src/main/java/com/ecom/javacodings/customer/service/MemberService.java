@@ -30,6 +30,9 @@ import com.ecom.javacodings.customer.access.members.MemberDAO;
 import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
+//import com.ecom.javacodings.external.purchase.PurchaseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
 
 @Service("memberService")
@@ -37,8 +40,7 @@ public class MemberService implements IMemberService {
 
     @Autowired
     IPurchaseService payUpService;
-    SequenceGenerator sequenceGenerator = new SequenceGenerator();
-    
+    SequenceGenerator sequenceGenerator = new SequenceGenerator();    
     
     // Region Member
 
@@ -278,6 +280,26 @@ public class MemberService implements IMemberService {
     public List<OrderDTO> countOrdersByMemberId(String MemberId) {
         return orderDAO.countOrdersByMemberId(MemberId);
     }
+    
+    @Override
+	public List<OrderDTO> findAllByMemberOrderOrders(String MemberId) {
+		return orderDAO.findAllByMemberOrderOrders(MemberId);
+	}
+    
+    @Override
+    public List<ItemDTO> findAllByMemberOrderItems(String MemberId) {
+    	return orderDAO.findAllByMemberOrderItems(MemberId);
+    }
+    
+    @Override
+	public List<OrderDTO> findOrderItemsByOrderId(String orderId) {
+		return orderDAO.findOrderItemsByOrderId(orderId);
+	}
+
+	@Override
+	public List<ItemDTO> findItemsByOrderId(String orderId) {
+		return orderDAO.findItemsByOrderId(orderId);
+	}
 
     //? Basic CRUD --------------------------------------------------------------
 
@@ -325,8 +347,6 @@ public class MemberService implements IMemberService {
         if (result != 0) { return orderData; }
         return null;
     }
-    
-    
 
     @Override
     public List<CartDTO> findAllCartByOrderId(String orderId) {
@@ -337,7 +357,7 @@ public class MemberService implements IMemberService {
     public List<ItemDTO> findAllItemsByOrderId(String orderId) {
         return orderDAO.findAllItemsByOrderId(orderId);
     }
-
+    
 	@Override
 	public String getItemsByEventId(String eventId) {
 		// TODO Auto-generated method stub
@@ -346,21 +366,19 @@ public class MemberService implements IMemberService {
 	@Override
 	public List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO){
     	List<EventBannerDTO> result = eventDAO.mainBanner(eventBannerDTO);
-    	return result;
-		
-		
-	
+    	return result;	
 	}
-
 	
 	@Override
 	public List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO){
 		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
 		return result;
 	}
-	
-	
-	 
-  
+
+    @Override
+    public MemberDTO findMemberByMemberIdAndName(String memberId, String memberName) {
+        return memberDAO.findByIdAndName(memberId, memberName);
+    }
+
     // End Region Order
 }

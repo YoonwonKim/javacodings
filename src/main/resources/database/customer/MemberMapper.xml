@@ -21,6 +21,15 @@
 		WHERE M.MEMBER_ID = #{member_id} AND M.PASSWORD=#{password}
 	</select>
 
+	<select id="findByIdAndName" resultType="memberDTO">
+		SELECT
+			M.MEMBER_ID, M.PASSWORD, M.ROLE, M."LEVEL",
+			I.NAME, I.EMAIL, I.BIRTH, I.PHONE
+		FROM MEMBERS M
+				 JOIN MEMBER_INFOS I ON M.MEMBER_ID = I.MEMBER_ID
+		WHERE M.MEMBER_ID = #{member_id} AND I.NAME = #{name}
+	</select>
+
 	<select id="getMemberIdByNameAndPhone" resultType="string">
 		SELECT MEMBER_ID
 		FROM MEMBER_INFOS
@@ -49,30 +58,5 @@
 	</delete>
 
 	<!-- End Region Basic CRUD -->
-	
-	<select id="findAllByMembersOrder">
-		SELECT 
-			I.LABEL, 
-			II.PATH, 
-			I.PRICE, 
-			(OI.AMOUNT/I.PRICE) AS QUANTITY,
-			OI.AMOUNT, 
-			OS.REG_DATE, 
-			OS.STATE
-		FROM 
-		MEMBERS M
-			JOIN 
-			ORDERS O ON M.MEMBER_ID = O.MEMBER_ID
-			JOIN 
-			ORDER_ITEMS OI ON O.ORDER_ID = OI.ORDER_ID
-			JOIN 
-			ITEMS I ON OI.ITEM_ID = I.ITEM_ID
-			JOIN 
-			ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID
-			JOIN 
-			ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID
-			WHERE 
-			M.MEMBER_ID = #{member_id}
-	</select>
 
 </mapper>

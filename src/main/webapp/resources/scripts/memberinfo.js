@@ -25,7 +25,6 @@
 	}
 });*/
 
-
 function editMemberInfoByMemberId() {
 	var memberData = {
 		member_id: $("#member_id").val(),
@@ -46,11 +45,11 @@ function editMemberInfoByMemberId() {
 }
 
 function archiveByMemberId() {	
-	var member_id = document.getElementById('member_id').value;  // .value 추가
+	var member_id = document.getElementById('member_id').value;
 			console.log(member_id);
 	$.ajax({
 		contentType: 'application/json',
-		data: JSON.stringify({member_id: member_id}),  // JSON 객체 형태로 수정
+		data: JSON.stringify({member_id: member_id}),
 		url: '/actions/account/archiveByMemberID',
 		method: 'POST',
 		success: function(response) {
@@ -65,13 +64,11 @@ function updateDeliveryAddress() {
 	var newZipcode = document.getElementById('sample6_postcode').value;
 	var newAddress = document.getElementById('sample6_address').value;
 	var newAddress2 = document.getElementById('sample6_detailAddress').value;
-//	var priority = document.getElementById('priority').value;
 	var priority = parseInt(document.getElementById('priority').value, 10);
 	var oldZipcode = document.getElementById('oldZipcode').value;
 	var oldAddress = document.getElementById('oldAddress').value;
 	var oldAddress2 = document.getElementById('oldAddress2').value;
 	
-	// 우편번호 또는 주소가 비어있는 경우
 	if (!newZipcode || !newAddress) {		
 		alert("우편번호와 주소는 필수 입력 항목입니다.");
 		return;
@@ -104,9 +101,6 @@ function updateDeliveryAddress() {
 		method: 'POST',
 		success: function(response) {
 			console.log("배송지가 성공적으로 변경되었습니다.");
-		},
-		error: function(error) {
-			console.error("배송지 변경 중 오류 발생:", error);
 		}
 	});
 }

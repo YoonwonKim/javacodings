@@ -81,6 +81,6 @@
         SET STOCK = STOCK - 1
         WHERE ITEM_ID = #{item_id}
     </update>
-
+	
     <!-- End Region Basic CRUD -->
 </mapper>
