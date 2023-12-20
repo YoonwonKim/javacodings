@@ -3,7 +3,6 @@ package com.ecom.javacodings.customer.controller;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.EventBannerDTO;
 import com.ecom.javacodings.common.transfer.EventDTO;
-import com.ecom.javacodings.common.transfer.EventItemDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
@@ -93,29 +92,28 @@ public class PageController {
 		MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
 		
 		if (member == null) return "redirect:/account/login";
-		else {
-			member = memberService.findMemberByIdAndPassword(
-					member.getMember_id(), member.getPassword());
-			member.setPassword(null); // Hide password for safe
-			model.addAttribute("ssKey", member);
 
-			MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
-			model.addAttribute("address", address);
-			
-			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
-			model.addAttribute("countMemberOrders", countMemberOrders);
-			
-			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
-			model.addAttribute("memberOrderOrders", memberOrderByOrder);
-			
-			List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
-			model.addAttribute("memberOrderItems", memberOrderByItem);
-			
-			Map<String, Object> memberOrders = new HashMap<>();
-			memberOrders.put("memberOrderOrders", memberOrderByOrder);
-			memberOrders.put("memberOrderItems", memberOrderByItem);
-			model.addAttribute("memberOrders", memberOrders);
-		}
+		member = memberService.findMemberByIdAndPassword(
+				member.getMember_id(), member.getPassword());
+		member.setPassword(null); // Hide password for safe
+		model.addAttribute("ssKey", member);
+
+		MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
+		model.addAttribute("address", address);
+
+		List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
+		model.addAttribute("countMemberOrders", countMemberOrders);
+
+		List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
+		model.addAttribute("memberOrderOrders", memberOrderByOrder);
+
+		List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
+		model.addAttribute("memberOrderItems", memberOrderByItem);
+
+		Map<String, Object> memberOrders = new HashMap<>();
+		memberOrders.put("memberOrderOrders", memberOrderByOrder);
+		memberOrders.put("memberOrderItems", memberOrderByItem);
+		model.addAttribute("memberOrders", memberOrders);
 
 		return "customer/account/information";
 	}
