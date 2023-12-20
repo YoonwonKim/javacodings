@@ -85,8 +85,10 @@ public interface IMemberService {
 	
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
-  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);	 
-    
+  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+
+    MemberDTO findMemberByMemberIdAndName(String memberId, String memberName);
+
     //Map<String, Object> getEventItemList(PageDTO page);
     
 }

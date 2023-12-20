@@ -375,7 +375,12 @@ public class MemberService implements IMemberService {
 	public List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO){
 		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
 		return result;
-	}	
-  
+	}
+
+    @Override
+    public MemberDTO findMemberByMemberIdAndName(String memberId, String memberName) {
+        return memberDAO.findByIdAndName(memberId, memberName);
+    }
+
     // End Region Order
 }

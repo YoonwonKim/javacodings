@@ -4,7 +4,7 @@ import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.SummaryDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.common.page.PageDTO;

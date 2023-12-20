@@ -119,6 +119,8 @@ public class ActionController {
     		result = "failed";
     	} else {
     		memberService.editMemberInfoByMemberId(member, memberId);
+            String memberName = member.getName();
+            member = memberService.findMemberByMemberIdAndName(memberId, memberName);
     		session.setAttribute("ssKey", member);
     		result = "success";
     	}

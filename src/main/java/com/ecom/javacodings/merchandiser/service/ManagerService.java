@@ -1,7 +1,7 @@
 package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.transfer.SummaryDTO;
-import com.ecom.javacodings.common.transfer.table.EventDTO;
+import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
