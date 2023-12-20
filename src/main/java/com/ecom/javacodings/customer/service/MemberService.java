@@ -42,8 +42,7 @@ public class MemberService implements IMemberService {
 
     @Autowired
     IPurchaseService payUpService;
-    SequenceGenerator sequenceGenerator = new SequenceGenerator();
-    
+    SequenceGenerator sequenceGenerator = new SequenceGenerator();    
     
     // Region Member
 
@@ -294,6 +293,15 @@ public class MemberService implements IMemberService {
     	return orderDAO.findAllByMemberOrderItems(MemberId);
     }
     
+    @Override
+	public List<OrderDTO> findOrderItemsByOrderId(String orderId) {
+		return orderDAO.findOrderItemsByOrderId(orderId);
+	}
+
+	@Override
+	public List<ItemDTO> findItemsByOrderId(String orderId) {
+		return orderDAO.findItemsByOrderId(orderId);
+	}
 
     //? Basic CRUD --------------------------------------------------------------
 
@@ -341,8 +349,6 @@ public class MemberService implements IMemberService {
         if (result != 0) { return orderData; }
         return null;
     }
-    
-    
 
     @Override
     public List<CartDTO> findAllCartByOrderId(String orderId) {
@@ -353,7 +359,7 @@ public class MemberService implements IMemberService {
     public List<ItemDTO> findAllItemsByOrderId(String orderId) {
         return orderDAO.findAllItemsByOrderId(orderId);
     }
-
+    
 	@Override
 	public String getItemsByEventId(String eventId) {
 		// TODO Auto-generated method stub
@@ -362,23 +368,14 @@ public class MemberService implements IMemberService {
 	@Override
 	public List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO){
     	List<EventBannerDTO> result = eventDAO.mainBanner(eventBannerDTO);
-    	return result;
-		
-		
-	
+    	return result;	
 	}
-
 	
 	@Override
 	public List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO){
 		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
 		return result;
-	}
-
-	
-	
-	
-	 
+	}	
   
     // End Region Order
 }

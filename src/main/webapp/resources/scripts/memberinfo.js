@@ -104,13 +104,3 @@ function updateDeliveryAddress() {
 		}
 	});
 }
-
-//주문관리    
-/*$(document).ready(function() {
-	$('cds-table-row').on('click', function() {
-        var order_id = $(this).find('cds-table-cell[data-order-id]').attr('data-order-id');
-		console.log(order_id)
-		// order_id를 파라미터로 하여 새로운 페이지로 이동
-		//window.location.href = '/account/orders/' + order_id;
-	});	
-});*/

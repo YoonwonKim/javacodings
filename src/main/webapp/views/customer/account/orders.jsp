@@ -77,7 +77,7 @@
 								<cds-table-body>
 									<c:forEach var="orderItem" items="${memberOrders.memberOrderItems}" varStatus="i">
 										<cds-table-row onclick="location.href='/account/orders/${memberOrders.memberOrderOrders[i.index].order_id}'">
-											<cds-table-cell data-order-id="${memberOrders.memberOrderOrders[i.index].order_id}"></cds-table-cell>
+											<cds-table-cell> </cds-table-cell>
 											<cds-table-cell>${orderItem.label}</cds-table-cell>
 											<cds-table-cell>${orderItem.path}</cds-table-cell>
 											<cds-table-cell>${orderItem.price}</cds-table-cell>

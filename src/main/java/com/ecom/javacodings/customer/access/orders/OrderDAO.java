@@ -18,7 +18,11 @@ public interface OrderDAO {
 	List<OrderDTO> findAllByMemberOrderOrders(@Param("member_id") String memberId);
 	
 	List<ItemDTO> findAllByMemberOrderItems(@Param("member_id") String memberId);
-
+	
+	List<OrderDTO> findOrderItemsByOrderId(@Param("order_id") String orderId);
+	
+	List<ItemDTO> findItemsByOrderId(@Param("order_id") String orderId);
+	
 	Boolean isExistOrderId(@Param("order_id") String orderId);
 
 	// End Region Metadata

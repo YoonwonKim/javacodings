@@ -18,5 +18,6 @@ public class OrderDTO {
 	private int state;
 
 	private List<CartDTO> itemList;
-
+	private List<ItemDTO> items;
+	
 }

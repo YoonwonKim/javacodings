@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.*;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,7 +36,6 @@ public interface IMemberService {
     int editMemberInfoByMemberId(MemberDTO memberData, String memberId);
 
     Map<String, Object> getItemPageByCategory(String category, int page);
-
     
     Map<String, Object> getItemPageByCategoryWithRow(String category, int page, int row);
 
@@ -57,7 +57,11 @@ public interface IMemberService {
 
     List<OrderDTO> findAllByMemberOrderOrders(String MemberId);
     
-    List<ItemDTO> findAllByMemberOrderItems(String MemberId);    
+    List<ItemDTO> findAllByMemberOrderItems(String MemberId);
+    
+    List<OrderDTO> findOrderItemsByOrderId(String orderId);
+    
+    List<ItemDTO> findItemsByOrderId(String orderId);        
     
     MemberAddressDTO getPrimaryAddress(String memberId);
 
@@ -78,16 +82,10 @@ public interface IMemberService {
     Map<String, Object> getEventPageMap(int currentPage);
     
     String getItemsByEventId(String eventId);
-
 	
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
-  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
-
-  
-	  	
-  
-	 
+  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);	 
     
     //Map<String, Object> getEventItemList(PageDTO page);
     

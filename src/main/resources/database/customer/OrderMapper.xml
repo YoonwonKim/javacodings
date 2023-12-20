@@ -83,7 +83,6 @@
 		WHERE ORDER_ID = #{order_id}
 	</select>
 
-
 	<insert id="increaseStateByOrderId">
 		INSERT INTO ORDER_STATES (ORDER_ID,STATE, REG_DATE) VALUES
 		(#{order_id}, (SELECT MAX(STATE) FROM ORDER_STATES) + 1,
@@ -136,13 +135,47 @@
 			JOIN
 			ORDER_ITEMS OI ON I.ITEM_ID = OI.ITEM_ID
 			JOIN
-			ORDERS OS ON OI.ORDER_ID = OS.ORDER_ID 
+			ORDERS O ON OI.ORDER_ID = O.ORDER_ID 
 			JOIN 
-			MEMBERS M ON OS.MEMBER_ID = M.MEMBER_ID
+			MEMBERS M ON O.MEMBER_ID = M.MEMBER_ID
 			WHERE
 			M.MEMBER_ID = #{member_id}
     </select>
 	
+	<select id="findItemsByOrderId">
+		SELECT
+			I.ITEM_ID, 
+			I.LABEL, 
+			II.PATH, 
+			II.CATEGORY, 
+			I.PRICE 
+		FROM ITEMS I
+			JOIN
+			ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY='thumbnail'
+			JOIN
+			ORDER_ITEMS OI ON I.ITEM_ID = OI.ITEM_ID
+			JOIN
+			ORDERS O ON OI.ORDER_ID = O.ORDER_ID
+			WHERE
+			O.ORDER_ID = #{order_id, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="findOrderItemsByOrderId">
+		SELECT 			
+			OI.AMOUNT,
+			OS.REG_DATE, 
+			OS.STATE
+		FROM 
+		ORDERS O
+			JOIN 
+			MEMBERS M ON O.MEMBER_ID = M.MEMBER_ID 
+			JOIN 
+			ORDER_ITEMS OI ON O.ORDER_ID = OI.ORDER_ID			
+			JOIN 
+			ORDER_STATES OS ON O.ORDER_ID = OS.ORDER_ID
+			WHERE 
+			O.ORDER_ID = #{order_id, jdbcType=VARCHAR}			
+	</select>
+	
 	<!-- End Region Basic CRUD -->
 </mapper>
- 

@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -112,7 +114,6 @@ public class PageController {
 			Map<String, Object> memberOrders = new HashMap<>();
 			memberOrders.put("memberOrderOrders", memberOrderByOrder);
 			memberOrders.put("memberOrderItems", memberOrderByItem);
-
 			model.addAttribute("memberOrders", memberOrders);
 		}
 
@@ -152,46 +153,27 @@ public class PageController {
 			Map<String, Object> memberOrders = new HashMap<>();
 			memberOrders.put("memberOrderOrders", memberOrderByOrder);
 			memberOrders.put("memberOrderItems", memberOrderByItem);
-
 			model.addAttribute("memberOrders", memberOrders);
 		}
 		return result;
 	}
-	
-//	@GetMapping("/account/orders/detail/{order_id}")
-//	public String ordersDetail(@PathVariable("order_id") String orderId, Model model) {
-//	    // orderId를 사용하여 해당 주문에 대한 정보를 가져오는 서비스 호출
-//	    OrderDTO orderDetail = memberService.findOrderDetailById(orderId);
-//	    
-//	    // 가져온 정보를 모델에 추가
-//	    model.addAttribute("orderDetail", orderDetail);
-//
-//	    return "customer/account/ordersdetail";
-//	}
-	
+		
 	@RequestMapping("/account/orders/{order_id}")
-    public String ordersDetail(@PathVariable("order_id") String orderId, Model model, HttpServletRequest request) {
-    	
-    	HttpSession session = request.getSession();
-    	MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
-    	
-    	List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
-		model.addAttribute("memberOrderOrders", memberOrderByOrder);
+	public String ordersDetail(@PathVariable("order_id") String orderId, Model model, HttpServletRequest request) {
 		
-		List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
-		model.addAttribute("memberOrderItems", memberOrderByItem);
+	    List<OrderDTO> orders = memberService.findOrderItemsByOrderId(orderId);
+	    model.addAttribute("orders", orders);
+	    
+	    List<ItemDTO> items = memberService.findItemsByOrderId(orderId);
+	    model.addAttribute("items", items);
+	    	    
+	    Map<String, Object> memberOrders = new HashMap<>();
+		memberOrders.put("orders", orders);
+		memberOrders.put("items", items);
+		model.addAttribute("memberOrders", memberOrders);		
 		
-		Map<String, Object> memberOrders = new HashMap<>();
-		memberOrders.put("memberOrderOrders", memberOrderByOrder);
-		memberOrders.put("memberOrderItems", memberOrderByItem);
-
-		model.addAttribute("memberOrders", memberOrders);    	
-		
-		System.out.println("memberOrders: " + memberOrders);
-		
-    	return "customer/account/ordersdetail";
-    }
-
+	    return "customer/account/ordersdetail";
+	}
 	// End Region Account
 	// Region Product
 
