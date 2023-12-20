@@ -219,28 +219,6 @@ public class PageController {
     	return "customer/index";
     }
     // End Region Order
-    
-    
-    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
-    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
-    	
-    	
-    	model.addAllAttributes(pageMap);
-    	System.out.println(pageMap.get("objectList"));
-
-    	return "customer/event/list";
-    }
-    
-    @RequestMapping("/event/item")
-    public String event(HttpServletRequest request, HttpServletResponse response,
-    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
-    	
-    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
-    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
-    	System.out.println(eventBannerDTO);
-    	
-    	return "customer/event/item";
-    }
 
 	@GetMapping("/order/purchase/{order_id}")
 	public String purchaseOrder(@PathVariable("order_id") String orderId,
