@@ -78,16 +78,16 @@
 									<c:forEach var="orderItem" items="${memberOrders.memberOrderItems}" varStatus="i">
 										<cds-table-row onclick="location.href='/account/orders/${memberOrders.memberOrderOrders[i.index].order_id}'">
 											<cds-table-cell> </cds-table-cell>
+											<cds-table-cell><img src="/resources/images/${orderItem.path}"></cds-table-cell>
 											<cds-table-cell>${orderItem.label}</cds-table-cell>
-											<cds-table-cell>${orderItem.path}</cds-table-cell>
 											<cds-table-cell>${orderItem.price}</cds-table-cell>
-											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount/orderItem.price}</cds-table-cell>											
+											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount/orderItem.price}</cds-table-cell>
 										 	<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount}</cds-table-cell>
 											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].reg_date}</cds-table-cell>
 											<cds-table-cell>
 												<c:choose>
 													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 0}">
-														주문 취소
+														결제 필요
 													</c:when>
 													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 1}">
 														결제 완료
@@ -123,9 +123,6 @@
 					</cds-stack>
 				</cds-tile>			
 			</cds-stack>
-			<%-- <div class="right">			
-				<cds-button kind="ghost" onclick="">???</cds-button>
-			</div> --%>
 		</div>
 		</div>
 	</div>

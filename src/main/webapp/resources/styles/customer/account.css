@@ -96,3 +96,8 @@ svg {
 input:required {
     border: 1px solid red;
 }
+
+img {
+    width: 80px;
+    margin: 8px;
+}
