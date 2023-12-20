@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <meta charset="UTF-8">
 <head>
@@ -46,7 +45,7 @@
 						<p>이름: ${ssKey.name}</p>
 						<p>생년월일: ${ssKey.birth}</p>
 						<p>이메일 : ${ssKey.email}</p>
-						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,8)}</p>
+						<p>연락처 : 010-${ssKey.phone.substring(0, 4)}-${ssKey.phone.substring(4,ssKey.phone.length())}</p>
 						<p class="link">프로필 수정</p>
 					</cds-stack>
 				</cds-clickable-tile>
@@ -60,23 +59,23 @@
 				</cds-clickable-tile>
 			</cds-stack>
 
-			<cds-tile href="/account/orders" id="orders">
-			<cds-stack gap="0" use-custom-gap-value orientation="vertical">
-				<h1>주문 관리</h1>
-				<div id="order-summary">
-					<cds-clickable-tile inline href="/account/orders?paid">
-						<c:import url="/resources/css/icons/price.svg" />
-						<cds-stack>
-							<p>결제 완료</p>
-						</cds-stack>
-					</cds-clickable-tile>
-				</div>
-			</cds-stack>
-			</cds-tile>
+<%--			<cds-tile href="/account/orders" id="orders">--%>
+<%--			<cds-stack gap="0" use-custom-gap-value orientation="vertical">--%>
+<%--				<h1>주문 관리</h1>--%>
+<%--				<div id="order-summary">--%>
+<%--					<cds-clickable-tile inline href="/account/orders?paid">--%>
+<%--						<c:import url="/resources/css/icons/price.svg" />--%>
+<%--						<cds-stack>--%>
+<%--							<p>결제 완료</p>--%>
+<%--						</cds-stack>--%>
+<%--					</cds-clickable-tile>--%>
+<%--				</div>--%>
+<%--			</cds-stack>--%>
+<%--			</cds-tile>--%>
 
-			<div class="right">
-				<cds-button kind="ghost" a href="/account/profile">회원 탈퇴</cds-button>
-			</div>
+<%--			<div class="right">--%>
+<%--				<cds-button kind="ghost" a href="/account/profile">회원 탈퇴</cds-button>--%>
+<%--			</div>--%>
 		</div>
 	</div>
 	</cds-layer>

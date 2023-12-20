@@ -45,15 +45,13 @@ function editMemberInfoByMemberId() {
 }
 
 function archiveByMemberId() {	
-	var member_id = document.getElementById('member_id').value;
-			console.log(member_id);
+	const member_id = document.getElementById('member_id').value;
 	$.ajax({
-		contentType: 'application/json',
 		data: JSON.stringify({member_id: member_id}),
 		url: '/actions/account/archiveByMemberID',
 		method: 'POST',
 		success: function(response) {
-			console.log("성공");
+			if(response == 'success') {location.href = '/';}
 		}
 	});
 }

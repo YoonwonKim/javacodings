@@ -16,6 +16,7 @@
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
 <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/structured-list.min.js"></script>
+<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/breadcrumb.min.js"></script>
 
 <%-- Fragment Styles ---------------------------------------------------------%>
 <link rel="stylesheet" href="/views/customer/fragments/global/init.css" />

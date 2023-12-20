@@ -239,7 +239,7 @@ public class PageController {
 	@PostMapping("/order/confirm/{order_id}")
 	public String confirmOrder(String ordr_idxx, @PathVariable("order_id") String orderId,
 							   PurchaseData purchaseData, Model responseBody) {
-		String page = "redirect:/";
+		String page = "redirect:/account/orders";
 		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
 
 		Map<String, String> purchaseResponse = payUpService.purchase(ordr_idxx, purchaseData);

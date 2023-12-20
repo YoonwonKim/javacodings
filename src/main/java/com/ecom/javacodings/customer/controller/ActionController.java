@@ -44,11 +44,13 @@ public class ActionController {
      */
     @PostMapping("/account/login")
     @ResponseBody
-    public String login(HttpServletRequest request, MemberDTO loginInfo) {
-        HttpSession session = request.getSession();
+    public String login(HttpSession session, MemberDTO loginInfo) {
         MemberDTO loginAttempt = memberService.findMemberByIdAndPassword(loginInfo.getMember_id(), loginInfo.getPassword());
 
         if (loginAttempt == null) return "failed";
+        String role = loginAttempt.getRole();
+        if (role.equals("ARCHIVED") || role.equals("TEMP")) return "failed";
+
         session.setAttribute("ssKey", loginAttempt);
         return "success";
     }
@@ -59,9 +61,8 @@ public class ActionController {
      */
     @PostMapping("/account/logout")
     @ResponseBody
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpSession session) {
         String result = "failed";
-        HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
 
         if (ssKey == null) return "success, but already logged out";
@@ -129,10 +130,8 @@ public class ActionController {
     
     @PostMapping("/account/archiveByMemberID")
     @ResponseBody
-    public String archiveMemberByMemberId(HttpServletRequest request, HttpServletResponse response,
-    							@RequestBody MemberDTO member, Model model) {
+    public String archiveMemberByMemberId(HttpSession session, @RequestBody MemberDTO member) {
     	String result = "";
-    	HttpSession session = request.getSession();
     	MemberDTO memebrInfo = (MemberDTO) session.getAttribute("ssKey");
     	String memberId = member.getMember_id();
     	
@@ -141,6 +140,7 @@ public class ActionController {
     	} else {
     		memberService.archiveMemberByMemberId(memberId);
     		session.setAttribute("ssKey", memebrInfo);
+            logout(session);
     		result = "success";
     	}
     	return result;
