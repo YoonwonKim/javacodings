@@ -48,6 +48,14 @@
 		WHERE MEMBER_ID = #{member_id} AND ITEM_ID = #{item_id}
 	</delete>
 
+	<delete id="deleteAllByMemberIdAndItemId">
+		DELETE FROM CARTS
+		WHERE (MEMBER_ID, ITEM_ID) IN
+		<foreach collection="itemList" item="item" separator="," open="(" close=")">
+			(#{member_id}, #{item.item_id})
+		</foreach>
+	</delete>
+
 	<!-- End Region Basic CRUD -->
 </mapper>
  

@@ -12,6 +12,11 @@ main {
     grid-column: 1 / 13;
 }
 
+.item-div {
+    border: solid 1px #525252;
+    padding: 16px;
+}
+
 /* Region Item **********************************************/
 
 #row {

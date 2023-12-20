@@ -3,7 +3,6 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.*;
 
 import org.springframework.stereotype.Service;
@@ -74,8 +73,9 @@ public interface IMemberService {
     
     String getItemsByEventId(String eventId);
 
-  List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
-  
-  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+    List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
 
+    List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+
+    int removeCartByOrderId(String memberId, String orderId);
 }

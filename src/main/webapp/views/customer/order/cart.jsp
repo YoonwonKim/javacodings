@@ -17,7 +17,7 @@
 		<cds-tile-group>
 		<cds-stack gap="8px" use-custom-gap-value>
 			<c:forEach var="item" items="${objectList}">
-				<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
+				<cds-selectable-tile id="${item.item_id}" class="order" selected>
 				<div id="row">
 					<img src="/resources/images/${item.path}">
 					<data class="orderable" id="${item.item_id}">

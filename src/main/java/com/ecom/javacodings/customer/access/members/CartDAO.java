@@ -2,6 +2,7 @@ package com.ecom.javacodings.customer.access.members;
 
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.ItemDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,6 +25,8 @@ public interface CartDAO {
 	int editCartByItemIdAndMemberId(CartDTO cart);
 
 	int deleteByMemberIdAndItemId(@Param("member_id") String memberId, @Param("item_id") String itemId);
+
+	int deleteAllByMemberIdAndItemId(@Param("member_id") String memberId, @Param("itemList") List<ItemDTO> itemList);
 
 	// End Region Basic CRUD
 }
