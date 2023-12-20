@@ -3,7 +3,6 @@ package com.ecom.javacodings.customer.service;
 import java.util.List;
 import java.util.Map;
 
-import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.transfer.*;
 
 import org.apache.ibatis.annotations.Param;
@@ -87,9 +86,13 @@ public interface IMemberService {
   List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
   
   List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+    List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
 
     MemberDTO findMemberByMemberIdAndName(String memberId, String memberName);
 
     //Map<String, Object> getEventItemList(PageDTO page);
     
+    List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+
+    int removeCartByOrderId(String memberId, String orderId);
 }

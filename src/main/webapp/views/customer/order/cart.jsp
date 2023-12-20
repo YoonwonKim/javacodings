@@ -5,7 +5,6 @@
 <head>
 	<title>자바코딩즈 장바구니</title>
 	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<%-- Page Script and Styles --%>
 	<script type="module" src="/resources/scripts/cart.js"></script>
@@ -15,34 +14,28 @@
 <%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 	<div id="table">
-		<cds-layer level="1">
 		<cds-tile-group>
 		<cds-stack gap="8px" use-custom-gap-value>
 			<c:forEach var="item" items="${objectList}">
-				<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
-				<div id="item-div">
+				<cds-selectable-tile id="${item.item_id}" class="order" selected>
+				<div id="row">
 					<img src="/resources/images/${item.path}">
-					<div id="item-desc">
-						<h1>${item.label}</h1>
-						<p>${item.desc}</p>
-						<cds-number-input class="cart-quantity" name="cart-quantity"
-										  value="${item.amount/item.price}" min="1" max="${item.stock}"
-										  inline ></cds-number-input>
-						<div id="order-amount">
-							<p class="field" price="${item.price}" value="${item.amount}">${item.amount} 원</p>
+					<data class="orderable" id="${item.item_id}">
+						<div id="desc">
+							<h1>${item.label}</h1>
+							<p>${item.desc}</p>
+							<data id="price" value="${item.price}"></data>
+							<cds-number-input id="quantity" inline size="sm"
+							                  value="${item.amount/item.price}" min="1" max="${item.stock}"></cds-number-input>
 						</div>
-						<div class="button-group">
-							<cds-button kind="secondary" class="request-single"
-							            item-id="${item.item_id}">구매하기</cds-button>
-							<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
-						</div>
-					</div>
+
+						<data id="amount" value="${item.amount}"></data>
+					</data>
 				</div>
 				</cds-selectable-tile>
 			</c:forEach>
 		</cds-stack>
 		</cds-tile-group>
-		</cds-layer>
 	</div>
 
 	<cds-layer level="1" id="order">
@@ -61,10 +54,12 @@
 				<p>총 결제 금액</p>
 				<p class="value">0 원</p>
 			</div>
-			<cds-button id="request-selected">구매하기</cds-button>
+			<div>
+				<cds-button id="order">구매하기</cds-button>
+				<cds-button kind="ghost" id="delete">삭제하기</cds-button>
+			</div>
 		</cds-stack>
 	</cds-tile>
-	<cds-button kind="ghost" onclick="deleteSelected()">선택 삭제하기</cds-button>
 	</cds-layer>
 
 <%--	<div id="button-group">--%>

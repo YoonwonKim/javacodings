@@ -26,7 +26,7 @@
     <!-- Region Basic CRUD -->
 
     <select id="findByItemId" resultType="itemDTO">
-        SELECT I.ITEM_ID, I.LABEL, I.PRICE, I."DESC", II.PATH
+        SELECT I.ITEM_ID, I.LABEL, I.PRICE, I."DESC", II.PATH, I.STOCK
         FROM ITEMS I
         JOIN ITEM_IMAGES II ON I.ITEM_ID = II.ITEM_ID AND II.CATEGORY = 'thumbnail'
         WHERE I.ITEM_ID = #{item_id}

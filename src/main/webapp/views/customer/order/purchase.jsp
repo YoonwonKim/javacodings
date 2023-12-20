@@ -5,64 +5,45 @@
 <head>
 	<title>자바코딩즈 장바구니</title>
 	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<%-- Page Script and Styles --%>
-	<script type="module" src="/resources/scripts/cart.js"></script>
+	<script type="text/javascript" src="/resources/scripts/customer/purchase.js"></script>
 	<link rel="stylesheet" href="/resources/styles/customer/cart.css" />
-
-	<script type="text/javascript">
-        function jsf_pay() {
-            try
-            {
-                let form = document.kcp_order_info;
-                KCP_Pay_Execute( form );
-            }
-            catch (e)
-            {
-                /* IE 에서 결제 정상종료시 throw로 스크립트 종료 */
-            }
-        }
-	</script>
 
 	<%-- 실제 결제 스크립트 --%>
 	<%--<script type="text/javascript" src="https://pay.kcp.co.kr/plugin/payplus_web.jsp"></script>--%>
 	<%-- 테스트용 결제 스크립트 --%>
 	<script type="text/javascript" src="https://testpay.kcp.co.kr/plugin/payplus_web.jsp"></script>
+
+	<c:if test="${isCheck == true}">
+	<script type="text/javascript">
+		let proceed = confirm("시스템 점검 중입니다. 잠시후 다시 시도해주세요");
+        if (proceed) location.href = "/account/orders";
+	</script>
+	</c:if>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
-	<div id="table">
-		<cds-layer level="1">
-			<cds-tile-group>
-				<cds-stack gap="8px" use-custom-gap-value>
-					<c:forEach var="item" items="${itemList}">
-						<cds-selectable-tile item-id="${item.item_id}" class="order" selected>
-							<div id="item-div">
-								<img src="/resources/images/${item.path}">
-								<div id="item-desc">
-									<h1>${item.label}</h1>
-									<p>${item.desc}</p>
-									<cds-number-input class="cart-quantity" name="cart-quantity"
-									                  value="${item.amount/item.price}" min="1" max="${item.stock}"
-									                  inline ></cds-number-input>
-									<div id="order-amount">
-										<p class="field" price="${item.price}" value="${item.amount}">${item.amount} 원</p>
-									</div>
-									<div class="button-group">
-										<cds-button kind="secondary" class="request-single"
-										            item-id="${item.item_id}">구매하기</cds-button>
-										<cds-button kind="ghost" onclick="deleteOne('${item.item_id}')">삭제하기</cds-button>
-									</div>
-								</div>
-							</div>
-						</cds-selectable-tile>
-					</c:forEach>
-				</cds-stack>
-			</cds-tile-group>
-		</cds-layer>
-	</div>
+	<cds-tile-group id="table">
+		<cds-stack gap="8px" use-custom-gap-value>
+		<c:forEach var="item" items="${itemList}">
+			<div class="item-div" id="row">
+				<img src="/resources/images/${item.path}">
+				<data class="orderable" id="${item.item_id}">
+					<div id="desc">
+						<h1>${item.label}</h1>
+						<p>${item.desc}</p>
+						<data id="quantity" value="${item.amount/item.price}">
+								${item.amount/item.price}</data>
+					</div>
+
+					<data id="amount" value="${item.amount}"></data>
+				</data>
+			</div>
+		</c:forEach>
+		</cds-stack>
+	</cds-tile-group>
 
 	<cds-layer level="1" id="order">
 		<cds-tile>
@@ -121,11 +102,12 @@
 				</div>
 				<div id="order-summary-total">
 					<p>총 결제 금액</p>
-					<p class="field">${amount} 원</p>
+					<p class="value" value="${amount}"></p>
 				</div>
 				<cds-button onclick="jsf_pay()">결제하기</cds-button>
 			</cds-stack>
 		</cds-tile>
+		<cds-button kind="ghost" id="cancel">취소하기</cds-button>
 	</cds-layer>
 </main>
 <%@ include file="/views/customer/fragments/global/footer.jsp" %>

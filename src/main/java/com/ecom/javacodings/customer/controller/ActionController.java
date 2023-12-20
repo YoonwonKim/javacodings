@@ -219,17 +219,6 @@ public class ActionController {
         return "success";
     }
 
-
-    @PostMapping("/cart/delete/{item_id}")
-    public String deleteCart(HttpServletRequest request, CartDTO item) {
-        HttpSession session = request.getSession();
-        MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-        if (ssKey == null) return "auth error";
-
-        item.setMember_id(ssKey.getMember_id());
-        memberService.deleteCartByMemberAndItemId(ssKey.getMember_id(), item.getItem_id());
-        return "success";
-    }
     @PostMapping("/cart/delete")
     public String deleteSelectedCart(HttpServletRequest request,
                         @RequestParam("orderList") List<CartDTO> cartList) {
@@ -237,56 +226,17 @@ public class ActionController {
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
 
-        int result = 1;
         for(CartDTO cart : cartList) {
             cart.setMember_id(ssKey.getMember_id());
-//            result *= memberService.deleteCart(cart);
+//            memberService.deleteCart(cart);
         }
         return "success";
     }
 
-
-    //장바구니 시작
-    @PostMapping("/updateCart")
-    @ResponseBody
-    public String updateCart(HttpServletRequest request, HttpServletResponse response,
-                             @RequestBody List<OrderDTO> orderList) {
-
-        HttpSession session = request.getSession();
-        OrderDTO order = (OrderDTO) session.getAttribute("cartList");
-
-        System.out.println("---------"+orderList);
-
-        if(order != null) {
-//			memberService.addCart(orderList);
-        }
-
-
-        return "redirect:/";
-    }
-
-    @PostMapping("/deleteCart")
-    public String deleteCart(HttpServletRequest request, HttpServletResponse response,
-                             @RequestBody List<OrderDTO> orderList) {
-        HttpSession session = request.getSession();
-        OrderDTO order = (OrderDTO) session.getAttribute("cartLists");
-
-        System.out.println("---------"+orderList);
-
-        if(order != null) {
-//			memberService.deleteOrderStateByCart(orderList);
-//			memberService.deleteOrdersByCart(orderList);
-            return "success";
-        }
-
-        return "failed";
-    }
-    //장바구니 끝
-
     // End Region Cart
     // Region Order -----------------------------------------------------------------------------------------------
 
-    @PostMapping("/order")
+    @PostMapping("/order/request")
     public String setOrder(HttpSession session, @RequestBody OrderDTO order) {
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";

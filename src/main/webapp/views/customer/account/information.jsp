@@ -3,13 +3,13 @@
 <meta charset="UTF-8">
 <head>
 	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
+	<link rel="stylesheet" href="//t1.daumcdn.net/postcode/cssjs/guide/1695281969613/guide.v2.min.css"/>
+
 	<title>자바 코딩즈 계정 관리</title>
 
-	<%-- Page Script --%>
 	<script src="/resources/scripts/register.js"></script>
 	<script src="/resources/scripts/zipCheck.js"></script>
 	<script src="/resources/scripts/memberinfo.js"></script>
-	<%-- Page Style --%>
 	<link rel="stylesheet" href="/resources/styles/customer/account.css" />
 </head>
 <body>

@@ -12,11 +12,8 @@ import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
 import com.ecom.javacodings.common.page.PageDTO;
 import com.ecom.javacodings.common.policies.OrderPolicies;
-import com.ecom.javacodings.common.transfer.BannerDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.EventBannerDTO;
-import com.ecom.javacodings.common.transfer.EventDTO;
-import com.ecom.javacodings.common.transfer.EventItemDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
 import com.ecom.javacodings.common.transfer.MemberDTO;
@@ -328,17 +325,16 @@ public class MemberService implements IMemberService {
         int result = 1;
         int amount = 0;
         for(CartDTO cart : cartList) {
-            result *= cartDAO.deleteByMemberIdAndItemId(memberId, cart.getItem_id());
             amount += cart.getAmount();
         }
 
-        String orderId = sequenceGenerator.generateUnique(
+        String generatedOrderId = sequenceGenerator.generateUnique(
                 (String generatedId) -> orderDAO.isExistOrderId(generatedId),
                 OrderPolicies.ID_LENGTH.getOrderPolicies()
         );
 
         OrderDTO orderData = new OrderDTO();
-        orderData.setOrder_id(orderId);
+        orderData.setOrder_id(generatedOrderId);
         orderData.setMember_id(memberId);
         orderData.setItemList(cartList);
         orderData.setAmount(amount);
@@ -379,6 +375,15 @@ public class MemberService implements IMemberService {
     public MemberDTO findMemberByMemberIdAndName(String memberId, String memberName) {
         return memberDAO.findByIdAndName(memberId, memberName);
     }
+
+
+
+    @Override
+    public int removeCartByOrderId(String memberId, String orderId) {
+        List<ItemDTO> itemList = orderDAO.findAllItemsByOrderId(orderId);
+        return cartDAO.deleteAllByMemberIdAndItemId(memberId, itemList);
+    }
+
 
     // End Region Order
 }

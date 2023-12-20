@@ -34,13 +34,13 @@ article {
     flex: 1;
 }
 
-#item-label {
+main h1 {
     font-family: Giants-Bold, sans-serif;
     font-size:   28px;
     line-height: 32px;
     padding-top: 16px;
 }
-#item-desc {
+main p {
     font-size:   14px;
     line-height: 16px;
 
@@ -52,15 +52,46 @@ article {
     margin-bottom: 16px;
 }
 
+main .orderable {
+    flex: 1;
+}
 
-#price label {
+main data {
+    display: block;
+}
+
+main label {
     align-self:   end;
 }
-#item-price-value, #item-event {
+main #value, #event {
     font-size:   20px;
     line-height: 24px;
     font-weight:  300;
 }
+
+
+main #quantity {
+    display: block;
+    max-width: 400px;
+}
+
+main label[for="amount"] {
+    display: block;
+    line-height: 32px;
+    padding-top: 16px;
+}
+main data#amount {
+    padding-bottom: 16px;
+    font-size: 28px;
+    font-family: 'IBM Plex Sans KR Light', sans-serif;
+    font-weight: 300;
+    line-height: 32px;
+}
+main data#amount b {
+    font-size: 16px;
+    padding-left: 8px;
+}
+
 
 
 /** Region Order **/
@@ -76,16 +107,5 @@ article {
 }
 #order label {
     padding-top: 16px;
-}
-
-
-
-
-#order-amount .field {
-    padding-bottom: 16px;
-    font-size: 28px;
-    font-family: 'IBM Plex Sans KR Light', sans-serif;
-    font-weight: 300;
-    line-height: 32px;
 }
 /** End Region Order **/

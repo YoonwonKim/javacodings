@@ -21,34 +21,41 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
-
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.ui.Model;
+
+import com.ecom.javacodings.common.transfer.ItemDTO;
+import com.ecom.javacodings.common.transfer.EventBannerDTO;
+import com.ecom.javacodings.common.transfer.CartDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
+
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.MemberAddressDTO;
+import com.ecom.javacodings.customer.service.IMemberService;
+
+import com.ecom.javacodings.purchase.data.PurchaseData;
+import com.ecom.javacodings.purchase.service.IPurchaseService;
 
 @Controller
 @RequestMapping("/")
 public class PageController {
-	// Region Variables
-	
+
     @Autowired
 	IMemberService memberService;
 
 	@Autowired
 	IPurchaseService payUpService;
 
-	// End Region Variables
-
     @RequestMapping()
-    public String main(HttpServletRequest request, HttpServletResponse response,
-                       Model model) {
+    public String landing(HttpServletRequest request, Model model) {
 		//? Session
 		HttpSession session = request.getSession();
 		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
@@ -65,24 +72,11 @@ public class PageController {
     	return "customer/index";
     }
 
-	@RequestMapping("/account/login")
-	public String login(HttpServletRequest request, HttpServletResponse response,
-						Model model) {
-		HttpSession session = request.getSession();
-		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
-		if (ssKey != null) return "redirect:/";
-		return "customer/account/login";
+	@RequestMapping("/support")
+	public String support() {
+		return "customer/account/support";
 	}
 
-	@RequestMapping("/account/register")
-    public String register() {
-    	return "customer/account/register";
-    }
-	
-	@RequestMapping("/account/find")
-	public String findAccount() {
-		return "customer/account/find";
-	}
 
 	// Region Account
 
@@ -117,10 +111,23 @@ public class PageController {
 
 		return "customer/account/information";
 	}
-	
-	@RequestMapping("/support")
-	public String support() {
-		return "customer/account/support";
+
+	@RequestMapping("/account/login")
+	public String login(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey != null) return "redirect:/";
+		return "customer/account/login";
+	}
+
+	@RequestMapping("/account/register")
+	public String register() {
+		return "customer/account/register";
+	}
+
+	@RequestMapping("/account/find")
+	public String findAccount() {
+		return "customer/account/find";
 	}
 
 	@GetMapping("/account/{tab}")
@@ -190,6 +197,34 @@ public class PageController {
 	
 
 	// End Region Product
+	// Region Event
+
+	@RequestMapping("/event/list")
+	public String eventList(Model model, String page, String row) {
+
+		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
+
+		if (currentRow != 0) memberService.setEventPageRow(currentRow);
+		Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
+
+
+		model.addAllAttributes(pageMap);
+		System.out.println(pageMap.get("objectList"));
+
+		return "customer/event/list";
+	}
+
+	@RequestMapping("/event/item")
+	public String event(Model model, EventBannerDTO eventBannerDTO) {
+		model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
+		model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
+		System.out.println(eventBannerDTO);
+
+		return "customer/event/item";
+	}
+
+	// End Region Event
 	// Region Cart
 
 	@RequestMapping("/cart")
@@ -213,19 +248,16 @@ public class PageController {
 	// End Region Cart
 	// Region Order
 
-    @RequestMapping("/order")
-    public String order(HttpServletRequest request, HttpServletResponse response,
-    		Model model, PageDTO page) {
-    	return "customer/index";
-    }
-    // End Region Order
-
 	@GetMapping("/order/purchase/{order_id}")
 	public String purchaseOrder(@PathVariable("order_id") String orderId,
-								Model model) {
+								Model model, HttpSession session) {
 		List<CartDTO> cartList = memberService.findAllCartByOrderId(orderId);
 		OrderDTO orderData = memberService.findOrderByOrderId(orderId);
 		orderData.setItemList(cartList);
+
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		String memberId = ssKey.getMember_id();
+		memberService.removeCartByOrderId(memberId, orderId);
 
 		Map<String, String> responseBody = payUpService.request(orderData);
 		model.addAllAttributes(responseBody);
@@ -233,25 +265,42 @@ public class PageController {
 		List<ItemDTO> itemList = memberService.findAllItemsByOrderId(orderId);
 		model.addAttribute("amount", orderData.getAmount());
 		model.addAttribute("itemList", itemList);
-		return "purchase/index";
+		return "customer/order/purchase";
 	}
 
 	@PostMapping("/order/confirm/{order_id}")
-	public String confirmOrder(String ordr_idxx, @PathVariable("order_id") String orderId,
+	public String confirmOrder(HttpSession session,
+							   String ordr_idxx, @PathVariable("order_id") String orderId,
 							   PurchaseData purchaseData, Model responseBody) {
 		String page = "redirect:/account/orders";
 		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
 
+		// * 결제 시도 --------------------------------
+
 		Map<String, String> purchaseResponse = payUpService.purchase(ordr_idxx, purchaseData);
-		if (!purchaseResponse.get("responseCode").equals("0000")) return page;
+		String responseCode = purchaseResponse.get("responseCode");
+
+		// * 예외 처리 --------------------------------
+
+		Boolean isSuccess = responseCode.equals("0000");
+		Boolean isCheck = responseCode.equals("CCC0");
+		if(isCheck   == true) {
+			page = purchaseOrder(orderId, responseBody, session);
+			responseBody.addAttribute("isCheck", true);
+			return page;
+		}
+		if(isSuccess == false) return page;
+
+		// * 결제 정보 저장 --------------------------------
 
 		String transactionId = purchaseResponse.get("transactionId");
 		String regDate = purchaseResponse.get("authDateTime");
-		int result = 0;
-		result += memberService.successPurchase(orderId, regDate);
-		result *= memberService.setTransactionIdByOrderId(transactionId, orderId);
-		if (result == 0) return page;
+		memberService.successPurchase(orderId, regDate);
+		memberService.setTransactionIdByOrderId(transactionId, orderId);
 
+		// * 페이지 구성 및 반환 --------------------------------
+
+		responseBody.addAttribute("isCheck", false);
 		responseBody.addAllAttributes(purchaseResponse);
 		return page;
 	}
