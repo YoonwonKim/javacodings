@@ -26,28 +26,15 @@
 		ON EB.EVENT_ID = E.EVENT_ID
 		WHERE EB.EVENT_ID = #{event_id}
 	</select>
-	
-	
-	
-	<select id="eventItem" parameterType="pageDTO">
+
+	<select id="eventItem" resultType="itemDTO">
 		SELECT I.ITEM_ID, I.LABEL, EI.EVENT_ID, II."PATH"
 		FROM EVENT_ITEMS EI
-		JOIN ITEMS I
-		ON I.ITEM_ID = EI.ITEM_ID
-		JOIN ITEM_IMAGES II
-		ON II.ITEM_ID = EI.ITEM_ID
+			JOIN ITEMS I
+			ON I.ITEM_ID = EI.ITEM_ID
+			JOIN ITEM_IMAGES II
+			ON II.ITEM_ID = EI.ITEM_ID AND II.CATEGORY = 'thumbnail'
+		WHERE EI.EVENT_ID = #{event_id}
 	</select>
 	
-<!-- 	<select id="getEventById" resultType="eventBannerDTO">
-		SELECT EB.IMAGE, EB.CATEGORY, EB.LABEL, E.EVENT_ID
-		FROM EVENT_BANNERS EB
-		JOIN EVENTS E
-		ON EB.EVENT_ID = E.EVENT_ID
-		WHERE EB.EVENT_ID = #{event_id}
-	</select>
-	 -->
-	
-	
-	
- 
- </mapper> 
+ </mapper>

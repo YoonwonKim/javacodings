@@ -19,8 +19,8 @@ public interface EventDAO {
 	List<EventBannerDTO> findAll(@Param("page") PageDTO page);
 	List<String> getAllItemLabelByEventId(@Param("event_id") String eventId);
 	
-	List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);	
-	List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
+	List<EventBannerDTO> mainBanner(@Param("event_id") String eventId);
+	List<ItemDTO> eventItem(@Param("event_id") String eventId);
 	String getEventById(String event_id);
 	
 	

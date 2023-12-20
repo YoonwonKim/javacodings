@@ -16,7 +16,7 @@
 <main>
 	<div class="banner">
 	<c:forEach items="${mainList}" var="banner">
-		<a href="/event/item?event_id=${banner.event_id}">
+		<a href="/event/${banner.event_id}">
 		<img src="/resources/images/${banner.image}"></a>
 	</c:forEach>
 	</div>
@@ -24,7 +24,7 @@
 	<div id="events">
 		<c:forEach items="${eventList}" var="banner">
 		<a class="card"
-		   href="/event/item?event_id=${banner.event_id}">
+		   href="/event/${banner.event_id}">
 			<h1>${banner.label}</h1>
 			<img src="/resources/images/${banner.image}" width="370px;" height="400px;">
 		</a>

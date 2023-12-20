@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.ecom.javacodings.common.transfer.*;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -82,17 +81,10 @@ public interface IMemberService {
     
     String getItemsByEventId(String eventId);
 
-	
-  List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
-  
-  List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
-    List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO);
+    List<EventBannerDTO> getBannerImageByEventId(String eventId);
+    List<ItemDTO> getAllItemsByEventId(String eventId);
 
     MemberDTO findMemberByMemberIdAndName(String memberId, String memberName);
-
-    //Map<String, Object> getEventItemList(PageDTO page);
-    
-    List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO);
 
     int removeCartByOrderId(String memberId, String orderId);
 }

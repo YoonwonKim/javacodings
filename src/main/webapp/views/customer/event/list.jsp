@@ -4,24 +4,12 @@
 <html>
 <head>
 	<title>자바코딩즈 이벤트페이지</title>
-	<script src="https://code.jquery.com/jquery-3.7.1.js"
-	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-	<%-- Fragment CSS --%>
-	<link rel="stylesheet" href="https://1.www.s81c.com/common/carbon-for-ibm-dotcom/tag/v1/latest/plex.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/init.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/header.css" />
-	<link rel="stylesheet" href="/views/customer/fragments/footer.css" />
+	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
 
 	<link rel="stylesheet" href="/resources/styles/customer/event-list.css" />
-
-	<%-- Page Script and Styles --%>
-	<script src="/resources/scripts/cart.js"></script>
-	<link rel="stylesheet" href="/resources/css/customer/cart.css" />
 </head>
 <body>
-<%@ include file="/views/customer/fragments/header.jsp" %>
+<%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
 		<h1 style="font-size:40px; margin-top:60px;">이벤트</h1>
 	<div class="tabmenu">
@@ -69,13 +57,7 @@
 			</li>
 		</ul>
 	</div>	
-		
-		
-		
-		
-		
-	
 </main>
-<%@ include file="/views/customer/fragments/footer.jsp" %>
+<%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
 </html>

@@ -360,14 +360,14 @@ public class MemberService implements IMemberService {
 		return null;
 	}
 	@Override
-	public List<EventBannerDTO> mainBanner(EventBannerDTO eventBannerDTO){
-    	List<EventBannerDTO> result = eventDAO.mainBanner(eventBannerDTO);
+	public List<EventBannerDTO> getBannerImageByEventId(String eventId) {
+    	List<EventBannerDTO> result = eventDAO.mainBanner(eventId);
     	return result;	
 	}
 	
 	@Override
-	public List<ItemDTO> eventItem(EventBannerDTO eventBannerDTO){
-		List<ItemDTO> result = eventDAO.eventItem(eventBannerDTO);
+	public List<ItemDTO> getAllItemsByEventId(String eventId) {
+		List<ItemDTO> result = eventDAO.eventItem(eventId);
 		return result;
 	}
 

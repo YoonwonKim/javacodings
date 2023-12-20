@@ -55,7 +55,7 @@
 				<p class="value">0 원</p>
 			</div>
 			<div>
-				<cds-button id="order">구매하기</cds-button>
+				<cds-button id="order-request">구매하기</cds-button>
 				<cds-button kind="ghost" id="delete">삭제하기</cds-button>
 			</div>
 		</cds-stack>

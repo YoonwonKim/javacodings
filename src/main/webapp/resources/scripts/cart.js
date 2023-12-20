@@ -2,6 +2,7 @@ sessionStorage.setItem("DEBUG_MODE", true);
 const DEBUG_MODE = sessionStorage.getItem("DEBUG_MODE");
 
 import {order} from '/resources/scripts/common/data/order.js';
+import {cart} from '/resources/scripts/common/data/cart.js';
 
 // Region 단일 상품 =================================================================
 
@@ -26,7 +27,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
-	const orderRequest = document.querySelector("#order");
+	const orderRequest = document.getElementById("order-request");
 	orderRequest.addEventListener('click', function() {
 		let orderList = [];
 		const itemList = document.querySelectorAll(".order[selected]");
@@ -38,6 +39,17 @@ $(document).ready(function() {
 		order.request(orderList);
 	});
 
+	const orderDelete= document.getElementById("delete");
+	orderDelete.addEventListener('click', function() {
+		let orderList = [];
+		const itemList = document.querySelectorAll(".order[selected]");
+		for(let i = 0; i < itemList.length; i++)
+		{
+			let orderData = order.elementToOrder(itemList[i]);
+			orderList.push(orderData);
+		}
+		cart.delete(orderList);
+	});
 });
 
 // End Region 복수 상품

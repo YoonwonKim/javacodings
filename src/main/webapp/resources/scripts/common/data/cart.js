@@ -26,9 +26,9 @@ cart.put = function(orderData)
     });
 }
 
-cart.delete = function(orderData) {
+cart.delete = function(orderList) {
     let url = '/actions/cart/delete';
-    let data = orderData;
+    let data = orderList;
     if (DEBUG_MODE) console.log(
         "%c장바구니 - 상품 삭제", "font-size: 16px; padding: 4px 0;",
         "\n요청 주소 : ", url,
@@ -38,7 +38,8 @@ cart.delete = function(orderData) {
     $.ajax({
         method: 'POST',
         url: url,
-        data: data,
+        data: JSON.stringify(data),
+        contentType: 'application/json',
         success: function(response)
         {
             if (required.login(response)) return;

@@ -221,14 +221,14 @@ public class ActionController {
 
     @PostMapping("/cart/delete")
     public String deleteSelectedCart(HttpServletRequest request,
-                        @RequestParam("orderList") List<CartDTO> cartList) {
+                        @RequestBody List<CartDTO> cartList) {
         HttpSession session = request.getSession();
         MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
         if (ssKey == null) return "auth error";
 
         for(CartDTO cart : cartList) {
-            cart.setMember_id(ssKey.getMember_id());
-//            memberService.deleteCart(cart);
+            String memberId = ssKey.getMember_id();
+            memberService.deleteCartByMemberAndItemId(memberId, cart.getItem_id());
         }
         return "success";
     }

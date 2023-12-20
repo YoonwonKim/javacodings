@@ -1,8 +1,5 @@
 package com.ecom.javacodings.customer.controller;
 
-import com.ecom.javacodings.common.page.PageDTO;
-import com.ecom.javacodings.common.transfer.EventBannerDTO;
-import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
 import com.ecom.javacodings.common.transfer.MemberAddressDTO;
@@ -13,9 +10,7 @@ import com.ecom.javacodings.customer.service.IMemberService;
 import com.ecom.javacodings.purchase.data.PurchaseData;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,23 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
-
-import com.ecom.javacodings.common.transfer.ItemDTO;
-import com.ecom.javacodings.common.transfer.EventBannerDTO;
-import com.ecom.javacodings.common.transfer.CartDTO;
-import com.ecom.javacodings.common.transfer.OrderDTO;
-
-import com.ecom.javacodings.common.transfer.MemberDTO;
-import com.ecom.javacodings.common.transfer.MemberAddressDTO;
-import com.ecom.javacodings.customer.service.IMemberService;
-
-import com.ecom.javacodings.purchase.data.PurchaseData;
-import com.ecom.javacodings.purchase.service.IPurchaseService;
 
 @Controller
 @RequestMapping("/")
@@ -215,13 +195,11 @@ public class PageController {
 		return "customer/event/list";
 	}
 
-	@RequestMapping("/event/item")
-	public String event(Model model, EventBannerDTO eventBannerDTO) {
-		model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
-		model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
-		System.out.println(eventBannerDTO);
-
-		return "customer/event/item";
+	@RequestMapping("/event/{event_id}")
+	public String event(Model model, @PathVariable("event_id") String eventId) {
+		model.addAttribute("mainBanner", memberService.getBannerImageByEventId(eventId));
+		model.addAttribute("eventItem", memberService.getAllItemsByEventId(eventId));
+		return "customer/event/view";
 	}
 
 	// End Region Event
@@ -304,32 +282,6 @@ public class PageController {
 		responseBody.addAllAttributes(purchaseResponse);
 		return page;
 	}
-	
-	@RequestMapping("/event/item")
-    public String event(HttpServletRequest request, HttpServletResponse response,
-    		Model model, ItemDTO itemDTO,EventBannerDTO eventBannerDTO, EventDTO eventDTO) {
-    	
-    	model.addAttribute("mainBanner", memberService.mainBanner(eventBannerDTO));
-    	model.addAttribute("eventItem", memberService.eventItem(eventBannerDTO));
-    	System.out.println(eventBannerDTO);
-    	
-    	return "customer/event/item";
-    }
-	
-	@RequestMapping("/event/list")
-    public String eventList(Model model, String page, String row) {
-
-    	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-    	int currentRow  = (row  == null) ? 0 : Integer.parseInt(row );
-    
-    	if (currentRow != 0) memberService.setEventPageRow(currentRow);
-    	Map<String, Object> pageMap = memberService.getEventPageMap(currentPage);
-    	
-    	
-    	model.addAllAttributes(pageMap);
-    	System.out.println(pageMap.get("objectList"));
-    	return "customer/event/list";
-    }
 
 	// End Region Order
 }
