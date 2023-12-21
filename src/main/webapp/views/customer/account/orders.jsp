@@ -50,8 +50,6 @@
 									<cds-table-header-cell></cds-table-header-cell>
 									<cds-table-header-cell>상품 이름</cds-table-header-cell>
 									<cds-table-header-cell>상품 이미지</cds-table-header-cell>
-									<cds-table-header-cell>상품 가격</cds-table-header-cell>
-									<cds-table-header-cell>상품 수량</cds-table-header-cell>
 									<cds-table-header-cell>결제 금액</cds-table-header-cell>
 									<cds-table-header-cell>결제일</cds-table-header-cell>
 									<cds-table-header-cell>주문 상태</cds-table-header-cell>
@@ -63,8 +61,6 @@
 											<cds-table-cell> </cds-table-cell>
 											<cds-table-cell><img src="/resources/images/${orderItem.path}"></cds-table-cell>
 											<cds-table-cell>${orderItem.label}</cds-table-cell>
-											<cds-table-cell>${orderItem.price}</cds-table-cell>
-											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount/orderItem.price}</cds-table-cell>
 										 	<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount}</cds-table-cell>
 											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].reg_date}</cds-table-cell>
 											<cds-table-cell>

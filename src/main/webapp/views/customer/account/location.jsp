@@ -9,7 +9,8 @@
 	<%-- Page Script --%>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/resources/scripts/join.js"></script>
-	<script src="/resources/scripts/zipCheck.js"></script>
+<%--	<script src="/resources/scripts/zipCheck.js"></script>--%>
+	<script src="/resources/scripts/common/postcode.js"></script>
 	<script src="/resources/scripts/memberinfo.js"></script>
 	<%-- Page Style --%>
 	<link rel="stylesheet" href="/resources/styles/customer/account.css" />
@@ -59,7 +60,7 @@
 						<p class="subject">변경할 배송지</p>
 						<p>
 							<input type="text" id="sample6_postcode" name="zipcode" class="d_form mini" name="zipcode" placeholder="우편번호">
-							<input type="button" onclick="zipCheck()" value="우편번호 찾기" class="d_btn">
+							<input type="button" onclick="postcode()" value="우편번호 찾기" class="d_btn">
 						</p>
 						<p>
 							<input type="text" id="sample6_address" name="address" class="d_form large" name="address" placeholder="주소">

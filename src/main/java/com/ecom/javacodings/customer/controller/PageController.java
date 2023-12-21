@@ -111,35 +111,34 @@ public class PageController {
 	}
 
 	@GetMapping("/account/{tab}")
-	public String accountTab(@PathVariable("tab") String tab, HttpServletRequest request, Model model) {
+	public String accountTab(@PathVariable("tab") String tab, HttpSession session, Model model) {
 		String result = "customer/account/" + tab;
-		HttpSession session = request.getSession();
 		MemberDTO member = (MemberDTO) session.getAttribute("ssKey");
-		
 		if (member == null) return "redirect:/account/login";
-		else {
-			member = memberService.findMemberByIdAndPassword(
-					member.getMember_id(), member.getPassword());
-			member.setPassword(null); // Hide password for safe
-			model.addAttribute("ssKey", member);
+		String memberId = member.getMember_id();
 
-			MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
-			model.addAttribute("address", address);
-			
-			List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
-			model.addAttribute("countMemberOrders", countMemberOrders);
-			
-			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
-			model.addAttribute("memberOrderOrders", memberOrderByOrder);
-			
-			List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
-			model.addAttribute("memberOrderItems", memberOrderByItem);
-			
+		member = memberService.findMemberByIdAndPassword(
+				member.getMember_id(), member.getPassword());
+		member.setPassword(null); // Hide password for safe
+		model.addAttribute("ssKey", member);
+
+		MemberAddressDTO address = memberService.getPrimaryAddress(member.getMember_id());
+		model.addAttribute("address", address);
+
+		List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
+		model.addAttribute("countMemberOrders", countMemberOrders);
+
+		if (tab.equals("orders"))
+		{
+			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(memberId);
+			List<ItemDTO>  memberOrderByItem = memberService.findAllByMemberOrderItems(memberId);
+
 			Map<String, Object> memberOrders = new HashMap<>();
 			memberOrders.put("memberOrderOrders", memberOrderByOrder);
 			memberOrders.put("memberOrderItems", memberOrderByItem);
 			model.addAttribute("memberOrders", memberOrders);
 		}
+
 		return result;
 	}
 		
