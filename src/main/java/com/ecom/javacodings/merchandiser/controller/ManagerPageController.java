@@ -1,13 +1,17 @@
 package com.ecom.javacodings.merchandiser.controller;
 
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.EventDTO;
+import com.ecom.javacodings.common.transfer.MemberDTO;
+import com.ecom.javacodings.common.transfer.OrderDTO;
 import com.ecom.javacodings.merchandiser.service.ManagerService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -105,5 +109,16 @@ public class ManagerPageController {
 
         model.addAttribute("eventId", eventId);
         return "merchandiser/event/view";
+    }
+
+    @GetMapping("/order/{order_id}")
+    public String accountTab(@PathVariable("order_id") String orderId, Model model) {
+        OrderDTO orderData = managerService.findOrderItemsByOrderId(orderId);
+        model.addAttribute("order", orderData);
+
+        List<CartDTO> itemList = managerService.findItemsByOrderId(orderId);
+        model.addAttribute("itemList", itemList);
+
+        return "/merchandiser/order-view";
     }
 }

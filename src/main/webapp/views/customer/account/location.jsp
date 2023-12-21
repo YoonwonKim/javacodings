@@ -59,14 +59,14 @@
 						
 						<p class="subject">변경할 배송지</p>
 						<p>
-							<input type="text" id="sample6_postcode" name="zipcode" class="d_form mini" name="zipcode" placeholder="우편번호">
+							<input type="text" id="zipcode" name="zipcode" class="d_form mini" name="zipcode" placeholder="우편번호">
 							<input type="button" onclick="postcode()" value="우편번호 찾기" class="d_btn">
 						</p>
 						<p>
-							<input type="text" id="sample6_address" name="address" class="d_form large" name="address" placeholder="주소">
+							<input type="text" id="address" name="address" class="d_form large" name="address" placeholder="주소">
 						</p>
 						<p>
-							<input type="text" id="sample6_detailAddress" name="address2" class="d_form" name="address2" placeholder="상세주소">
+							<input type="text" id="address2" name="address2" class="d_form" name="address2" placeholder="상세주소">
 						</p>
 						<p>
 							<input type="hidden" id="member_id" name="member_id" value="${ssKey.member_id}" readonly>

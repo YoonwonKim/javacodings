@@ -1,5 +1,6 @@
 package com.ecom.javacodings.merchandiser.service;
 
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.SummaryDTO;
 import com.ecom.javacodings.common.transfer.EventDTO;
 import com.ecom.javacodings.common.transfer.ItemDTO;
@@ -94,4 +95,8 @@ public interface ManagerService {
 
     void setOrderPageRow(int row);
     Map<String, Object> getOrderPageMap(int currentPage);
+
+    OrderDTO findOrderItemsByOrderId(String orderId);
+
+    List<CartDTO> findItemsByOrderId(String orderId);
 }

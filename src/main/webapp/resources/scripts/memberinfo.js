@@ -59,9 +59,9 @@ function archiveByMemberId() {
 //배송지변경
 function updateDeliveryAddress() {
 	var member_id = document.getElementById('member_id').value;
-	var newZipcode = document.getElementById('sample6_postcode').value;
-	var newAddress = document.getElementById('sample6_address').value;
-	var newAddress2 = document.getElementById('sample6_detailAddress').value;
+	var newZipcode = document.getElementById('zipcode').value;
+	var newAddress = document.getElementById('address').value;
+	var newAddress2 = document.getElementById('address2').value;
 	var priority = parseInt(document.getElementById('priority').value, 10);
 	var oldZipcode = document.getElementById('oldZipcode').value;
 	var oldAddress = document.getElementById('oldAddress').value;
@@ -99,6 +99,7 @@ function updateDeliveryAddress() {
 		method: 'POST',
 		success: function(response) {
 			console.log("배송지가 성공적으로 변경되었습니다.");
+			location.reload();
 		}
 	});
 }

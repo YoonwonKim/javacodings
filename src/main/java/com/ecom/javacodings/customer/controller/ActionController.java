@@ -184,8 +184,8 @@ public class ActionController {
     
     @PostMapping("/account/duplicate")
     public String checkDuplicate(HttpServletRequest request, HttpServletResponse response,
-                                 MemberDTO member) {
-        Boolean r = memberService.isExistMemberId(member.getMember_id());
+                                 String member_id) {
+        Boolean r = memberService.isExistMemberId(member_id);
         if (r) return "duplicated";
         return "not-duplicated";
     }

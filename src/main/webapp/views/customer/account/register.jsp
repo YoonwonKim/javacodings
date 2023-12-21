@@ -82,7 +82,7 @@
 		<cds-button type="button" id="register">회원가입</cds-button>
 		<cds-stack orientation="horizontal">
 			<a href="/account/login">로그인</a>
-			<a href="/account/search">아이디 및 비밀번호 찾기</a>
+<%--			<a href="/account/find">아이디 및 비밀번호 찾기</a>--%>
 		</cds-stack>
 	</cds-stack>
 	</cds-layer>

@@ -3,7 +3,7 @@
 <mapper namespace="com.ecom.javacodings.customer.access.members.MemberDAO">
 	<!-- Region Metadata -->
 
-	<select id="isExistMemberID" resultType="int">
+	<select id="isExistMemberId" resultType="Boolean">
 		SELECT CASE WHEN COUNT(MEMBER_ID) > 0 THEN '1' ELSE '0' END
 		FROM MEMBERS
 		WHERE MEMBER_ID = #{member_id}

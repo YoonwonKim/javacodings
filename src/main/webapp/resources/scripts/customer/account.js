@@ -87,6 +87,7 @@ register_validate.member_id = function(input) {
 	$.ajax({
 		data: {member_id: input.value},
 		method: 'POST',
+		async: false,
 		url: '/actions/account/duplicate',
 		success: function(data) {
 			if (data == 'duplicated') {

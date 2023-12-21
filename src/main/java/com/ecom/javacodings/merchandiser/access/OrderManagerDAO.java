@@ -3,6 +3,7 @@ package com.ecom.javacodings.merchandiser.access;
 import java.util.List;
 
 import com.ecom.javacodings.common.page.PageDTO;
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.SummaryDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,4 +40,7 @@ public interface OrderManagerDAO {
 	int orderStateCnt(OrderDTO order);
 
 	int updateOrderStates(OrderDTO orders);
+	List<CartDTO> findItemsByOrderId(String orderId);
+
+	OrderDTO findOrderItemsByOrderId(String orderId);
 }

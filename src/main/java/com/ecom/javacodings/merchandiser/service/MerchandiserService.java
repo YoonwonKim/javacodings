@@ -2,6 +2,7 @@ package com.ecom.javacodings.merchandiser.service;
 
 import com.ecom.javacodings.common.identity.SequenceGenerator;
 import com.ecom.javacodings.common.page.PageConstructor;
+import com.ecom.javacodings.common.transfer.CartDTO;
 import com.ecom.javacodings.common.transfer.ItemImageDTO;
 import com.ecom.javacodings.common.transfer.SummaryDTO;
 import com.ecom.javacodings.common.transfer.EventDTO;
@@ -154,6 +155,16 @@ public class MerchandiserService implements ManagerService {
         Map<String, Object> resultMap = orderPageConstructor.getPageMapOrNull(currentPage);
         if (resultMap == null) resultMap.put("responseMsg", "outboundError");
         return resultMap;
+    }
+
+    @Override
+    public OrderDTO findOrderItemsByOrderId(String orderId) {
+        return orderDAO.findOrderItemsByOrderId(orderId);
+    }
+
+    @Override
+    public List<CartDTO> findItemsByOrderId(String orderId) {
+        return orderDAO.findItemsByOrderId(orderId);
     }
 
     // READ ===============================

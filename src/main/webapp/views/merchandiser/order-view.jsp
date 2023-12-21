@@ -4,15 +4,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>자바코딩즈 상품 디테일 페이지</title>
-	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
+	<title>자바코딩즈 주문 관리</title>
+	<%@ include file="/views/merchandiser/fragments/dependencies.jsp" %>
 
 	<%-- Page Scripts --%>
 	<link rel="stylesheet" href="/resources/styles/customer/order/view.css" />
 	<script src="/resources/scripts/memberinfo.js"></script>
 </head>
 <body>
-<%@ include file="/views/customer/fragments/global/header.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
 <main>
 	<div id="order-data">
 		<p id="order-id">${order_id}</p>
@@ -31,18 +31,6 @@
 			</c:choose>
 		</p>
 		<div id="button-group">
-			<c:choose>
-			<c:when test="${order.state == 0}">
-				<cds-button id="purchase" kind="primary" href="/order/purchase/${order_id}">결제</cds-button>
-				<cds-button id="cancel"   kind="secondary">주문 취소</cds-button>
-			</c:when>
-			<c:when test="${order.state >= 3}">
-				<cds-button id="cancel" kind="primary">반품/환불</cds-button>
-			</c:when>
-			<c:otherwise>
-				<cds-button id="cancel" kind="primary">주문 취소</cds-button>
-			</c:otherwise>
-			</c:choose>
 		</div>
 	</div>
 
@@ -59,6 +47,6 @@
 	</c:forEach>
 	</div>
 </main>
-<%@ include file="/views/customer/fragments/global/footer.jsp" %>
+<%@ include file="/views/merchandiser/fragments/global/footer.jsp" %>
 </body>
 </html>

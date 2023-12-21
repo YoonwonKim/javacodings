@@ -11,6 +11,7 @@ function updatePrice() {
 	const quantityValue = itemData.querySelector("#quantity").value;
 
 	let amountValue = Number(priceValue * quantityValue);
+	amountElement.value = amountValue;
 	amountElement.innerHTML =
 		amountValue.toLocaleString() + " 원"
 		+ "<b>(1개 당 " + Number(priceValue).toLocaleString() + " 원)</b>";

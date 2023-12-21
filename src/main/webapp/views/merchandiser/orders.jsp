@@ -32,7 +32,7 @@
 				</cds-table-head>
 				<cds-table-body>
 					<c:forEach var="order" items="${objectList}">
-						<cds-table-row>
+						<cds-table-row onclick="location.href = '/admin/order/${order.order_id}'">
 							<cds-table-cell>${order.order_id}</cds-table-cell>
 							<cds-table-cell>${order.member_id}</cds-table-cell>
 							<cds-table-cell>
