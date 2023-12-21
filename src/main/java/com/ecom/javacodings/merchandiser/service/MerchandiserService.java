@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -139,6 +140,22 @@ public class MerchandiserService implements ManagerService {
     public int countItems() { return itemDAO.count(); }
     // End Region 상품 메타 정보
     // Region Order
+    final int DEFAULT_ORDER_ROW = 30;
+    PageConstructor orderPageConstructor = new PageConstructor(DEFAULT_ORDER_ROW,
+            (String criteria, PageDTO pageData) -> Collections.singletonList(orderDAO.findAll(pageData)),
+            (String criteria) -> orderDAO.count()
+    );
+
+    // * 기본 CRUD Methods -----------------------------------------------------
+    @Override public void setOrderPageRow(int row) { orderPageConstructor.setRow(row); }
+
+    @Override
+    public Map<String, Object> getOrderPageMap(int currentPage) {
+        Map<String, Object> resultMap = orderPageConstructor.getPageMapOrNull(currentPage);
+        if (resultMap == null) resultMap.put("responseMsg", "outboundError");
+        return resultMap;
+    }
+
     // READ ===============================
     @Override
     public List<OrderDTO> listOrder(PageDTO page) {
@@ -155,15 +172,19 @@ public class MerchandiserService implements ManagerService {
     @Override
     public int countOrders() { return orderDAO.countOrders(); }
     @Override
-    public List<OrderDTO> countOrderState() {
-//        List<OrderDTO> result = orderDAO.countState();
-//        String[] states = {"장바구니", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
-//
-//        for (OrderDTO order : result) {
-//            order.setOrder_id(states[order.getState()]);
-//        }
-//        return result;
-        return null;
+    public Map<String, Object> summaryOrderState() {
+        List<SummaryDTO> summary = orderDAO.countState();
+        String[] states = {"결제 필요", "결제 완료", "주문 확인", "배송 시작", "배송 중", "배송 완료", "환불", "반품", "처리 완료"};
+
+        for (SummaryDTO item : summary) {
+            item.setLabel(states[Integer.parseInt(item.getLabel())]);
+        }
+
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("label", "주문 정보 요약");
+        resultMap.put("itemList", summary);
+        resultMap.put("stateList", Arrays.asList(states));
+        return resultMap;
     }
     public int orderStateCnt(OrderDTO order) {
     	return orderDAO.orderStateCnt(order);
@@ -196,11 +217,9 @@ public class MerchandiserService implements ManagerService {
     }
     
     @Override
-    public List<ItemDTO> listEventItem(PageDTO page){
-    	List<ItemDTO> result = eventDAO.listEventItem(page);
+    public List<ItemDTO> listEventItem(PageDTO page, String eventId){
+    	List<ItemDTO> result = eventDAO.listEventItem(page, eventId);
     	return result;
-    	
-    	
 	}
     
 //    @Override

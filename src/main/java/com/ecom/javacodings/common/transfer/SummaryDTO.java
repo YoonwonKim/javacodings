@@ -7,5 +7,5 @@ import lombok.ToString;
 @ToString
 public class SummaryDTO {
     private String label;
-    private String quantity;
+    private String value;
 }

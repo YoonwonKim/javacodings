@@ -3,6 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecom.javacodings.merchandiser.access.OrderManagerDAO">
 
+	<select id="count">
+		SELECT COUNT(ORDER_ID)
+		FROM ORDERS
+	</select>
+
+	<select id="findAll" resultType="orderDTO">
+		SELECT *
+		FROM
+		(
+			SELECT MAX(O.ORDER_ID) AS ORDER_ID, MAX(O.MEMBER_ID) AS MEMBER_ID,
+				   MAX(S.STATE) AS STATE, MAX(S.REG_DATE) AS REG_DATE,
+				   ROW_NUMBER() over (ORDER BY MAX(S.STATE)) AS RN
+			FROM ORDERS O
+				JOIN ORDER_STATES S ON O.ORDER_ID = S.ORDER_ID
+			GROUP BY O.ORDER_ID
+		)
+		WHERE RN BETWEEN #{page.start} AND #{page.end}
+	</select>
+
+
 	<select id="listOrder" parameterType="pageDTO" resultType="OrderDTO">
 		SELECT ORDER_ID, ITEM_ID, MEMBER_ID, AMOUNT, STATE, REG_DATE
 		FROM (
@@ -41,8 +61,8 @@
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>	
 
-	<select id="countState" resultType="orderDTO" parameterType="int">
-		select D.STATE, NVL(Q.AMOUNT, 0) AS AMOUNT
+	<select id="countState" resultType="summaryDTO" parameterType="int">
+		select D.STATE AS LABEL, NVL(Q.AMOUNT, 0) AS VALUE
 		FROM
 			(
 			SELECT ROWNUM STATE

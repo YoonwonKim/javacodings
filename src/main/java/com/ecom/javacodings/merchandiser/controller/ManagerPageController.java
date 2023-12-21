@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -62,22 +63,16 @@ public class ManagerPageController {
         return "merchandiser/item/main";
     }
 
-    @RequestMapping("/orders")
-    public String orders(HttpServletRequest request, HttpServletResponse response,
-                          Model model) {
-//        Map<String, Object> pageMap = pageConstructor.getPages(
-//                (PageDTO pageSet) -> Collections.singletonList(managerService.listOrder(pageSet)),
-//                request.getParameter("page"),
-//                request.getParameter("row"),
-//                managerService.countOrders()
-//        );
+    @RequestMapping("/order")
+    public String orders(Model model, String page, String row) {
+        Map<String, Object> summary = managerService.summaryOrderState();
+        model.addAttribute("summary", summary);
 
-//        if((Integer) pageMap.get("currentPage") > (Integer) pageMap.get("totalPages")) {
-//            return "redirect:/admin/orders?page=" + pageMap.get("totalPages") + "&row=" + pageMap.get("row");
-//        }
-//
-//        model.addAllAttributes(pageMap);
-        model.addAttribute("stateList", managerService.countOrderState());
+        int currentRow  = (row  == null)?0:Integer.parseInt(row);
+        if (currentRow != 0) managerService.setOrderPageRow(currentRow);
+        int currentPage = (page == null)?1:Integer.parseInt(page);
+        Map<String, Object> pageMap = managerService.getOrderPageMap(currentPage);
+        model.addAllAttributes(pageMap);
         return "/merchandiser/orders";
     }
     // End Region Pages
@@ -100,17 +95,15 @@ public class ManagerPageController {
         return "merchandiser/event/list";
     }
 
-    @RequestMapping("/event/item")
-    public String events(HttpServletRequest request,
-                         HttpServletResponse response,
-                         Model model,
-                         EventDTO eventDTO) {
+    @RequestMapping("/event/{event_id}")
+    public String events(Model model, @PathVariable("event_id") String eventId) {
 
         PageDTO page = new PageDTO(1, 15);
+        model.addAttribute("itemList", managerService.listEventItem(page, eventId));
+//        model.addAttribute("event", managerService.listEvent(page));
 
-        model.addAttribute("itemList", managerService.listEventItem(page));
-        model.addAttribute("event", managerService.listEvent(page));
 
-        return "merchandiser/event/item";
+        model.addAttribute("eventId", eventId);
+        return "merchandiser/event/view";
     }
 }

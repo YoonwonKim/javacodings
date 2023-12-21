@@ -7,7 +7,7 @@
 		<c:forEach var="item" items="${summary.itemList}">
 			<div class="value">
 				<p class="label">${item.label}</p>
-				<h1>${item.quantity}</h1>
+				<h1>${item.value}</h1>
 			</div>
 		</c:forEach>
 	</cds-stack>

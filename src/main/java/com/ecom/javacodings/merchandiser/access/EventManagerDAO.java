@@ -15,7 +15,7 @@ public interface EventManagerDAO {
 	//List<EventDTO> listEvents(Map<String, Object> params);
 	List<EventDTO> listEvent(PageDTO pageDTO);
 	
-	List<ItemDTO> listEventItem(PageDTO page);
+	List<ItemDTO> listEventItem(@Param("page") PageDTO page, @Param("event_id") String eventId);
 	
 	void stateUpdate(EventDTO eventDTO);
 	

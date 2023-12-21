@@ -51,7 +51,7 @@ public interface ManagerService {
     int countOrders();
 
     //RQ - 013 - 05 주문 상태 요약
-    List<OrderDTO> countOrderState();
+    Map<String, Object> summaryOrderState();
 
     // End Region Orders
 
@@ -69,7 +69,7 @@ public interface ManagerService {
     List<EventDTO> listEvent(PageDTO pageDTO);
     
     //상품,이벤트 리스트
-    List<ItemDTO> listEventItem(PageDTO page);
+    List<ItemDTO> listEventItem(PageDTO page, String eventId);
     
     
     //세일 기능
@@ -91,4 +91,7 @@ public interface ManagerService {
     String editItem(ItemDTO item, List<String> tags);
 
     void setItemImages(String itemId, List<Object> itemImageList);
+
+    void setOrderPageRow(int row);
+    Map<String, Object> getOrderPageMap(int currentPage);
 }

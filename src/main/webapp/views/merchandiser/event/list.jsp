@@ -3,30 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%@ include file="/views/merchandiser/fragments/dependencies.jsp" %>
 	<title>자바코딩즈 상품 이벤트 관리</title>
-	<link rel="stylesheet" href="/resources/styles/merchandiser/item.css" />
-	<script src="https://code.jquery.com/jquery-3.7.1.js"
-	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-	<%-- Web Components ----------------------------------------------------------------------------------------------%>
-	<%-- For Layout  --%>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/layer.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
-	<%-- For Widgets --%>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
-	<%-- For Inputs  --%>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
-
-	<%-- Custom Components ------------------------------------------------------------------------------------------------%>
-	<%-- Fragements --%>
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/init.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/header.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/footer.css" />
 	<%-- Widgets --%>
 	<link rel="stylesheet" href="/resources/styles/components/pagination.css" />
 	<script src="/resources/scripts/common/components/pagination.js"></script>
-
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
@@ -53,7 +34,8 @@
 		</cds-table-head>
 		<cds-table-body>
 			<c:forEach var="event" items="${objectList}" varStatus="status">
-				<cds-table-row class="row" event-id="${event.event_id}">
+				<cds-table-row class="row" event-id="${event.event_id}"
+				               onclick="location.href = '/admin/event/${event.event_id}'">
 					<cds-table-cell>${event.event_id}</cds-table-cell>
 					<cds-table-cell>${event.label}</cds-table-cell>
 					<cds-table-cell>${event.category}</cds-table-cell>

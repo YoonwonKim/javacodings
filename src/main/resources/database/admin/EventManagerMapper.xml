@@ -27,36 +27,20 @@
 	</select>
 
 
-  <!-- 상품리스트 등록일을 최신순으로 내림차순 -->
-  <select id="listEventItem" parameterType="pageDTO">
+	<!-- 상품리스트 등록일을 최신순으로 내림차순 -->
+	<select id="listEventItem" parameterType="pageDTO">
 		SELECT *
 		FROM
 		(
-			SELECT I.ITEM_ID, I.LABEL, I."DESC", E.CATEGORY,II.PATH,E.EVENT_ID,
-			       ROW_NUMBER() over (ORDER BY I.ITEM_ID DESC) AS RN
-			FROM ITEMS I
-			
-			JOIN EVENT_ITEMS EI
-			ON I.ITEM_ID = EI.ITEM_ID
-			
-			JOIN EVENTS E
-			ON E.EVENT_ID = EI.EVENT_ID
-			
-			JOIN ITEM_IMAGES II
-			ON II.ITEM_ID = I.ITEM_ID
-	  	)
-		WHERE RN BETWEEN #{start} AND #{end}
-		
-		
-	
-	
-	
-	<!-- 이벤트 추가 -->
-	<!-- <insert id="eventAdd" parameterType="pageDTO">
-		INSERT INTO EVENTS (EVENT_ID, CATEGORY, CONTENT)
-		VALUES (1, #{category}, #{content})
-	</insert> -->
-  </select>
+			SELECT I.ITEM_ID, I.LABEL, I."DESC", P.PATH,
+				   ROW_NUMBER() over (ORDER BY I.ITEM_ID DESC) AS RN
+			FROM EVENT_ITEMS E
+			    JOIN ITEMS I ON E.ITEM_ID = I.ITEM_ID
+				JOIN ITEM_IMAGES P ON P.ITEM_ID = E.ITEM_ID AND P.CATEGORY = 'thumbnail'
+			WHERE E.EVENT_ID = #{event_id}
+		)
+		WHERE RN BETWEEN #{page.start} AND #{page.end}
+	</select>
   
   <update id="stateUpdate" parameterType="eventDTO">
   		UPDATE EVENTS SET

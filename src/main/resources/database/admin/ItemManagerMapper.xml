@@ -5,13 +5,13 @@
 <!-- Region Metadata ====================================================-->
 
 	<select id="summaryItemsByCategory" resultType="summaryDTO">
-		SELECT CATEGORY AS LABEL, COUNT(ITEM_ID) AS QUANTITY
+		SELECT CATEGORY AS LABEL, COUNT(ITEM_ID) AS VALUE
 		FROM ITEMS
 		GROUP BY CATEGORY
 	</select>
 
 	<select id="summaryItemsByTag" resultType="summaryDTO">
-		SELECT TAG AS LABEL, COUNT(ITEM_ID) AS QUANTITY
+		SELECT TAG AS LABEL, COUNT(ITEM_ID) AS VALUE
 		FROM ITEM_TAGS
 		GROUP BY TAG
 	</select>

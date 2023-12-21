@@ -31,6 +31,7 @@ function updateOrder(selectBox) {
         url: "/admin/actions/update_order",
         data: order,
         success: function(response) {
+            location.reload();
         }
     });
 }

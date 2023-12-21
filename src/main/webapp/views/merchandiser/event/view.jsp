@@ -3,31 +3,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%@ include file="/views/merchandiser/fragments/dependencies.jsp" %>
 	<title>자바코딩즈 상품 이벤트 관리</title>
-	<link rel="stylesheet" href="/resources/css/manage_products.css" />
-	<script src="https://code.jquery.com/jquery-3.7.1.js"
-	        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-
-	<%--  Web Components --%>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/button.min.js"></script>
-	<script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/checkbox.min.js"></script>
-	<%-- Fragment CSS --%>
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/init.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/header.css" />
-	<link rel="stylesheet" href="/views/merchandiser/fragments/global/footer.css" />
 	<script src="/resources/scripts/eventsPg.js"></script>
+	<link rel="stylesheet" href="/resources/styles/merchandiser/item.css"/>
 </head>
 <body>
 <%@ include file="/views/merchandiser/fragments/global/header.jsp" %>
 <main>
 	<div class="layer-01">
-	
-	<form action="../admin/actions/eventMgt" name="eventMgt">
-	이벤트아이디<input type="text" >
-	<input type="submit" value="전송">
-	</form>
+		<p>이벤트 아이디</p>
+		<h1>${eventId}</h1>
+
 	<cds-table is-selectable is-sortable>
 		<cds-table-header-title slot="title">상품 이벤트 관리</cds-table-header-title>
 		<cds-table-header-description slot="description">
@@ -56,7 +43,6 @@
 				<cds-table-header-cell>이미지</cds-table-header-cell>
 				<cds-table-header-cell>이름</cds-table-header-cell>
 				<cds-table-header-cell>설명</cds-table-header-cell>
-				<cds-table-header-cell></cds-table-header-cell>
 			</cds-table-header-row>
 		</cds-table-head>
 		<cds-table-body>
@@ -66,14 +52,11 @@
 					<cds-table-cell><image src="/resources/images/${item.path}" width="80px"></image></cds-table-cell>
 					<cds-table-cell name="label">${item.label}</cds-table-cell>
 					<cds-table-cell name="desc">${item.desc}</cds-table-cell>
-					
 				</cds-table-row>
 			</c:forEach>
 		</cds-table-body>
 	</cds-table>
 	</div>
-
-	<%@ include file="/views/merchandiser/components/product_modal.jsp" %>
 </main>
 <%@ include file="/views/merchandiser/fragments/global/footer.jsp" %>
 </body>
