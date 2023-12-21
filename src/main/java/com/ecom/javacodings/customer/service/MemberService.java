@@ -287,12 +287,12 @@ public class MemberService implements IMemberService {
     }
     
     @Override
-	public List<OrderDTO> findOrderItemsByOrderId(String orderId) {
+	public OrderDTO findOrderItemsByOrderId(String orderId) {
 		return orderDAO.findOrderItemsByOrderId(orderId);
 	}
 
 	@Override
-	public List<ItemDTO> findItemsByOrderId(String orderId) {
+	public List<CartDTO> findItemsByOrderId(String orderId) {
 		return orderDAO.findItemsByOrderId(orderId);
 	}
 

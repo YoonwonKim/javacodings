@@ -19,9 +19,9 @@ public interface OrderDAO {
 	
 	List<CartDTO> findAllByMemberOrderItems(@Param("member_id") String memberId, @Param("order_id") String orderId);
 	
-	List<OrderDTO> findOrderItemsByOrderId(@Param("order_id") String orderId);
+	OrderDTO findOrderItemsByOrderId(@Param("order_id") String orderId);
 	
-	List<ItemDTO> findItemsByOrderId(@Param("order_id") String orderId);
+	List<CartDTO> findItemsByOrderId(@Param("order_id") String orderId);
 	
 	Boolean isExistOrderId(@Param("order_id") String orderId);
 

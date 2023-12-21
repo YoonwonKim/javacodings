@@ -57,9 +57,9 @@ public interface IMemberService {
     
     List<CartDTO> findAllByMemberOrderItems(String memberId, String orderId);
 
-    List<OrderDTO> findOrderItemsByOrderId(String orderId);
+    OrderDTO findOrderItemsByOrderId(String orderId);
     
-    List<ItemDTO> findItemsByOrderId(String orderId);        
+    List<CartDTO> findItemsByOrderId(String orderId);
     
     MemberAddressDTO getPrimaryAddress(String memberId);
 

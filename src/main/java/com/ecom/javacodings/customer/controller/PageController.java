@@ -11,7 +11,6 @@ import com.ecom.javacodings.purchase.data.PurchaseData;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -132,19 +131,17 @@ public class PageController {
 	}
 		
 	@RequestMapping("/account/orders/{order_id}")
-	public String ordersDetail(@PathVariable("order_id") String orderId, Model model, HttpServletRequest request) {
-		
-	    List<OrderDTO> orders = memberService.findOrderItemsByOrderId(orderId);
-	    model.addAttribute("orders", orders);
+	public String ordersDetail(@PathVariable("order_id") String orderId, Model model,
+							   HttpSession session) {
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey == null) return "redirect:/";
+
+	    OrderDTO orderData = memberService.findOrderItemsByOrderId(orderId);
+	    model.addAttribute("order", orderData);
 	    
-	    List<ItemDTO> items = memberService.findItemsByOrderId(orderId);
-	    model.addAttribute("items", items);
+	    List<CartDTO> itemList = memberService.findItemsByOrderId(orderId);
+	    model.addAttribute("itemList", itemList);
 	    	    
-	    Map<String, Object> memberOrders = new HashMap<>();
-		memberOrders.put("orders", orders);
-		memberOrders.put("items", items);
-		model.addAttribute("memberOrders", memberOrders);		
-		
 	    return "customer/account/ordersdetail";
 	}
 	// End Region Account
@@ -222,6 +219,7 @@ public class PageController {
 		orderData.setItemList(cartList);
 
 		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey == null) return "redirect:/";
 		String memberId = ssKey.getMember_id();
 		memberService.removeCartByOrderId(memberId, orderId);
 
@@ -238,6 +236,8 @@ public class PageController {
 	public String confirmOrder(HttpSession session,
 							   String ordr_idxx, @PathVariable("order_id") String orderId,
 							   PurchaseData purchaseData, Model responseBody) {
+		MemberDTO ssKey = (MemberDTO) session.getAttribute("ssKey");
+		if (ssKey == null) return "redirect:/";
 		String page = "redirect:/account/orders";
 		if (purchaseData.getRes_cd() == null || !purchaseData.getRes_cd().equals("0000")) return page;
 

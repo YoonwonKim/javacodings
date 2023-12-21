@@ -1,0 +1,71 @@
+main {
+    width: 1280px;
+    margin: 0 auto;
+}
+
+
+#order-data {
+    border-bottom: 1px solid #8d8d8d;
+    padding: 32px 16px 8px;
+}
+#order-data #button-group {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 8px;
+}
+#order-data #order-amount {
+    padding-top: 16px;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 450;
+    padding-bottom: 8px;
+}
+
+
+#order-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px;
+    color: #161616;
+}
+.item img {
+    width: 80px;
+}
+.item .orderable {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.item .orderable #label {
+    font-size: 20px;
+    line-height: 24px;
+    color: #161616;
+}
+.item .orderable #desc {
+    font-size: 14px;
+    line-height: 24px;
+    color: #262626;
+}
+.item .orderable #amount {
+    padding-top: 8px;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 450;
+}
+.item:hover {
+    background-color: #e0e0e0;
+    animation-name: fade;
+    animation-duration: 0.15s;
+    color: #161616;
+}
+@keyframes fade {
+    from {background: #f4f4f4;}
+    to   {background: #e0e0e0;}
+}

@@ -8,74 +8,53 @@
 	<%@ include file="/views/customer/fragments/dependencies.jsp" %>
 
 	<%-- Page Scripts --%>
-	<link rel="stylesheet" href="/resources/styles/customer/product-view.css" />
+	<link rel="stylesheet" href="/resources/styles/customer/order/view.css" />
 	<script src="/resources/scripts/memberinfo.js"></script>
 </head>
 <body>
 <%@ include file="/views/customer/fragments/global/header.jsp" %>
 <main>
+	<div id="order-data">
+		<p id="order-id">${order_id}</p>
+		<p id="order-amount" value="${order.amount}">${order.amount} 원</p>
+		<p id="state">
+			<c:choose>
+				<c:when test="${order.state == 0}">결제 필요</c:when>
+				<c:when test="${order.state == 1}">결제 완료</c:when>
+				<c:when test="${order.state == 2}">주문 확인</c:when>
+				<c:when test="${order.state == 3}">배송 시작</c:when>
+				<c:when test="${order.state == 4}">배송 진행</c:when>
+				<c:when test="${order.state == 5}">배송 완료</c:when>
+				<c:when test="${order.state == 6}">환불 완료</c:when>
+				<c:when test="${order.state == 7}">반품 완료</c:when>
+				<c:when test="${order.state == 8}">처리 완료</c:when>
+			</c:choose>
+		</p>
+		<div id="button-group">
+			<c:choose>
+			<c:when test="${order.state == 0}">
+				<cds-button id="purchase" kind="primary" href="/order/purchase/${order_id}">결제</cds-button>
+				<cds-button id="cancel"   kind="secondary">주문 취소</cds-button>
+			</c:when>
+			<c:otherwise>
+				<cds-button id="cancel" kind="primary">주문 취소</cds-button>
+			</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
 
-	<c:forEach var="orders" items="${orders}" varStatus="i">
-		<c:if test="${memberOrders.items[i.index].category == 'thumbnail'}">
-			<article>
-				<img src="/resources/images/${memberOrders.items[i.index].path}" id="item-image">
-				<div id="item-metadata" class="order" item-id="${memberOrders.items[i.index].item_id}">
-					<div id="article">
-						<h1 id="item-label">${memberOrders.items[i.index].label}</h1>
-						<p id="item-desc">${memberOrders.items[i.index].desc}</p>
-						<cds-stack id="item-price" gap="8px" use-custom-gap-value orientation="vertical">
-							<label id="item-price-label">판매 가격</label>
-							<div>
-								<p id="item-price">${memberOrders.items[i.index].price}</p>
-							</div>
-						</cds-stack>
-					</div>
-					<div id="order-amount">
-						<p>결제 금액</p>
-						<p class="field">${orders.amount}</p>
-					</div>
-					<cds-stack orientation="horizontal" gap="8px"use-custom-gap-value>
-						<label id="item-price-label">주문 상태</label>
-						<div>
-							<p id="item-price">
-								<c:choose>
-									<c:when test="${orders.state == 0}">
-										주문 취소
-									</c:when>
-									<c:when test="${orders.state == 1}">
-										결제 완료
-									</c:when>
-									<c:when test="${orders.state == 2}">
-										주문 확인
-									</c:when>
-									<c:when test="${orders.state == 3}">
-										배송 시작
-									</c:when>
-									<c:when test="${orders.state == 4}">
-										배송 중
-									</c:when>
-									<c:when test="${orders.state == 5}">
-										배송 완료
-									</c:when>
-									<c:when test="${orders.state == 6}">
-										환불
-									</c:when>
-									<c:when test="${orders.state == 7}">
-										반품
-									</c:when>
-									<c:when test="${orders.state == 8}">
-										처리 완료
-									</c:when>
-								</c:choose>
-							</p>
-						</div>
-						<cds-button id="cancleorder" kind="primary">주문 취소</cds-button> 
-					</cds-stack>
-				</div>
-			</article>
-		</c:if>
+	<div id="order-items">
+	<c:forEach var="item" items="${itemList}">
+	<a class="item" href="/item/${item.item_id}">
+		<img src="/resources/images/${item.path}" id="thumbnail">
+		<data class="orderable" id="${item.item_id}">
+			<data id="label">${item.label}</data>
+			<data id="desc">${item.desc}</data>
+			<data id="amount" value="${item.amount}">${item.amount} 원</data>
+		</data>
+	</a>
 	</c:forEach>
-
+	</div>
 </main>
 <%@ include file="/views/customer/fragments/global/footer.jsp" %>
 </body>
