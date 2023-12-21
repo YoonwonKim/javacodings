@@ -28,8 +28,6 @@ import com.ecom.javacodings.customer.access.members.MemberInfoDAO;
 import com.ecom.javacodings.customer.access.members.MemberPaymentDAO;
 import com.ecom.javacodings.customer.access.orders.OrderDAO;
 //import com.ecom.javacodings.external.purchase.PurchaseService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ecom.javacodings.purchase.service.IPurchaseService;
 
 @Service("memberService")
@@ -284,8 +282,8 @@ public class MemberService implements IMemberService {
 	}
     
     @Override
-    public List<ItemDTO> findAllByMemberOrderItems(String MemberId) {
-    	return orderDAO.findAllByMemberOrderItems(MemberId);
+    public List<CartDTO> findAllByMemberOrderItems(String memberId, String orderId) {
+    	return orderDAO.findAllByMemberOrderItems(memberId, orderId);
     }
     
     @Override

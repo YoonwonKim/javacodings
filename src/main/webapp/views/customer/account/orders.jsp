@@ -47,7 +47,6 @@
 								<cds-table-header-title slot="title">주문 관리</cds-table-header-title>
 								<cds-table-head>								
 								<cds-table-header-row>
-									<cds-table-header-cell></cds-table-header-cell>
 									<cds-table-header-cell>상품 이름</cds-table-header-cell>
 									<cds-table-header-cell>상품 이미지</cds-table-header-cell>
 									<cds-table-header-cell>결제 금액</cds-table-header-cell>
@@ -56,43 +55,24 @@
 								</cds-table-header-row>
 								</cds-table-head>
 								<cds-table-body>
-									<c:forEach var="orderItem" items="${memberOrders.memberOrderItems}" varStatus="i">
-										<cds-table-row onclick="location.href='/account/orders/${memberOrders.memberOrderOrders[i.index].order_id}'">
-											<cds-table-cell> </cds-table-cell>
-											<cds-table-cell><img src="/resources/images/${orderItem.path}"></cds-table-cell>
-											<cds-table-cell>${orderItem.label}</cds-table-cell>
-										 	<cds-table-cell>${memberOrders.memberOrderOrders[i.index].amount}</cds-table-cell>
-											<cds-table-cell>${memberOrders.memberOrderOrders[i.index].reg_date}</cds-table-cell>
+									<c:forEach var="order" items="${orderList}">
+										<cds-table-row onclick="location.href='/account/orders/${order.order_id}'">
+											<cds-table-cell><img src="/resources/images/${order.itemList[0].path}"></cds-table-cell>
+											<cds-table-cell>${order.itemList[0].label}</cds-table-cell>
+										 	<cds-table-cell>${order.itemList[0].amount}</cds-table-cell>
+											<cds-table-cell>${order.reg_date}</cds-table-cell>
 											<cds-table-cell>
-												<c:choose>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 0}">
-														결제 필요
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 1}">
-														결제 완료
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 2}">
-														주문 확인
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 3}">
-														배송 시작
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 4}">
-														배송 중
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 5}">
-														배송 완료
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 6}">
-														환불
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 7}">
-														반품
-													</c:when>
-													<c:when test="${memberOrders.memberOrderOrders[i.index].state == 8}">
-														처리 완료
-													</c:when>
-												</c:choose>
+											<c:choose>
+												<c:when test="${order.state == 0}">결제 필요</c:when>
+												<c:when test="${order.state == 1}">결제 완료</c:when>
+												<c:when test="${order.state == 2}">주문 확인</c:when>
+												<c:when test="${order.state == 3}">배송 시작</c:when>
+												<c:when test="${order.state == 4}">배송 진행</c:when>
+												<c:when test="${order.state == 5}">배송 완료</c:when>
+												<c:when test="${order.state == 6}">환불 완료</c:when>
+												<c:when test="${order.state == 7}">반품 완료</c:when>
+												<c:when test="${order.state == 8}">처리 완료</c:when>
+											</c:choose>
 											</cds-table-cell>
 										</cds-table-row>
 									</c:forEach>

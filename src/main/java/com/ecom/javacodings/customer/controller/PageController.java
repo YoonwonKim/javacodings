@@ -78,17 +78,6 @@ public class PageController {
 		List<OrderDTO> countMemberOrders = memberService.countOrdersByMemberId(member.getMember_id());
 		model.addAttribute("countMemberOrders", countMemberOrders);
 
-		List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(member.getMember_id());
-		model.addAttribute("memberOrderOrders", memberOrderByOrder);
-
-		List<ItemDTO> memberOrderByItem = memberService.findAllByMemberOrderItems(member.getMember_id());
-		model.addAttribute("memberOrderItems", memberOrderByItem);
-
-		Map<String, Object> memberOrders = new HashMap<>();
-		memberOrders.put("memberOrderOrders", memberOrderByOrder);
-		memberOrders.put("memberOrderItems", memberOrderByItem);
-		model.addAttribute("memberOrders", memberOrders);
-
 		return "customer/account/information";
 	}
 
@@ -130,13 +119,13 @@ public class PageController {
 
 		if (tab.equals("orders"))
 		{
-			List<OrderDTO> memberOrderByOrder = memberService.findAllByMemberOrderOrders(memberId);
-			List<ItemDTO>  memberOrderByItem = memberService.findAllByMemberOrderItems(memberId);
-
-			Map<String, Object> memberOrders = new HashMap<>();
-			memberOrders.put("memberOrderOrders", memberOrderByOrder);
-			memberOrders.put("memberOrderItems", memberOrderByItem);
-			model.addAttribute("memberOrders", memberOrders);
+			List<OrderDTO> orderList = memberService.findAllByMemberOrderOrders(memberId);
+			for (OrderDTO orderData : orderList) {
+				 String orderId = orderData.getOrder_id();
+				 List<CartDTO> itemList = memberService.findAllByMemberOrderItems(memberId, orderId);
+				 orderData.setItemList(itemList);
+			}
+			model.addAttribute("orderList", orderList);
 		}
 
 		return result;

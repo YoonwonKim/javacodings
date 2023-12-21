@@ -17,7 +17,7 @@ public interface OrderDAO {
 	
 	List<OrderDTO> findAllByMemberOrderOrders(@Param("member_id") String memberId);
 	
-	List<ItemDTO> findAllByMemberOrderItems(@Param("member_id") String memberId);
+	List<CartDTO> findAllByMemberOrderItems(@Param("member_id") String memberId, @Param("order_id") String orderId);
 	
 	List<OrderDTO> findOrderItemsByOrderId(@Param("order_id") String orderId);
 	
